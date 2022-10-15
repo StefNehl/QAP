@@ -7,31 +7,61 @@ namespace QAPInstanceReader
     public class QAPInstanceReader
     {
         private static QAPInstanceReader fileReader;
-        private const string path = "TestInstances\\";
-        private string folderPath; 
+        private const string path = "TestInstances";
 
-        private QAPInstanceReader(string instancePath)
+        private QAPInstanceReader()
         {
-            var pathValue = ConfigurationManager.AppSettings["QAPLIB"];
-            folderPath = path + pathValue;
+            Folders = new();
+
+            foreach(var key in ConfigurationManager.AppSettings.AllKeys)
+            {
+                if(key == null)
+                    continue;
+
+                Folders.Add(key);
+            }
         }
 
         public static QAPInstanceReader GetInstance()
         {
             if(fileReader== null)
-                fileReader = new QAPInstanceReader(path);
+                fileReader = new QAPInstanceReader();
 
             return fileReader;
         }
 
-        public async Task<Instance?> ReadFileAsync(string fileName)
+        public List<string> Folders 
+        {
+            get; private set;
+        }
+
+        public string[] GetFilesInFolder(string folder)
+        {
+            var files = Directory.GetFiles(GetFolderPath(folder));
+
+            for(int i = 0; i < files.Length; i++) 
+            {
+                var fullFilePathArray = files[i].Split("\\");
+                files[i] = fullFilePathArray.Last();
+            }
+
+            return files;
+        }
+
+        private string GetFolderPath(string folder)
+        {
+            string folderPath = path + "\\" + folder;
+            string fullFolderPath = AppDomain.CurrentDomain.BaseDirectory + folderPath + "\\";
+            return fullFolderPath;
+        }
+
+        public async Task<Instance?> ReadFileAsync(string folder, string fileName)
         {
             int n = 0;
             int[,] a = new int[n, n];
             int[,] b = new int[n, n];
 
-            string fullPath = AppDomain.CurrentDomain.BaseDirectory + folderPath + "\\" + fileName;
-            
+            var fullPath = GetFolderPath(folder) + fileName;
             if (!File.Exists(fullPath))
                 return null;
 
