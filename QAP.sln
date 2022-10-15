@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33006.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAP", "QAP\QAP.csproj", "{84AB8588-91BD-4947-811C-E74CC68DE8AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAPInstanceReader", "QAPInstanceReader\QAPInstanceReader.csproj", "{10402875-0AE3-4F5B-B523-0D159A9EC2CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{8FD24D91-7B05-4465-91E5-0A6E617AE96A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84AB8588-91BD-4947-811C-E74CC68DE8AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AB8588-91BD-4947-811C-E74CC68DE8AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AB8588-91BD-4947-811C-E74CC68DE8AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AB8588-91BD-4947-811C-E74CC68DE8AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10402875-0AE3-4F5B-B523-0D159A9EC2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10402875-0AE3-4F5B-B523-0D159A9EC2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10402875-0AE3-4F5B-B523-0D159A9EC2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10402875-0AE3-4F5B-B523-0D159A9EC2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FD24D91-7B05-4465-91E5-0A6E617AE96A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD24D91-7B05-4465-91E5-0A6E617AE96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FD24D91-7B05-4465-91E5-0A6E617AE96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FD24D91-7B05-4465-91E5-0A6E617AE96A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1785B278-0B1D-4A12-9142-7EC8FAFADAC8}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,15 @@
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\QAPLIB\chr12a.dat
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\QAPLIB\chr12b.dat
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\QAPLIB\chr12c.dat
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\Domain.deps.json
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\Domain.dll
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\Domain.pdb
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.csproj.AssemblyReference.cache
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.AssemblyInfoInputs.cache
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.AssemblyInfo.cs
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.dll
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\refint\Domain.dll
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.pdb
+C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\ref\Domain.dll
