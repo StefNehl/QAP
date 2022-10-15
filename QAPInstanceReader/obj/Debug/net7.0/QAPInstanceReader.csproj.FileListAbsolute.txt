@@ -1,7 +1,6 @@
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\QAPLIB\chr12a.dat
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\QAPLIB\chr12b.dat
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\QAPLIB\chr12c.dat
-C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\QAPInstanceReader.dll.config
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\QAPInstanceReader.deps.json
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\QAPInstanceReader.dll
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\QAPInstanceReader.pdb
@@ -17,3 +16,4 @@ C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\QAPInstanceRe
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\refint\QAPInstanceReader.dll
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\QAPInstanceReader.pdb
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\ref\QAPInstanceReader.dll
+C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\QAPLIBOptimum\chr12a.dat

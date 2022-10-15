@@ -12,17 +12,12 @@ namespace QAPInstanceReader
         private QAPInstanceReader()
         {
             Folders = new();
+            Folders.Add("QAPLIB");
+            Folders.Add("QAPLIBOptimum");
 
-            foreach(var key in ConfigurationManager.AppSettings.AllKeys)
-            {
-                if(key == null)
-                    continue;
-
-                Folders.Add(key);
-            }
         }
 
-        public static QAPInstanceReader GetInstance()
+    public static QAPInstanceReader GetInstance()
         {
             if(fileReader== null)
                 fileReader = new QAPInstanceReader();
