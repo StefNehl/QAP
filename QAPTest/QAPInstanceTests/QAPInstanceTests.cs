@@ -58,5 +58,23 @@ namespace QAPTest.QAPInstanceTests
 
             Assert.That(instancevalue, Is.EqualTo(optimalInstanceValue));
         }
+
+        [Test]
+        public async Task Check_GetInstanceValue_chr25a()
+        {
+            var folderName = "QAPLIB";
+            var fileName = "chr25a.dat";
+
+            //Optimal permuatation from https://www.opt.math.tugraz.at/qaplib/inst.html
+            var optimalPermutation = new int[] { 25, 12, 5, 3, 18, 4, 16, 8, 20, 10, 14, 6, 15, 23, 24, 19, 13, 1, 21, 11, 17, 2, 22, 7, 9 };
+            ReduceIndexOfPermutation(optimalPermutation);
+
+            int optimalInstanceValue = 3796;
+
+            var instance = await _reader.ReadFileAsync(folderName, fileName);
+            var instancevalue = instance.GetInstanceValue(optimalPermutation);
+
+            Assert.That(instancevalue, Is.EqualTo(optimalInstanceValue));
+        }
     }
 }
