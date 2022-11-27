@@ -97,26 +97,24 @@ namespace QAPInstanceReader
                     if(count >= aStartIndex && count <= aEndIndex)
                     {
                         var stringValuesArray = line.Split(" ");
-                        parseStringValuesAndInsertInIntMatrix(stringValuesArray, a, aRowCount);
+                        ParseStringValuesAndInsertInIntMatrix(stringValuesArray, a, aRowCount);
                         aRowCount++;
                     }
 
                     if (count >= bStartIndex && count <= bEndIndex)
                     {
                         var stringValuesArray = line.Split(" ");
-                        parseStringValuesAndInsertInIntMatrix(stringValuesArray, b, bRowCount);
+                        ParseStringValuesAndInsertInIntMatrix(stringValuesArray, b, bRowCount);
                         bRowCount++;
                     }
-
                     count++;
-                    Console.WriteLine(line);
                 }
             }
 
             return new Instance(n, a, b);
         }
 
-        private void parseStringValuesAndInsertInIntMatrix(string[]? stringValues, int[,] matrix, int rowIndex)
+        private void ParseStringValuesAndInsertInIntMatrix(string[]? stringValues, int[,] matrix, int rowIndex)
         {
             if (stringValues == null)
                 return;

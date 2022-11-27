@@ -33,3 +33,5 @@ C:\Users\stefa\source\repos\QAP\QAP\obj\Debug\net7.0\QAP.pdb
 C:\Users\stefa\source\repos\QAP\QAP\obj\Debug\net7.0\QAP.genruntimeconfig.cache
 C:\Users\stefa\source\repos\QAP\QAP\obj\Debug\net7.0\ref\QAP.dll
 C:\Users\stefa\source\repos\QAP\QAP\bin\Debug\net7.0\TestInstances\QAPLIBOptimum\chr12a.dat
+C:\Users\stefa\source\repos\QAP\QAP\bin\Debug\net7.0\TestInstances\Small\TestN1.dat
+C:\Users\stefa\source\repos\QAP\QAP\bin\Debug\net7.0\TestInstances\Small\TestN2.dat

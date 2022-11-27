@@ -14,3 +14,5 @@ C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\refint\Domain.dll
 C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\Domain.pdb
 C:\Users\stefa\source\repos\QAP\Domain\obj\Debug\net7.0\ref\Domain.dll
 C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\QAPLIBOptimum\chr12a.dat
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\Small\TestN1.dat
+C:\Users\stefa\source\repos\QAP\Domain\bin\Debug\net7.0\TestInstances\Small\TestN2.dat

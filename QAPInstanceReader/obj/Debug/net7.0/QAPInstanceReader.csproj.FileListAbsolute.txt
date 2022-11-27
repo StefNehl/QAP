@@ -17,3 +17,5 @@ C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\refint\QAPIns
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\QAPInstanceReader.pdb
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\obj\Debug\net7.0\ref\QAPInstanceReader.dll
 C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\QAPLIBOptimum\chr12a.dat
+C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\Small\TestN1.dat
+C:\Users\stefa\source\repos\QAP\QAPInstanceReader\bin\Debug\net7.0\TestInstances\Small\TestN2.dat

@@ -1,13 +1,10 @@
 using QAPInstanceReader;
 
-namespace QAPTest.QAPInstanceReaderTests
+namespace QAPTest.QAPInstanceTests
 {
+    [TestFixture]
     public class QAPInstanceReaderTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
         public void TestFolderNotEmpty()

@@ -117,3 +117,5 @@ C:\Users\stefa\source\repos\QAP\QAPTest\obj\Debug\net7.0\QAPTest.pdb
 C:\Users\stefa\source\repos\QAP\QAPTest\obj\Debug\net7.0\QAPTest.genruntimeconfig.cache
 C:\Users\stefa\source\repos\QAP\QAPTest\obj\Debug\net7.0\ref\QAPTest.dll
 C:\Users\stefa\source\repos\QAP\QAPTest\bin\Debug\net7.0\TestInstances\QAPLIBOptimum\chr12a.dat
+C:\Users\stefa\source\repos\QAP\QAPTest\bin\Debug\net7.0\TestInstances\Small\TestN1.dat
+C:\Users\stefa\source\repos\QAP\QAPTest\bin\Debug\net7.0\TestInstances\Small\TestN2.dat

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,15 +13,15 @@ namespace Domain.Models
         {
             string instanceString = "N: " + N + Environment.NewLine;
 
-            instanceString += getMatrixString(A);
+            instanceString += GetMatrixString(A);
             instanceString += Environment.NewLine;
 
-            instanceString += getMatrixString(B);
+            instanceString += GetMatrixString(B);
 
             return instanceString;
         }
 
-        private static string getMatrixString(int[,] matrix)
+        private static string GetMatrixString(int[,] matrix)
         {
             var matrixString = string.Empty;
 
@@ -39,6 +40,25 @@ namespace Domain.Models
             }
 
             return matrixString;
+        }
+
+        public double GetInstanceValue(int[] permutation)
+        {
+            if (permutation.Length != N)
+                return double.MaxValue;
+
+            double result = 0;
+            for(int i = 0; i < N; i++)
+            {
+                for(int j = 0; j < N; j++)
+                {
+                    double resultA = A[i, j];
+                    double resultB = B[permutation[i], permutation[j]];
+                    result += resultA * resultB;
+                }
+            }
+
+            return result;
         }
     }
 }
