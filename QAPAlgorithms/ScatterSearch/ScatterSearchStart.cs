@@ -74,9 +74,23 @@ namespace QAPAlgorithms.ScatterSearch
             //ToDo Improve solution with shortest distance 
         }
 
-        private void EliminateIdenticalSolutions()
+        //Sets the first index of a dublicated solution to -1
+        public void EliminateIdenticalSolutions()
         {
-            
+            for(int sToCheck = 0; sToCheck < Population.GetLength(0) -1; sToCheck++)
+            {
+                for(int s = sToCheck + 1; s < Population.GetLength(0); s++)
+                {
+                    for (int i = 0; i < Population.GetLength(1); i++)
+                    {
+                        if (Population[sToCheck, i] != Population[s, i])
+                            break;
+
+                        if (i == Population.GetLength(1) - 1)
+                            Population[s, 0] = -1;
+                    }
+                }
+            }
         }
 
         private void IdentifyTheBestSolutions()
