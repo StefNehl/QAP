@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QAPTest", "QAPTest\QAPTest.csproj", "{B57268C4-AA14-4418-A809-DB231182943F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAPAlgorithms", "QAPAlgorithms\QAPAlgorithms.csproj", "{2CE4335F-C274-4772-9FA8-66AA992ADAFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QAPAlgorithms", "QAPAlgorithms\QAPAlgorithms.csproj", "{2CE4335F-C274-4772-9FA8-66AA992ADAFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QAPBenchmark", "QAPBenchmark\QAPBenchmark.csproj", "{380BE41F-32EE-490B-9FE2-9F15C689E3A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2CE4335F-C274-4772-9FA8-66AA992ADAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE4335F-C274-4772-9FA8-66AA992ADAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CE4335F-C274-4772-9FA8-66AA992ADAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{380BE41F-32EE-490B-9FE2-9F15C689E3A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{380BE41F-32EE-490B-9FE2-9F15C689E3A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{380BE41F-32EE-490B-9FE2-9F15C689E3A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{380BE41F-32EE-490B-9FE2-9F15C689E3A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
