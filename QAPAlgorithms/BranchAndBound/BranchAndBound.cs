@@ -19,8 +19,5 @@ namespace QAPAlgorithms.BranchAndBound
         {
             throw new NotImplementedException();
         }
-
-        private int[]
-
     }
 }
