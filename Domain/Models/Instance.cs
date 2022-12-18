@@ -42,23 +42,6 @@ namespace Domain.Models
             return matrixString;
         }
 
-        public long GetInstanceValue(int[] permutation)
-        {
-            if (permutation.Length != N)
-                return long.MaxValue;
 
-            long result = 0;
-            for(int i = 0; i < N; i++)
-            {
-                for(int j = 0; j < N; j++)
-                {
-                    int resultA = A[i, j];
-                    int resultB = B[permutation[i], permutation[j]];
-                    result += resultA * resultB;
-                }
-            }
-
-            return result;
-        }
     }
 }

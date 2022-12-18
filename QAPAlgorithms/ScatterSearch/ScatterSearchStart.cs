@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain;
+using Domain.Models;
 using QAPAlgorithms.Contracts;
 using System;
 using System.Collections.Generic;
@@ -12,31 +13,54 @@ namespace QAPAlgorithms.ScatterSearch
     public class ScatterSearchStart
     {
         //16_Design of Heuristic Algorithms for Hard Optimization.pdf 215
-        private readonly int mu = 10; //size of the complete population (max = 20)
-        private readonly int bigE = 5; //size of the elite solutions (around 10) 
+        //14_Principles of Scatter Search P.3
+        private readonly int populationSize = 10; //size of the complete population (max = 20)
+        private readonly int refrerenceSetSize = 5; //size of the reference (elite) solutions (around 10) 
         private Instance currentInstance;
-        public int[,] Population { get; private set; }
+        public List<int[]> Population { get; set; }
+        public List<InstanceSolution> ReferenceSet { get; set; } 
 
-        public ScatterSearchStart(Instance instance, int? sizeOfCompletePopulationMu = null)
+
+        public ScatterSearchStart(Instance instance, int? populationSize = null)
         {
             currentInstance = instance;
+            if(populationSize != null)
+                this.populationSize = populationSize.Value;
 
-            if(sizeOfCompletePopulationMu != null)
-                mu = sizeOfCompletePopulationMu.Value;  
-
-            Population = new int[mu, instance.N];
+            Population = new List<int[]>();
+            ReferenceSet = new List<InstanceSolution>();
         }
 
         public InstanceSolution Solve()
         {
             
-            var resultValue = int.MaxValue;
             var resultPermutation = new int[currentInstance.N];
-            
-
+            ReferenceSet.Clear();
             GenerateInitialPopulation();
 
+            var foundNewSolutions = true;
+
+            while(foundNewSolutions)
+            {
+                var newSubSets = GenerateNewSubSets(2, 10);
+                foundNewSolutions = false;
+
+                for(int i = 0; i < newSubSets.Length; i++)
+                {
+                    var subSet = newSubSets[i,0];
+                }
+            }
+
+
             return new InstanceSolution(currentInstance, resultPermutation);
+        }
+
+        //
+        private int[,] GenerateNewSubSets(int sizeOfSubsets, int nrOfSubsets)
+        {
+            var subSets = new int[sizeOfSubsets, nrOfSubsets];
+
+            return subSets;
         }
 
         public Task<int> SolveAsync(Instance instance, CancellationToken cancellationToken)
@@ -49,24 +73,59 @@ namespace QAPAlgorithms.ScatterSearch
         //Next solution starts with index + 1
         public void GenerateInitialPopulation(int nrOfIndexesToMovePerIteration = 1)
         {
+            Population.Clear();
+
             int newIndexValue;
-            for (int s = 0; s < mu; s++)
+            for (int s = 0; s < populationSize; s++)
             {
+                var newSolution = new int[currentInstance.N];
                 for (int i = 0; i < currentInstance.N; i++)
                 {
                     if (s == 0)
-                        newIndexValue = i;
+                        newSolution[i] = i;
                     else
                     {
                         int newIndex = i - nrOfIndexesToMovePerIteration;
                         if (newIndex < 0)
                             newIndex = currentInstance.N + newIndex;
-                        newIndexValue = Population[s - 1, newIndex];
+                        newSolution[i] = Population[s-1][newIndex];
                     }
+                    
+                }
+                Population.Add(newSolution);
+            }
+        }
 
-                    Population[s, i] = newIndexValue;
+        public bool ReferenceSetUpdate(int[] newSolution)
+        {
+            if (!ReferenceSet.Any())
+            {
+                ReferenceSet.Add(new InstanceSolution(currentInstance,newSolution));
+                return true;
+            }
+
+            var newSolutionValue = InstanceHelpers.GetInstanceValueWithSolution(currentInstance, newSolution);
+            var bestSolution = ReferenceSet.First();
+            if (newSolutionValue < bestSolution.SolutionValue)
+                ReferenceSet.Insert(0, new InstanceSolution(currentInstance, newSolution));
+
+            foreach(var solution in ReferenceSet)
+            {
+                if(newSolutionValue > solution.SolutionValue)
+                {
+                    int indexAfter = ReferenceSet.IndexOf(solution) + 1;
+                    if (indexAfter > ReferenceSet.Count)
+                        ReferenceSet.Add(new InstanceSolution(currentInstance, newSolution));
+                    else
+                        ReferenceSet.Insert(indexAfter, new InstanceSolution(currentInstance, newSolution));
+                    break;
                 }
             }
+
+            if (ReferenceSet.Count > refrerenceSetSize)
+                ReferenceSet.RemoveRange(refrerenceSetSize - 1, ReferenceSet.Count);
+
+            return false;
         }
 
         private void RepairAndImproveSolution()
@@ -74,21 +133,17 @@ namespace QAPAlgorithms.ScatterSearch
             //ToDo Improve solution with shortest distance 
         }
 
-        //Sets the first index of a dublicated solution to -1
-        public void EliminateIdenticalSolutions()
+        public void EliminateIdenticalSolutionsFromSet(List<int[]> solutionSet)
         {
-            for(int sToCheck = 0; sToCheck < Population.GetLength(0) -1; sToCheck++)
+            for(int i = 0; i < solutionSet.Count; i++) 
             {
-                for(int s = sToCheck + 1; s < Population.GetLength(0); s++)
+                for(int j = i+1; j < solutionSet.Count; j++) 
                 {
-                    for (int i = 0; i < Population.GetLength(1); i++)
+                    if (InstanceHelpers.IsEqual(solutionSet[i], solutionSet[j]))
                     {
-                        if (Population[sToCheck, i] != Population[s, i])
-                            break;
-
-                        if (i == Population.GetLength(1) - 1)
-                            Population[s, 0] = -1;
+                        solutionSet.RemoveAt(j);
                     }
+
                 }
             }
         }

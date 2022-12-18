@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public record InstanceSolution(Instance Instance, int[] Permutation)
+    public class InstanceSolution
     {
-        public long SolutionValue
+        public int[] Permutation { get; }
+        public Instance Instance { get; }
+        public long SolutionValue { get; }  
+
+        public InstanceSolution(Instance instance, int[] permutation)
         {
-            get
-            {
-                return Instance.GetInstanceValue(Permutation);
-            }
+            Permutation = permutation;
+            Instance = instance;
+            SolutionValue = InstanceHelpers.GetInstanceValueWithSolution(instance, permutation);
         }
+
     }
 }
