@@ -20,7 +20,6 @@ namespace QAPTest.QAPAlgorithmsTests
         public void SetUp()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
             scatterSearch = new ScatterSearchStart(testInstance, 6);
         }
@@ -111,14 +110,39 @@ namespace QAPTest.QAPAlgorithmsTests
         }
 
         [Test]
-        public void CheckReferenceSetUpdate_AddToWorseList()
+        public void CheckReferenceSetUpdate_AddEmptyList()
         {
-            scatterSearch.ReferenceSetUpdate(new[] { 0, 1, 2 });
+            var result = scatterSearch.ReferenceSetUpdate(new[] { 0, 1, 2 });
+
+            Assert.That(result, Is.EqualTo(true));
             Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
         }
 
         [Test]
-        public void CheckReferenceSetUpdate_AddLargetToList()
+        public void CheckReferenceSetUpdate_AddToWorseList_ReferenceSetFull()
+        {
+            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
+            testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
+            scatterSearch = new ScatterSearchStart(testInstance, 6, 1);
+            
+            scatterSearch.ReferenceSet = new List<InstanceSolution>()
+            {
+                new InstanceSolution(testInstance, new int[]{ 1, 0, 2})
+            };
+
+            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.EqualTo(false));
+                Assert.That(scatterSearch.ReferenceSet, Has.Count.EqualTo(1));
+                Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.Not.EqualTo(newInstanceSolution.SolutionValue));
+            });
+        }
+
+        [Test]
+        public void CheckReferenceSetUpdate_AddToWorseList()
         {
             scatterSearch.ReferenceSet = new List<InstanceSolution>()
             {
@@ -126,10 +150,11 @@ namespace QAPTest.QAPAlgorithmsTests
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
-            scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
 
             Assert.Multiple(() =>
             {
+                Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
                 Assert.That(scatterSearch.ReferenceSet[1].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
@@ -144,10 +169,11 @@ namespace QAPTest.QAPAlgorithmsTests
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
-            scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
 
             Assert.Multiple(() =>
             {
+                Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
                 Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });

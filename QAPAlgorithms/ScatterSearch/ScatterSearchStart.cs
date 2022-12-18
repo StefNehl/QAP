@@ -14,18 +14,18 @@ namespace QAPAlgorithms.ScatterSearch
     {
         //16_Design of Heuristic Algorithms for Hard Optimization.pdf 215
         //14_Principles of Scatter Search P.3
-        private readonly int populationSize = 10; //size of the complete population (max = 20)
-        private readonly int refrerenceSetSize = 5; //size of the reference (elite) solutions (around 10) 
+        private readonly int populationSize; //size of the complete population (max = 20)
+        private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private Instance currentInstance;
         public List<int[]> Population { get; set; }
         public List<InstanceSolution> ReferenceSet { get; set; } 
 
 
-        public ScatterSearchStart(Instance instance, int? populationSize = null)
+        public ScatterSearchStart(Instance instance, int populationSize = 10, int referenceSetSize = 5)
         {
             currentInstance = instance;
-            if(populationSize != null)
-                this.populationSize = populationSize.Value;
+            this.populationSize = populationSize;
+            this.refrerenceSetSize = referenceSetSize;
 
             Population = new List<int[]>();
             ReferenceSet = new List<InstanceSolution>();
@@ -37,6 +37,12 @@ namespace QAPAlgorithms.ScatterSearch
             var resultPermutation = new int[currentInstance.N];
             ReferenceSet.Clear();
             GenerateInitialPopulation();
+            EliminateIdenticalSolutionsFromSet(Population);
+
+            foreach(var solution in Population) 
+            {
+                ReferenceSetUpdate(solution);
+            }
 
             var foundNewSolutions = true;
 
@@ -75,7 +81,6 @@ namespace QAPAlgorithms.ScatterSearch
         {
             Population.Clear();
 
-            int newIndexValue;
             for (int s = 0; s < populationSize; s++)
             {
                 var newSolution = new int[currentInstance.N];
@@ -114,8 +119,12 @@ namespace QAPAlgorithms.ScatterSearch
                 if(newSolutionValue > solution.SolutionValue)
                 {
                     int indexAfter = ReferenceSet.IndexOf(solution) + 1;
-                    if (indexAfter > ReferenceSet.Count)
+                    if (indexAfter >= ReferenceSet.Count)
+                    {
+                        if (ReferenceSet.Count >= refrerenceSetSize)
+                            return false;
                         ReferenceSet.Add(new InstanceSolution(currentInstance, newSolution));
+                    }
                     else
                         ReferenceSet.Insert(indexAfter, new InstanceSolution(currentInstance, newSolution));
                     break;
@@ -125,8 +134,7 @@ namespace QAPAlgorithms.ScatterSearch
             if (ReferenceSet.Count > refrerenceSetSize)
                 ReferenceSet.RemoveRange(refrerenceSetSize - 1, ReferenceSet.Count);
 
-            // return true if solution was added
-            return false;
+            return true;
         }
 
         private void RepairAndImproveSolution()
