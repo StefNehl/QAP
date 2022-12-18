@@ -125,6 +125,7 @@ namespace QAPAlgorithms.ScatterSearch
             if (ReferenceSet.Count > refrerenceSetSize)
                 ReferenceSet.RemoveRange(refrerenceSetSize - 1, ReferenceSet.Count);
 
+            // return true if solution was added
             return false;
         }
 
