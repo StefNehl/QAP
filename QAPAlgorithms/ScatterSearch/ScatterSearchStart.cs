@@ -48,25 +48,37 @@ namespace QAPAlgorithms.ScatterSearch
 
             while(foundNewSolutions)
             {
-                var newSubSets = GenerateNewSubSets(2, 10);
+                var newSubSets = new List<int[]>();
+                foreach(var solution in ReferenceSet) 
+                    newSubSets.AddRange(GenerateNewSubSets(2, solution.SolutionPermutation));
+
                 foundNewSolutions = false;
 
-                for(int i = 0; i < newSubSets.Length; i++)
+                foreach(var subSet in newSubSets) 
                 {
-                    var subSet = newSubSets[i,0];
+                    CombineSolution(subSet, subSet);
+                    RepairAndImproveSolution(subSet);
+                    if (ReferenceSetUpdate(subSet))
+                        foundNewSolutions = true;
                 }
             }
-
-
+            
             return new InstanceSolution(currentInstance, resultPermutation);
         }
 
-        //
-        private int[,] GenerateNewSubSets(int sizeOfSubsets, int nrOfSubsets)
+
+        private IEnumerable<int[]> GenerateNewSubSets(int sizeOfSubsets, int[] solution)
         {
-            var subSets = new int[sizeOfSubsets, nrOfSubsets];
+            var subSets = new List<int[]>();  
+
+            
 
             return subSets;
+        }
+
+        private void CombineSolution(int[] solutionA, int[] solutionB)
+        {
+
         }
 
         public Task<int> SolveAsync(Instance instance, CancellationToken cancellationToken)
@@ -137,7 +149,7 @@ namespace QAPAlgorithms.ScatterSearch
             return true;
         }
 
-        private void RepairAndImproveSolution()
+        private void RepairAndImproveSolution(int[] solution)
         {
             //ToDo Improve solution with shortest distance 
         }
@@ -157,24 +169,5 @@ namespace QAPAlgorithms.ScatterSearch
             }
         }
 
-        private void IdentifyTheBestSolutions()
-        {
-
-        }
-
-        private void IdentifyMostDifferentSolutions()
-        {
-
-        }
-
-        private void CombineSolutions()
-        {
-
-        }
-
-        private void JoinPotentialSolutions()
-        {
-
-        }
     }
 }

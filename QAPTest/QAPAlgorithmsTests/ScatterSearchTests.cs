@@ -131,7 +131,7 @@ namespace QAPTest.QAPAlgorithmsTests
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
 
             Assert.Multiple(() =>
             {
@@ -150,7 +150,7 @@ namespace QAPTest.QAPAlgorithmsTests
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
 
             Assert.Multiple(() =>
             {
@@ -169,7 +169,7 @@ namespace QAPTest.QAPAlgorithmsTests
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.Permutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
 
             Assert.Multiple(() =>
             {

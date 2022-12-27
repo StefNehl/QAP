@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class InstanceSolution
+    public class InstanceSolution : IInstanceSolution
     {
-        public int[] Permutation { get; }
-        public Instance Instance { get; }
-        public long SolutionValue { get; }  
+        public int[] SolutionPermutation { get; }
+        public long SolutionValue { get; }
+        public long HashCode { get; }
 
         public InstanceSolution(Instance instance, int[] permutation)
         {
-            Permutation = permutation;
-            Instance = instance;
+            SolutionPermutation = permutation;
             SolutionValue = InstanceHelpers.GetInstanceValueWithSolution(instance, permutation);
+            HashCode = InstanceHelpers.GenerateHashCode(permutation);
         }
 
     }
