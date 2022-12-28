@@ -99,12 +99,26 @@ namespace QAPAlgorithms.ScatterSearch
 
                 foreach (var nextPair in solutionPairs)
                 {
+                    //Fill last element
+                    if((solutionLenght - newIndex) == 1)
+                    {
+                        if (!IsNumberAlreadyInTheSolution(nextPair[0], newSolution))
+                        {
+                            newSolution[newIndex] = nextPair[0];
+                            if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
+                                newSolutions.Add(newSolution);
+                            break;
+                        }
+
+                    }
 
                     if (!IsPairFeasible(nextPair, newSolution))
                         continue;
 
                     newSolution[newIndex] = nextPair[0];
-                    newSolution[newIndex + 1] = nextPair[1];
+
+                    if(newIndex < solutionLenght)
+                        newSolution[newIndex + 1] = nextPair[1];
 
                     pairCounter++;
                     newIndex = 0 + (pairCounter * 2);
@@ -150,6 +164,17 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             return true;
+        }
+
+        private static bool IsNumberAlreadyInTheSolution(int newNumber, int[] currentSolution)
+        {
+            for (int i = 0; i < currentSolution.Length; i++)
+            {
+                if (currentSolution[i] == newNumber)
+                    return true;
+            }
+
+            return false;
         }
 
         private static bool IsSolutionInTheStartSolutionList(int[] newSolution, 

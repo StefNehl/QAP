@@ -14,7 +14,7 @@ namespace QAPTest.QAPAlgorithmsTests
     public class SubSetGenerationMethodTests
     {
         [Test]
-        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_StepSize_1()
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_1()
         {
             var firstPermutation = new int[4] { 0, 1, 2, 3 };
 
@@ -51,7 +51,7 @@ namespace QAPTest.QAPAlgorithmsTests
         }
 
         [Test]
-        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_StepSize_2()
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_2()
         {
             var firstPermutation = new int[4] { 0, 1, 2, 3 };
 
@@ -88,7 +88,7 @@ namespace QAPTest.QAPAlgorithmsTests
         }
 
         [Test]
-        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_StepSize_3()
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_3()
         {
             var firstPermutation = new int[4] { 0, 1, 2, 3 };
 
@@ -97,6 +97,76 @@ namespace QAPTest.QAPAlgorithmsTests
             newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
 
             var secondPermutation = new int[4] { 1, 2, 3, 0 };
+            var newSolutionB = new Mock<IInstanceSolution>();
+            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
+            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+
+            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+            Assert.Throws<Exception>(() => SubSetGenerationMethod.CombineSolutionsPairWise(list, 3));
+        }
+
+        [Test]
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_1()
+        {
+            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+
+            var newSolutionA = new Mock<IInstanceSolution>();
+            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
+            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+
+            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new Mock<IInstanceSolution>();
+            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
+            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+
+            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+
+            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list);
+
+            var expectedCount = 3;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(expectedCount));
+            });
+        }
+
+        [Test]
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_2()
+        {
+            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+
+            var newSolutionA = new Mock<IInstanceSolution>();
+            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
+            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+
+            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new Mock<IInstanceSolution>();
+            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
+            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+
+            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+
+            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list, 2);
+
+            var expectedCount = 4;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Has.Count.EqualTo(expectedCount));
+            });
+        }
+
+        [Test]
+        public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_3()
+        {
+            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+
+            var newSolutionA = new Mock<IInstanceSolution>();
+            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
+            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+
+            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
             var newSolutionB = new Mock<IInstanceSolution>();
             newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
             newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
