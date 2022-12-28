@@ -45,11 +45,16 @@ namespace QAPAlgorithms.ScatterSearch
         /// pairs are available, the function takes the next pair from the first solution
         /// </summary>
         /// <param name="solutions"></param>
-        /// <param name="stepSizeForPairs"></param>
+        /// <param name="stepSizeForPairs">this parameter sets the step for the pairs. 
+        /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
+        /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
         /// <returns></returns>
         public static List<int[]> CombineSolutionsPairWise(List<IInstanceSolution> solutions, 
             int stepSizeForPairs = 1)
         {
+            if (stepSizeForPairs > 2)
+                throw new Exception("Stepsize higher than 2 is not supported and verified");
+
             List<int[]> newSolutions = new List<int[]>();
             var solutionPairs = new List<int[]>();
 
@@ -59,13 +64,14 @@ namespace QAPAlgorithms.ScatterSearch
             foreach (var instanceSolution in solutions)
             {
                 var solution = instanceSolution.SolutionPermutation;
-                for (int i = 0; i < nrOfPairsPerSolution; i += stepSizeForPairs)
+                var startIndex = 0;
+                for (int i = 0; i < nrOfPairsPerSolution; i++)
                 {
                     var newSolutionPair = new int[2];
 
-                    newSolutionPair[0] = solution[i];
+                    newSolutionPair[0] = solution[startIndex];
 
-                    var nextIndex = i + 1;
+                    var nextIndex = startIndex + 1;
                     if (nextIndex == solution.Length)
                     {
                         nextIndex = 0;
@@ -74,6 +80,8 @@ namespace QAPAlgorithms.ScatterSearch
 
                     if(!IsPairAlreadyInList(newSolutionPair, solutionPairs))
                         solutionPairs.Add(newSolutionPair);
+
+                    startIndex += stepSizeForPairs;
                 }
             }
 
