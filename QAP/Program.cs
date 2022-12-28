@@ -22,7 +22,7 @@ if (instance == null)
 
 Console.WriteLine(instance);
 
-var testPermutation = new int[] { 0, 1 };
-var result = instance.GetInstanceValue(testPermutation);
+//var testPermutation = new int[] { 0, 1 };
+//var result = instance.GetInstanceValue(testPermutation);
 
-Console.WriteLine("Result: " + result);
+//Console.WriteLine("Result: " + result);

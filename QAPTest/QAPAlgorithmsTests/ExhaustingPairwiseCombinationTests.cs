@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Models;
 using Moq;
+using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,16 @@ using System.Threading.Tasks;
 namespace QAPTest.QAPAlgorithmsTests
 {
     [TestFixture]
-    public class SubSetGenerationMethodTests
+    public class ExhaustingPairwiseCombinationTests
     {
+        private ExhaustingPairwiseCombination combinationMethod;
+
+        [SetUp]
+        public void SetUp()
+        {
+            combinationMethod = new ExhaustingPairwiseCombination();
+        }
+
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_1()
         {
@@ -29,7 +38,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutionsPairWise(list);
 
             var expectedCount = 2;
             var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
@@ -66,7 +75,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list, 2);
+            var result = combinationMethod.CombineSolutionsPairWise(list, 2);
 
             var expectedCount = 2;
             var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
@@ -102,7 +111,7 @@ namespace QAPTest.QAPAlgorithmsTests
             newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-            Assert.Throws<Exception>(() => SubSetGenerationMethod.CombineSolutionsPairWise(list, 3));
+            Assert.Throws<Exception>(() => combinationMethod.CombineSolutionsPairWise(list, 3));
         }
 
         [Test]
@@ -121,7 +130,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutionsPairWise(list);
 
             var expectedCount = 3;
 
@@ -147,7 +156,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = SubSetGenerationMethod.CombineSolutionsPairWise(list, 2);
+            var result = combinationMethod.CombineSolutionsPairWise(list, 2);
 
             var expectedCount = 4;
 
@@ -172,7 +181,7 @@ namespace QAPTest.QAPAlgorithmsTests
             newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-            Assert.Throws<Exception>(() => SubSetGenerationMethod.CombineSolutionsPairWise(list, 3));
+            Assert.Throws<Exception>(() => combinationMethod.CombineSolutionsPairWise(list, 3));
         }
     }
 }
