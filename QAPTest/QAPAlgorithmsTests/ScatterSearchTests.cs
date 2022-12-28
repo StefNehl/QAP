@@ -13,7 +13,7 @@ namespace QAPTest.QAPAlgorithmsTests
     [TestFixture]
     public class ScatterSearchTests
     {
-        private Instance testInstance;
+        private QAPInstance testInstance;
         private ScatterSearchStart scatterSearch;
 
         [SetUp]

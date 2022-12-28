@@ -12,7 +12,7 @@ namespace Domain.Models
         public long SolutionValue { get; }
         public long HashCode { get; }
 
-        public InstanceSolution(Instance instance, int[] permutation)
+        public InstanceSolution(QAPInstance instance, int[] permutation)
         {
             SolutionPermutation = permutation;
             SolutionValue = InstanceHelpers.GetInstanceValueWithSolution(instance, permutation);

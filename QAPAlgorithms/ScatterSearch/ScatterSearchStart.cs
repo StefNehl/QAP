@@ -16,12 +16,12 @@ namespace QAPAlgorithms.ScatterSearch
         //14_Principles of Scatter Search P.3
         private readonly int populationSize; //size of the complete population (max = 20)
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
-        private Instance currentInstance;
+        private QAPInstance currentInstance;
         public List<int[]> Population { get; set; }
         public List<InstanceSolution> ReferenceSet { get; set; } 
 
 
-        public ScatterSearchStart(Instance instance, int populationSize = 10, int referenceSetSize = 5)
+        public ScatterSearchStart(QAPInstance instance, int populationSize = 10, int referenceSetSize = 5)
         {
             currentInstance = instance;
             this.populationSize = populationSize;
@@ -81,7 +81,7 @@ namespace QAPAlgorithms.ScatterSearch
 
         }
 
-        public Task<int> SolveAsync(Instance instance, CancellationToken cancellationToken)
+        public Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

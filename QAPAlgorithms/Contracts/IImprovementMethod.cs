@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace QAPAlgorithms.Contracts
 {
-    public interface IAlgorithm
+    public interface IImprovementMethod
     {
-        Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken);
-        int Solve(QAPInstance instance);
+        void ImproveSolution(IInstanceSolution instanceSolution);
+
+        void ImproveSolutions(List<IInstanceSolution> instanceSolutions);
     }
 }

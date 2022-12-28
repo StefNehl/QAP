@@ -50,7 +50,7 @@ namespace QAPInstanceReader
             return fullFolderPath;
         }
 
-        public async Task<Instance?> ReadFileAsync(string folder, string fileName)
+        public async Task<QAPInstance?> ReadFileAsync(string folder, string fileName)
         {
             int n = 0;
             int[,] a = new int[n, n];
@@ -111,7 +111,7 @@ namespace QAPInstanceReader
                 }
             }
 
-            return new Instance(n, a, b);
+            return new QAPInstance(n, a, b);
         }
 
         private void ParseStringValuesAndInsertInIntMatrix(string[]? stringValues, int[,] matrix, int rowIndex)

@@ -9,7 +9,7 @@ namespace Domain
 {
     public static class InstanceHelpers
     {
-        public static long GetInstanceValueWithSolution(Instance instance, int[] solution)
+        public static long GetInstanceValueWithSolution(QAPInstance instance, int[] solution)
         {
             if (solution.Length != instance.N)
                 return long.MaxValue;
