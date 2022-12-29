@@ -11,6 +11,6 @@ namespace QAPAlgorithms.Contracts
     {
         void ImproveSolution(IInstanceSolution instanceSolution);
 
-        void ImproveSolutions(List<IInstanceSolution> instanceSolutions);
+        Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct);
     }
 }

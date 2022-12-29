@@ -121,7 +121,7 @@ namespace QAPAlgorithms.ScatterSearch
                 return true;
             }
 
-            var newSolutionValue = InstanceHelpers.GetInstanceValueWithSolution(currentInstance, newSolution);
+            var newSolutionValue = InstanceHelpers.GetSolutionValue(currentInstance, newSolution);
             var bestSolution = ReferenceSet.First();
             if (newSolutionValue < bestSolution.SolutionValue)
                 ReferenceSet.Insert(0, new InstanceSolution(currentInstance, newSolution));

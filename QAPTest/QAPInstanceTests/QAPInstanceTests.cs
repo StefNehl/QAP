@@ -37,7 +37,7 @@ namespace QAPTest.QAPInstanceTests
             int optimalInstanceValue = 9552;
 
             var instance = await _reader.ReadFileAsync(folderName, fileName);
-            var instancevalue = InstanceHelpers.GetInstanceValueWithSolution(instance, optimalPermutation);
+            var instancevalue = InstanceHelpers.GetSolutionValue(instance, optimalPermutation);
 
             Assert.That(instancevalue, Is.EqualTo(optimalInstanceValue));
         }
@@ -55,7 +55,7 @@ namespace QAPTest.QAPInstanceTests
             int optimalInstanceValue = 9742;
 
             var instance = await _reader.ReadFileAsync(folderName, fileName);
-            var instancevalue = InstanceHelpers.GetInstanceValueWithSolution(instance, optimalPermutation);
+            var instancevalue = InstanceHelpers.GetSolutionValue(instance, optimalPermutation);
 
             Assert.That(instancevalue, Is.EqualTo(optimalInstanceValue));
         }
@@ -73,7 +73,7 @@ namespace QAPTest.QAPInstanceTests
             int optimalInstanceValue = 3796;
 
             var instance = await _reader.ReadFileAsync(folderName, fileName);
-            var instancevalue = InstanceHelpers.GetInstanceValueWithSolution(instance, optimalPermutation);
+            var instancevalue = InstanceHelpers.GetSolutionValue(instance, optimalPermutation);
 
             Assert.That(instancevalue, Is.EqualTo(optimalInstanceValue));
         }

@@ -50,7 +50,7 @@ namespace QAPInstanceReader
             return fullFolderPath;
         }
 
-        public async Task<QAPInstance?> ReadFileAsync(string folder, string fileName)
+        public async Task<QAPInstance> ReadFileAsync(string folder, string fileName)
         {
             int n = 0;
             int[,] a = new int[n, n];
@@ -58,7 +58,9 @@ namespace QAPInstanceReader
 
             var fullPath = GetFolderPath(folder) + fileName;
             if (!File.Exists(fullPath))
-                return null;
+            {
+                throw new FileNotFoundException(fullPath);
+            }
 
             string? line;
             using(StreamReader file = new StreamReader(fullPath))

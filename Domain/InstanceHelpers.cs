@@ -9,7 +9,7 @@ namespace Domain
 {
     public static class InstanceHelpers
     {
-        public static long GetInstanceValueWithSolution(QAPInstance instance, int[] solution)
+        public static long GetSolutionValue(QAPInstance instance, int[] solution)
         {
             if (solution.Length != instance.N)
                 return long.MaxValue;
@@ -45,6 +45,13 @@ namespace Domain
             if (GenerateHashCode(permutation1) == GenerateHashCode(permutation2))
                 return true;
 
+            return false;
+        }
+
+        public static bool IsBetterSolution(long oldSolutionValue, long newSolutionValue)
+        {
+            if (newSolutionValue < oldSolutionValue)
+                return true;
             return false;
         }
     }
