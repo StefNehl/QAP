@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace QAPTest.QAPAlgorithmsTests
 {
     [TestFixture]
-    public class LocalSearchFirstImprovementTests
+    public class LocalSearchBestImprovementTests
     {
         private QAPInstance instance;
         private IImprovementMethod improvementMethod;
@@ -25,16 +25,15 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             instance = await qapReader.ReadFileAsync(folderName, fileName);
-            improvementMethod = new LocalSearchFirstImprovement(instance);
+            improvementMethod = new LocalSearchBestImprovement(instance);
 
             worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            betterPermutation = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            betterPermutation = new int[] { 1, 0, 2, 3, 5, 4, 6, 7, 8, 9, 10, 11 };
         }
 
         [Test]
         public void ImproveSolution()
         {
-
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
@@ -52,6 +51,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public async Task ImproveSolutions()
         {
+
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 

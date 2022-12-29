@@ -11,6 +11,9 @@ namespace Domain
     {
         public static long GetSolutionValue(QAPInstance instance, int[] solution)
         {
+            //ToDo
+            //Improve new calculation of the Value Erenda Cela p.77
+
             if (solution.Length != instance.N)
                 return long.MaxValue;
 
