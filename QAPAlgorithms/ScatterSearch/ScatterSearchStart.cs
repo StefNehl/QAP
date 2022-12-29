@@ -18,67 +18,68 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
         public List<int[]> Population { get; set; }
-        public List<InstanceSolution> ReferenceSet { get; set; } 
+        public List<IInstanceSolution> ReferenceSet { get; set; }
 
+        private readonly IImprovementMethod improvementMethod;
+        private readonly SubSetGenerationMethod subSetGenerationMethod;
+        private readonly ICombinationMethod combinationMethod;
 
-        public ScatterSearchStart(QAPInstance instance, int populationSize = 10, int referenceSetSize = 5)
+        public ScatterSearchStart(QAPInstance instance,
+            IImprovementMethod improvementMethod,
+            ICombinationMethod combinationMethod,
+            int populationSize = 10,
+            int referenceSetSize = 5)
         {
             currentInstance = instance;
             this.populationSize = populationSize;
             this.refrerenceSetSize = referenceSetSize;
 
+            this.improvementMethod = improvementMethod;
+            this.combinationMethod = combinationMethod;
+            this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
+
             Population = new List<int[]>();
-            ReferenceSet = new List<InstanceSolution>();
+            ReferenceSet = new List<IInstanceSolution>();
         }
 
-        public InstanceSolution Solve()
+        /// <summary>
+        /// Returns the solved solution with the permutation and solution value and the number of iterations
+        /// </summary>
+        /// <param name="maxIterations"></param>
+        /// <returns></returns>
+        public Tuple<IInstanceSolution, int> Solve(int maxIterations)
         {
-            
-            var resultPermutation = new int[currentInstance.N];
             ReferenceSet.Clear();
             GenerateInitialPopulation();
             EliminateIdenticalSolutionsFromSet(Population);
 
-            foreach(var solution in Population) 
+            foreach(var permutation in Population) 
             {
-                ReferenceSetUpdate(solution);
+                var newSolution = new InstanceSolution(currentInstance, permutation);
+                ReferenceSetUpdate(newSolution);
             }
 
             var foundNewSolutions = true;
+            int count = 0;
 
             while(foundNewSolutions)
             {
-                var newSubSets = new List<int[]>();
-                foreach(var solution in ReferenceSet) 
-                    newSubSets.AddRange(GenerateNewSubSets(2, solution.SolutionPermutation));
+                count++;
 
                 foundNewSolutions = false;
+                var newSubSets = subSetGenerationMethod.GenerateType1SubSet(ReferenceSet);
 
                 foreach(var subSet in newSubSets) 
                 {
-                    CombineSolution(subSet, subSet);
-                    RepairAndImproveSolution(subSet);
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
                 }
+
+                if (count == maxIterations)
+                    break;
             }
-            
-            return new InstanceSolution(currentInstance, resultPermutation);
-        }
 
-
-        private IEnumerable<int[]> GenerateNewSubSets(int sizeOfSubsets, int[] solution)
-        {
-            var subSets = new List<int[]>();  
-
-            
-
-            return subSets;
-        }
-
-        private void CombineSolution(int[] solutionA, int[] solutionB)
-        {
-
+            return new Tuple<IInstanceSolution, int>(ReferenceSet[0], count);
         }
 
         public Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken)
@@ -113,45 +114,42 @@ namespace QAPAlgorithms.ScatterSearch
             }
         }
 
-        public bool ReferenceSetUpdate(int[] newSolution)
+        public bool ReferenceSetUpdate(IInstanceSolution newSolution)
         {
             if (!ReferenceSet.Any())
             {
-                ReferenceSet.Add(new InstanceSolution(currentInstance,newSolution));
+                ReferenceSet.Add(newSolution);
                 return true;
             }
 
-            var newSolutionValue = InstanceHelpers.GetSolutionValue(currentInstance, newSolution);
+            var newSolutionValue = newSolution.SolutionValue;
             var bestSolution = ReferenceSet.First();
             if (newSolutionValue < bestSolution.SolutionValue)
-                ReferenceSet.Insert(0, new InstanceSolution(currentInstance, newSolution));
-
-            foreach(var solution in ReferenceSet)
+                ReferenceSet.Insert(0, newSolution);
+            else
             {
-                if(newSolutionValue > solution.SolutionValue)
+                foreach(var solution in ReferenceSet)
                 {
-                    int indexAfter = ReferenceSet.IndexOf(solution) + 1;
-                    if (indexAfter >= ReferenceSet.Count)
+                    if(newSolutionValue > solution.SolutionValue)
                     {
-                        if (ReferenceSet.Count >= refrerenceSetSize)
-                            return false;
-                        ReferenceSet.Add(new InstanceSolution(currentInstance, newSolution));
+                        int indexAfter = ReferenceSet.IndexOf(solution) + 1;
+                        if (indexAfter >= ReferenceSet.Count)
+                        {
+                            if (ReferenceSet.Count >= refrerenceSetSize)
+                                return false;
+                            ReferenceSet.Add(newSolution);
+                        }
+                        else
+                            ReferenceSet.Insert(indexAfter, newSolution);
+                        break;
                     }
-                    else
-                        ReferenceSet.Insert(indexAfter, new InstanceSolution(currentInstance, newSolution));
-                    break;
                 }
             }
 
             if (ReferenceSet.Count > refrerenceSetSize)
-                ReferenceSet.RemoveRange(refrerenceSetSize - 1, ReferenceSet.Count);
+                ReferenceSet.RemoveAt(ReferenceSet.Count - 1);
 
             return true;
-        }
-
-        private void RepairAndImproveSolution(int[] solution)
-        {
-            //ToDo Improve solution with shortest distance 
         }
 
         public void EliminateIdenticalSolutionsFromSet(List<int[]> solutionSet)

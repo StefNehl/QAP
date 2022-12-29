@@ -23,5 +23,22 @@ namespace Domain.Models
         {
             SolutionValue = InstanceHelpers.GetSolutionValue(instance, this.SolutionPermutation);
         }
+
+        public string DisplayInConsole()
+        {
+            var resultString = string.Empty;
+
+            Console.WriteLine();
+            Console.WriteLine($"Solution Value: {SolutionValue}");
+            Console.Write("[ ");
+            for(int i = 0; i < SolutionPermutation.Length; i++)
+            {
+                Console.Write(SolutionPermutation[i] + " ");
+            }
+            Console.Write("]");
+            Console.WriteLine();
+
+            return resultString;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Domain;
+using QAPAlgorithms.ScatterSearch;
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
@@ -33,11 +34,16 @@ Console.WriteLine();
 folderName = "QAPLIB";
 instanceName = "chr12a.dat";
 
-var firstPermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-var secondPermutation = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-
 instance = await qapReader.ReadFileAsync(folderName, instanceName);
 
-Console.WriteLine($"First: {InstanceHelpers.GetSolutionValue(instance, firstPermutation)}");
-Console.WriteLine($"Second: {InstanceHelpers.GetSolutionValue(instance, secondPermutation)}");
+var improvementMethod = new LocalSearchFirstImprovement(instance);
+var combinationMethod = new ExhaustingPairwiseCombination();
+
+var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod);
+var maxIterations = 100000;
+var resultTuple = newScatterSearch.Solve(maxIterations);
+
+Console.WriteLine();
+Console.WriteLine($"QAP Instance solved after {resultTuple.Item2} iterations (Maxiterations: {maxIterations})");
+resultTuple.Item1.DisplayInConsole();
 

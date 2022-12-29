@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
+using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,17 @@ namespace QAPTest.QAPAlgorithmsTests
     {
         private QAPInstance testInstance;
         private ScatterSearchStart scatterSearch;
+        private IImprovementMethod improvementMethod;
+        private ICombinationMethod combinationMethod;
 
         [SetUp]
         public void SetUp()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            scatterSearch = new ScatterSearchStart(testInstance, 6);
+            improvementMethod = new LocalSearchFirstImprovement(testInstance);
+            combinationMethod = new ExhaustingPairwiseCombination();
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6);
         }
 
         [Test]
@@ -112,7 +117,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddEmptyList()
         {
-            var result = scatterSearch.ReferenceSetUpdate(new[] { 0, 1, 2 });
+            var result = scatterSearch.ReferenceSetUpdate(new InstanceSolution( testInstance, new[] { 0, 1, 2 }));
 
             Assert.That(result, Is.EqualTo(true));
             Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
@@ -123,15 +128,15 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            scatterSearch = new ScatterSearchStart(testInstance, 6, 1);
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6, 1);
             
-            scatterSearch.ReferenceSet = new List<InstanceSolution>()
+            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
             {
                 new InstanceSolution(testInstance, new int[]{ 1, 0, 2})
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
             {
@@ -144,13 +149,13 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddToWorseList()
         {
-            scatterSearch.ReferenceSet = new List<InstanceSolution>()
+            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
             {
                 new InstanceSolution(testInstance, new int[]{ 1, 0, 2})
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
             {
@@ -163,18 +168,39 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList()
         {
-            scatterSearch.ReferenceSet = new List<InstanceSolution>()
+            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
             {
                 new InstanceSolution(testInstance, new int[]{ 0, 1, 2})
             };
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
-            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution.SolutionPermutation);
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
+                Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+            });
+        }
+
+        [Test]
+        public void CheckReferenceSetUpdate_AddBetterToList_ReferenceSetFull()
+        {
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6, 1);
+
+            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
+            {
+                new InstanceSolution(testInstance, new int[]{ 0, 1, 2})
+            };
+            
+            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
+            var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.EqualTo(true));
+                Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
                 Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
         }

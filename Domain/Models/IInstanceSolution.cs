@@ -6,7 +6,7 @@
         int[] SolutionPermutation { get; }
         long SolutionValue { get; }
         void RefreshSolutionValue(QAPInstance instance);
-        
+        string DisplayInConsole();
 
     }
 }

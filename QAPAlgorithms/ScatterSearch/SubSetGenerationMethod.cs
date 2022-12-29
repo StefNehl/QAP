@@ -110,7 +110,7 @@ namespace QAPAlgorithms.ScatterSearch
             for (int i = startIndex; i < referenceSolutions.Count - 1; i++)
             {
                 listForSubSets.Add(referenceSolutions[i]);
-                for (int j = i + 1; i < referenceSolutions.Count; j++)
+                for (int j = i + 1; j < referenceSolutions.Count; j++)
                 {
                     listForSubSets.Add(referenceSolutions[j]);
                     var newTrialPermutations = combinationMethod.CombineSolutionsPairWise(listForSubSets);

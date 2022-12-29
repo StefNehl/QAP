@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QAPAlgorithms\QAPAlgorithms.csproj" />
     <ProjectReference Include="..\QAPInstanceReader\QAPInstanceReader.csproj" />
   </ItemGroup>
 
