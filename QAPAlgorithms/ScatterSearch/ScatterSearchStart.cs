@@ -20,9 +20,7 @@ namespace QAPAlgorithms.ScatterSearch
         public List<int[]> Population { get; set; }
         public List<IInstanceSolution> ReferenceSet { get; set; }
 
-        private readonly IImprovementMethod improvementMethod;
         private readonly SubSetGenerationMethod subSetGenerationMethod;
-        private readonly ICombinationMethod combinationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
 
         public ScatterSearchStart(QAPInstance instance,
@@ -36,8 +34,6 @@ namespace QAPAlgorithms.ScatterSearch
             this.populationSize = populationSize;
             this.refrerenceSetSize = referenceSetSize;
 
-            this.improvementMethod = improvementMethod;
-            this.combinationMethod = combinationMethod;
             this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             this.generateInitPopulationMethod = generateInitPopulationMethod;
 
