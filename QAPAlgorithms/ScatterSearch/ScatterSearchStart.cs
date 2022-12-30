@@ -73,7 +73,11 @@ namespace QAPAlgorithms.ScatterSearch
             IterationCount = 0;
             var thousendsCount = 0;
 
-            while(foundNewSolutions)
+            var typeCount = 1;
+            var newSubSets = new List<IInstanceSolution>();
+
+
+            while (foundNewSolutions)
             {
                 IterationCount++;
                 thousendsCount++;
@@ -91,13 +95,32 @@ namespace QAPAlgorithms.ScatterSearch
                 }
 
                 foundNewSolutions = false;
-                var newSubSets = subSetGenerationMethod.GenerateType1SubSet(ReferenceSet);
+                newSubSets.Clear();
+
+                switch (typeCount)
+                {
+                    case 1:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSet(ReferenceSet));
+                        break;
+                    case 2:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSet(ReferenceSet));
+                        break;
+                    case 3:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSet(ReferenceSet));
+                        break;
+                    case 4:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSet(ReferenceSet));
+                        typeCount = 0;
+                        break;
+                }
 
                 foreach(var subSet in newSubSets) 
                 {
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
                 }
+
+                typeCount++;
 
             }
 
