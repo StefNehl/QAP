@@ -37,10 +37,10 @@ instanceName = "chr12a.dat";
 instance = await qapReader.ReadFileAsync(folderName, instanceName);
 
 var improvementMethod = new LocalSearchFirstImprovement(instance);
-var combinationMethod = new ExhaustingPairwiseCombination();
+var combinationMethod = new ExhaustingPairwiseCombination(1);
 
 var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod);
-var maxIterations = 100000;
+var maxIterations = 10000;
 var resultTuple = newScatterSearch.Solve(maxIterations);
 
 Console.WriteLine();

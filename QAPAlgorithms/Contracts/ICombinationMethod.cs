@@ -9,7 +9,6 @@ namespace QAPAlgorithms.Contracts
 {
     public interface ICombinationMethod
     {
-        public List<int[]> CombineSolutionsPairWise(List<IInstanceSolution> solutions,
-                int stepSizeForPairs = 1);
+        public List<int[]> CombineSolutionsPairWise(List<IInstanceSolution> solutions);
     }
 }

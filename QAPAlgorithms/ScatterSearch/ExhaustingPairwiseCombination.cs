@@ -14,18 +14,26 @@ namespace QAPAlgorithms.ScatterSearch
     /// </summary>
     public class ExhaustingPairwiseCombination : ICombinationMethod
     {
+        private readonly int stepSizeForPairs;
+
+        /// <summary>
+        /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
+        /// </summary>
+        /// <param name="stepSizeForPairs">this parameter sets the step for the pairs. 
+        /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
+        /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
+        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1)
+        {
+            this.stepSizeForPairs = stepSizeForPairs;
+        }
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
         /// new created solution with pairs until the size of a solution is reached. If not enough 
         /// pairs are available, the function takes the next pair from the first solution
         /// </summary>
         /// <param name="solutions"></param>
-        /// <param name="stepSizeForPairs">this parameter sets the step for the pairs. 
-        /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
-        /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
         /// <returns></returns>
-        public List<int[]> CombineSolutionsPairWise(List<IInstanceSolution> solutions,
-            int stepSizeForPairs = 1)
+        public List<int[]> CombineSolutionsPairWise(List<IInstanceSolution> solutions)
         {
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
