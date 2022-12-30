@@ -18,6 +18,8 @@ namespace QAPTest.QAPAlgorithmsTests
         private ScatterSearchStart scatterSearch;
         private IImprovementMethod improvementMethod;
         private ICombinationMethod combinationMethod;
+        private IGenerateInitPopulationMethod generateInitPopulationMethod;
+        private int populationSize;
 
         [SetUp]
         public void SetUp()
@@ -26,14 +28,15 @@ namespace QAPTest.QAPAlgorithmsTests
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
             improvementMethod = new LocalSearchFirstImprovement(testInstance);
             combinationMethod = new ExhaustingPairwiseCombination();
-            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6);
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            populationSize = 6;
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod);
         }
 
         [Test]
         public void CheckGenerateInitialPopulation_WithOneStep()
         {
-            scatterSearch.GenerateInitialPopulation();
-            var p = scatterSearch.Population;
+            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, testInstance.N);
 
             var resultArray = new List<int[]> 
             { 
@@ -52,8 +55,8 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithTwoSteps()
         {
-            scatterSearch.GenerateInitialPopulation(2);
-            var p = scatterSearch.Population;
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2);
+            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, testInstance.N);
 
             var resultArray = new List<int[]>
             { 
@@ -72,9 +75,8 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckEliminateIdenticalSolution()
         {
-            scatterSearch.GenerateInitialPopulation(1);
+            var p = generateInitPopulationMethod.GeneratePopulation(1, testInstance.N);
             scatterSearch.EliminateIdenticalSolutionsFromSet(scatterSearch.Population);
-            var p = scatterSearch.Population;
 
             var resultArray = new List<int[]> 
             { 
@@ -128,7 +130,7 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6, 1);
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
             
             scatterSearch.ReferenceSet = new List<IInstanceSolution>()
             {
@@ -187,7 +189,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList_ReferenceSetFull()
         {
-            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, 6, 1);
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
 
             scatterSearch.ReferenceSet = new List<IInstanceSolution>()
             {

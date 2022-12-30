@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Domain.Models;
+using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using System;
 using System.Collections.Generic;
@@ -13,20 +14,20 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     public class GenerateInitialPopulationBenchmarks
     {
         private int solutionSize;
-        private ScatterSearchStart scatterSearch;
+        private IGenerateInitPopulationMethod generationMethod;
 
         [GlobalSetup] 
         public void Setup() 
         {
             solutionSize = 10;
             var newInstance = new QAPInstance(10, null, null);
-            scatterSearch = new ScatterSearchStart(newInstance);
+            generationMethod = new StepWisePopulationGenerationMethod(1);
         }
 
         [Benchmark]
         public void GenerateInitialPopulation()
         {
-            scatterSearch.GenerateInitialPopulation();
+            generationMethod.GeneratePopulation(10, solutionSize);
         }
     }
 }

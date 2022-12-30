@@ -12,8 +12,9 @@ var instance = await qapReader.ReadFileAsync(folderName, instanceName);
 
 var improvementMethod = new LocalSearchFirstImprovement(instance);
 var combinationMethod = new ExhaustingPairwiseCombination(1);
+var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
 
-var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod);
+var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod, generationInitPopMethod);
 var runtimeInSeconds = 10;
 var resultTuple = newScatterSearch.Solve(runtimeInSeconds, true);
 

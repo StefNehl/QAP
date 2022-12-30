@@ -23,10 +23,12 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly IImprovementMethod improvementMethod;
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly ICombinationMethod combinationMethod;
+        private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
 
         public ScatterSearchStart(QAPInstance instance,
             IImprovementMethod improvementMethod,
             ICombinationMethod combinationMethod,
+            IGenerateInitPopulationMethod generateInitPopulationMethod,
             int populationSize = 10,
             int referenceSetSize = 5)
         {
@@ -37,6 +39,7 @@ namespace QAPAlgorithms.ScatterSearch
             this.improvementMethod = improvementMethod;
             this.combinationMethod = combinationMethod;
             this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
+            this.generateInitPopulationMethod = generateInitPopulationMethod;
 
             Population = new List<int[]>();
             ReferenceSet = new List<IInstanceSolution>();
@@ -55,7 +58,9 @@ namespace QAPAlgorithms.ScatterSearch
             var timeToEnd = currentTime.AddSeconds(runTimeInSeconds);
 
             ReferenceSet.Clear();
-            GenerateInitialPopulation();
+            Population.Clear();
+            Population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
+
             EliminateIdenticalSolutionsFromSet(Population);
 
             foreach(var permutation in Population) 
@@ -104,32 +109,6 @@ namespace QAPAlgorithms.ScatterSearch
             throw new NotImplementedException();
         }
 
-        //Generates Initial population 
-        //Start with the first index and sets every index to the i 
-        //Next solution starts with index + 1
-        public void GenerateInitialPopulation(int nrOfIndexesToMovePerIteration = 1)
-        {
-            Population.Clear();
-
-            for (int s = 0; s < populationSize; s++)
-            {
-                var newSolution = new int[currentInstance.N];
-                for (int i = 0; i < currentInstance.N; i++)
-                {
-                    if (s == 0)
-                        newSolution[i] = i;
-                    else
-                    {
-                        int newIndex = i - nrOfIndexesToMovePerIteration;
-                        if (newIndex < 0)
-                            newIndex = currentInstance.N + newIndex;
-                        newSolution[i] = Population[s-1][newIndex];
-                    }
-                    
-                }
-                Population.Add(newSolution);
-            }
-        }
 
         public bool ReferenceSetUpdate(IInstanceSolution newSolution)
         {
