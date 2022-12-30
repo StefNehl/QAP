@@ -42,13 +42,18 @@ namespace QAPAlgorithms.ScatterSearch
             ReferenceSet = new List<IInstanceSolution>();
         }
 
+        public long IterationCount { get; set; }
+
         /// <summary>
         /// Returns the solved solution with the permutation and solution value and the number of iterations
         /// </summary>
-        /// <param name="maxIterations"></param>
+        /// <param name="runTimeInSeconds"></param>
         /// <returns></returns>
-        public Tuple<IInstanceSolution, int> Solve(int maxIterations)
+        public Tuple<IInstanceSolution, long> Solve(int runTimeInSeconds, bool displayProgressInConsole = false)
         {
+            var currentTime = DateTime.Now;
+            var timeToEnd = currentTime.AddSeconds(runTimeInSeconds);
+
             ReferenceSet.Clear();
             GenerateInitialPopulation();
             EliminateIdenticalSolutionsFromSet(Population);
@@ -60,11 +65,25 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             var foundNewSolutions = true;
-            int count = 0;
+            IterationCount = 0;
+            var thousendsCount = 0;
 
             while(foundNewSolutions)
             {
-                count++;
+                IterationCount++;
+                thousendsCount++;
+                //Check only every 1000 Iterations the Time
+                
+                if(thousendsCount == 1000)
+                {
+                    if (displayProgressInConsole)
+                        Console.WriteLine(IterationCount);
+
+                    thousendsCount = 0;
+                    currentTime = DateTime.Now;
+                    if (currentTime > timeToEnd)
+                        break;
+                }
 
                 foundNewSolutions = false;
                 var newSubSets = subSetGenerationMethod.GenerateType1SubSet(ReferenceSet);
@@ -75,11 +94,9 @@ namespace QAPAlgorithms.ScatterSearch
                         foundNewSolutions = true;
                 }
 
-                if (count == maxIterations)
-                    break;
             }
 
-            return new Tuple<IInstanceSolution, int>(ReferenceSet[0], count);
+            return new Tuple<IInstanceSolution, long>(ReferenceSet[0], IterationCount);
         }
 
         public Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken)
