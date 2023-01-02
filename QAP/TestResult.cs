@@ -11,6 +11,7 @@ namespace QAP
         int N, 
         long SolutionValue, 
         long Time, 
+        long SolutionsTried,
         int[] Solution,
         string CombinationMethodName,
         string InitPopulationGenerationMethodName, 
@@ -54,6 +55,8 @@ namespace QAP
             sb.Append(";");
             sb.Append(Time);
             sb.Append(";");
+            sb.Append(SolutionsTried);
+            sb.Append(";");
 
             var arrayString = new StringBuilder();
             arrayString.Append("[");
@@ -87,6 +90,8 @@ namespace QAP
             sb.Append(";");
             sb.Append("Time[s]");
             sb.Append(";");
+            sb.Append("Solutions Tried");
+            sb.Append(";");
             sb.Append("Permutation");
             sb.Append(";");
             sb.Append("Combination Method");
@@ -94,6 +99,36 @@ namespace QAP
             sb.Append("Init Pop Generation");
             sb.Append(";");
             sb.Append("ImprovementMethod");
+            return sb.ToString();
+        }
+
+        public string ToStringForConsole()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Instance Name: {InstanceName}");
+            sb.AppendLine($"N: {N}");
+            sb.AppendLine($"Solution Value: {SolutionValue}");
+            sb.AppendLine($"Time[s]: {Time}");
+            sb.AppendLine($"Solutions Tried: {SolutionsTried}");
+
+            var arrayString = new StringBuilder();
+            arrayString.Append("[");
+            for (int i = 0; i < Solution.Length; i++)
+            {
+                arrayString.Append(Solution[i]);
+
+                if (i < Solution.Length - 1)
+                    arrayString.Append(", ");
+            }
+            arrayString.Append("]");
+
+            sb.AppendLine($"Permutation: {arrayString.ToString()}");
+            sb.AppendLine($"Combination Method: {CombinationMethodName}");
+            sb.AppendLine($"Init Pop Generation: {CombinationMethodName}");
+            sb.AppendLine($"Improvement Method: {CombinationMethodName}");
+
+
+
             return sb.ToString();
         }
     }

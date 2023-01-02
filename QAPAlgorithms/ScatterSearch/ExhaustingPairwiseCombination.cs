@@ -16,6 +16,7 @@ namespace QAPAlgorithms.ScatterSearch
     {
         private readonly int stepSizeForPairs;
         private HashSet<long> alreadyCombinedSolutions;
+        private bool checkIfSolutionsWereAlreadyCombined;
 
         /// <summary>
         /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
@@ -27,6 +28,7 @@ namespace QAPAlgorithms.ScatterSearch
         {
             this.stepSizeForPairs = stepSizeForPairs;
             alreadyCombinedSolutions = new HashSet<long>();
+            this.checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined;
         }
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
@@ -42,11 +44,16 @@ namespace QAPAlgorithms.ScatterSearch
 
             List<int[]> newSolutions = new List<int[]>();
            
-            var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-            if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
-                return newSolutions;
 
-            alreadyCombinedSolutions.Add(hashCodeOfSolutions);
+            if(checkIfSolutionsWereAlreadyCombined)
+            {
+                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
+                if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
+                    return newSolutions;
+                alreadyCombinedSolutions.Add(hashCodeOfSolutions);
+            }
+
+
             var solutionPairs = new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;

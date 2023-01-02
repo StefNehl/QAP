@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace QAP
 {
@@ -38,7 +39,8 @@ namespace QAP
                 instance.InstanceName, 
                 instance.N, 
                 result.Item1.SolutionValue, 
-                runTimeInSeconds, 
+                result.Item3, 
+                result.Item2,
                 result.Item1.SolutionPermutation, 
                 combinationMethod.GetType().Name, 
                 generateInitPopulationMethod.GetType().Name, 

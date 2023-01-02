@@ -9,17 +9,25 @@ var testResults = new List<TestResult>();
 
 
 var folderName = "QAPLIB";
-var instanceName = "chr12a.dat";
-var instance = await qapReader.ReadFileAsync(folderName, instanceName);
+//var instanceName = "chr12a.dat";
 
-var improvementMethod = new LocalSearchFirstImprovement(instance);
-var combinationMethod = new ExhaustingPairwiseCombination(1, true);
-var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
 
-var runtimeInSeconds = 10;
-var testInstance = new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);
-var testResult = testInstance.StartTest(instance, 40, 10, runtimeInSeconds, 4, SubSetGenerationMethodType.Cycle, true);
+var runtimeInSeconds = 60;
 
-Console.WriteLine(testResult.ToStringColumnNames());
-Console.WriteLine(testResult.ToString());
+var filesInFolder = qapReader.GetFilesInFolder(folderName);
+foreach(var fileName in filesInFolder)
+{
+    var instance = await qapReader.ReadFileAsync(folderName, fileName);
+
+    var improvementMethod = new LocalSearchFirstImprovement(instance);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
+
+    var testInstance = new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);
+    var testResult = testInstance.StartTest(instance, 20, 10, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, true);
+
+    Console.WriteLine(testResult.ToStringForConsole());
+}
+
+
 

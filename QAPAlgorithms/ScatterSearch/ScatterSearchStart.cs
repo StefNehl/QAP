@@ -45,18 +45,18 @@ namespace QAPAlgorithms.ScatterSearch
         public long IterationCount { get; set; }
 
         /// <summary>
-        /// Returns the solved solution with the permutation and solution value and the number of iterations
+        /// Returns the solved solution, the number of iterations and the runTime in seconds
         /// </summary>
         /// <param name="runTimeInSeconds"></param>
         /// <returns></returns>
-        public Tuple<IInstanceSolution, long> Solve(
+        public Tuple<IInstanceSolution, long, long> Solve(
             int runTimeInSeconds,
             int subSetGenerationTypes = 4,
             SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
             bool displayProgressInConsole = false)
         {
-            var currentTime = DateTime.Now;
-            var timeToEnd = currentTime.AddSeconds(runTimeInSeconds);
+            var startTime = DateTime.Now;
+            var timeToEnd = startTime.AddSeconds(runTimeInSeconds);
 
             ReferenceSet.Clear();
             Population.Clear();
@@ -77,7 +77,7 @@ namespace QAPAlgorithms.ScatterSearch
             var typeCount = subSetGenerationTypes;
             var newSubSets = new List<IInstanceSolution>();
 
-
+            var currentTime = DateTime.Now;
             while (foundNewSolutions)
             {
                 IterationCount++;
@@ -119,22 +119,16 @@ namespace QAPAlgorithms.ScatterSearch
 
                 foreach(var subSet in newSubSets) 
                 {
-                    if(ReferenceSetUpdate(subSet))
-                        foundNewSolutions = true;
+                    foundNewSolutions = ReferenceSetUpdate(subSet);
+                    //foundNewSolutions = true;
                 }
 
                 if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
                     typeCount++;
             }
 
-            return new Tuple<IInstanceSolution, long>(ReferenceSet.First(), IterationCount);
+            return new Tuple<IInstanceSolution, long, long>(ReferenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
         }
-
-        public Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public bool ReferenceSetUpdate(IInstanceSolution newSolution)
         {
