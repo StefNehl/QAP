@@ -19,7 +19,7 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
         public List<int[]> Population { get; set; }
-        public List<IInstanceSolution> ReferenceSet { get; set; }
+        public SortedSet<IInstanceSolution> ReferenceSet { get; set; }
 
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
@@ -39,7 +39,7 @@ namespace QAPAlgorithms.ScatterSearch
             this.generateInitPopulationMethod = generateInitPopulationMethod;
 
             Population = new List<int[]>();
-            ReferenceSet = new List<IInstanceSolution>();
+            ReferenceSet = new SortedSet<IInstanceSolution>();
         }
 
         public long IterationCount { get; set; }
@@ -84,7 +84,7 @@ namespace QAPAlgorithms.ScatterSearch
                 thousendsCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(thousendsCount == 10)
+                if(thousendsCount == 1000)
                 {
                     if (displayProgressInConsole)
                     {
@@ -97,7 +97,7 @@ namespace QAPAlgorithms.ScatterSearch
                         break;
                 }
 
-                //foundNewSolutions = false;
+                foundNewSolutions = false;
                 newSubSets.Clear();
 
                 switch (typeCount)
@@ -119,17 +119,15 @@ namespace QAPAlgorithms.ScatterSearch
 
                 foreach(var subSet in newSubSets) 
                 {
-                    ReferenceSetUpdate(subSet);
-                    //foundNewSolutions = true;
-
-                    //if ()
+                    if(ReferenceSetUpdate(subSet))
+                        foundNewSolutions = true;
                 }
 
                 if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
                     typeCount++;
             }
 
-            return new Tuple<IInstanceSolution, long>(ReferenceSet[0], IterationCount);
+            return new Tuple<IInstanceSolution, long>(ReferenceSet.First(), IterationCount);
         }
 
         public Task<int> SolveAsync(QAPInstance instance, CancellationToken cancellationToken)
@@ -146,32 +144,15 @@ namespace QAPAlgorithms.ScatterSearch
                 return true;
             }
 
-            var newSolutionValue = newSolution.SolutionValue;
-            var bestSolution = ReferenceSet.First();
-            if (newSolutionValue < bestSolution.SolutionValue)
-                ReferenceSet.Insert(0, newSolution);
-            else
-            {
-                foreach(var solution in ReferenceSet)
-                {
-                    if(newSolutionValue > solution.SolutionValue)
-                    {
-                        int indexAfter = ReferenceSet.IndexOf(solution) + 1;
-                        if (indexAfter >= ReferenceSet.Count)
-                        {
-                            if (ReferenceSet.Count >= refrerenceSetSize)
-                                return false;
-                            ReferenceSet.Add(newSolution);
-                        }
-                        else
-                            ReferenceSet.Insert(indexAfter, newSolution);
-                        break;
-                    }
-                }
-            }
-
+            ReferenceSet.Add(newSolution);
             if (ReferenceSet.Count > refrerenceSetSize)
-                ReferenceSet.RemoveAt(ReferenceSet.Count - 1);
+            {
+                var entryToDelete = ReferenceSet.Last();
+                ReferenceSet.Remove(entryToDelete);
+                
+                if(entryToDelete.HashCode == newSolution.HashCode)
+                    return false;
+            }
 
             return true;
         }

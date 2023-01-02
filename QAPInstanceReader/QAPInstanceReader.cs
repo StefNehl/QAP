@@ -113,7 +113,7 @@ namespace QAPInstanceReader
                 }
             }
 
-            return new QAPInstance(n, a, b);
+            return new QAPInstance(fileName, n, a, b);
         }
 
         private void ParseStringValuesAndInsertInIntMatrix(string[]? stringValues, int[,] matrix, int rowIndex)

@@ -33,7 +33,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType1SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType1SubSet(SortedSet<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>();
             return GetSolutionForSubSets(referenceSolutions, listForSubSets, 0);
@@ -46,11 +46,11 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType2SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType2SubSet(SortedSet<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>
             {
-                referenceSolutions[0]
+                referenceSolutions.First()
             };
 
             return GetSolutionForSubSets(referenceSolutions, listForSubSets, 1);
@@ -63,12 +63,12 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType3SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType3SubSet(SortedSet<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>
             {
-                referenceSolutions[0],
-                referenceSolutions[1]
+                referenceSolutions.First(),
+                referenceSolutions.ElementAt(1)
             };
 
             return GetSolutionForSubSets(referenceSolutions, listForSubSets, 2);
@@ -81,14 +81,14 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType4SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType4SubSet(SortedSet<IInstanceSolution> referenceSolutions)
         {
             var result = new List<IInstanceSolution>();
             var listForSubSets = new List<IInstanceSolution>();
 
             for(int i = 0; i < referenceSolutions.Count; i++)
             {
-                listForSubSets.Add(referenceSolutions[i]);
+                listForSubSets.Add(referenceSolutions.ElementAt(i));
                 if(i >= 4)
                 {
                     var newTrialPermutations = combinationMethod.CombineSolutionsPairWise(listForSubSets);
@@ -102,7 +102,7 @@ namespace QAPAlgorithms.ScatterSearch
         }
 
         private List<IInstanceSolution> GetSolutionForSubSets(
-            List<IInstanceSolution> referenceSolutions,
+            SortedSet<IInstanceSolution> referenceSolutions,
             List<IInstanceSolution> listForSubSets,
             int startIndex)
         {
@@ -110,18 +110,18 @@ namespace QAPAlgorithms.ScatterSearch
 
             for (int i = startIndex; i < referenceSolutions.Count - 1; i++)
             {
-                listForSubSets.Add(referenceSolutions[i]);
+                listForSubSets.Add(referenceSolutions.ElementAt(i));
                 for (int j = i + 1; j < referenceSolutions.Count; j++)
                 {
-                    listForSubSets.Add(referenceSolutions[j]);
+                    listForSubSets.Add(referenceSolutions.ElementAt(j));
                     var newTrialPermutations = combinationMethod.CombineSolutionsPairWise(listForSubSets);
                     var newTrialSolutions = CreateSolutions(newTrialPermutations);
                     improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, default);
                     result.AddRange(newTrialSolutions);
 
-                    listForSubSets.Remove(referenceSolutions[j]);
+                    listForSubSets.Remove(referenceSolutions.ElementAt(j));
                 }
-                listForSubSets.Remove(referenceSolutions[i]);
+                listForSubSets.Remove(referenceSolutions.ElementAt(i));
             }
 
             return result;

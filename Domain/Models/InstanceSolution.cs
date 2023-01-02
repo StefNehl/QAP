@@ -40,5 +40,12 @@ namespace Domain.Models
 
             return resultString;
         }
+
+        public int CompareTo(IInstanceSolution? other)
+        {
+            if(other == null) 
+                return 1;
+            return SolutionValue.CompareTo(other.SolutionValue);
+        }
     }
 }

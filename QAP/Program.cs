@@ -1,9 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using Domain;
+using QAP;
 using QAPAlgorithms.ScatterSearch;
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
+
+var testResults = new List<TestResult>();
 
 
 var folderName = "QAPLIB";
@@ -14,11 +16,10 @@ var improvementMethod = new LocalSearchFirstImprovement(instance);
 var combinationMethod = new ExhaustingPairwiseCombination(1, true);
 var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
 
-var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod, generationInitPopMethod);
-var runtimeInSeconds = 30;
-var resultTuple = newScatterSearch.Solve(runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, true);
+var runtimeInSeconds = 10;
+var testInstance = new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);
+var testResult = testInstance.StartTest(instance, 40, 10, runtimeInSeconds, 4, SubSetGenerationMethodType.Cycle, true);
 
-Console.WriteLine();
-Console.WriteLine($"QAP Instance solved after {resultTuple.Item2} iterations (Runtime: {runtimeInSeconds} [s])");
-resultTuple.Item1.DisplayInConsole();
+Console.WriteLine(testResult.ToStringColumnNames());
+Console.WriteLine(testResult.ToString());
 

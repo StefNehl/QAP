@@ -92,10 +92,9 @@ namespace QAPTest.QAPAlgorithmsTests
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
             
-            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
-            {
-                new InstanceSolution(testInstance, new int[]{ 1, 0, 2})
-            };
+            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
+            var newSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
+            scatterSearch.ReferenceSet.Add(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -104,17 +103,16 @@ namespace QAPTest.QAPAlgorithmsTests
             {
                 Assert.That(result, Is.EqualTo(false));
                 Assert.That(scatterSearch.ReferenceSet, Has.Count.EqualTo(1));
-                Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.Not.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.Not.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
 
         [Test]
         public void CheckReferenceSetUpdate_AddToWorseList()
         {
-            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
-            {
-                new InstanceSolution(testInstance, new int[]{ 1, 0, 2})
-            };
+            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
+            var newSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
+            scatterSearch.ReferenceSet.Add(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -123,17 +121,16 @@ namespace QAPTest.QAPAlgorithmsTests
             {
                 Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
-                Assert.That(scatterSearch.ReferenceSet[1].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.ReferenceSet.ElementAt(1).SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
 
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList()
         {
-            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
-            {
-                new InstanceSolution(testInstance, new int[]{ 0, 1, 2})
-            };
+            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
+            var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
+            scatterSearch.ReferenceSet.Add(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -142,7 +139,7 @@ namespace QAPTest.QAPAlgorithmsTests
             {
                 Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
-                Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
 
@@ -151,11 +148,10 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
 
-            scatterSearch.ReferenceSet = new List<IInstanceSolution>()
-            {
-                new InstanceSolution(testInstance, new int[]{ 0, 1, 2})
-            };
-            
+            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
+            var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
+            scatterSearch.ReferenceSet.Add(newSolution);
+
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
@@ -163,7 +159,7 @@ namespace QAPTest.QAPAlgorithmsTests
             {
                 Assert.That(result, Is.EqualTo(true));
                 Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
-                Assert.That(scatterSearch.ReferenceSet[0].SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
     }
