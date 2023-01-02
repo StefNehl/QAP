@@ -15,8 +15,8 @@ var combinationMethod = new ExhaustingPairwiseCombination(1);
 var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
 
 var newScatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod, generationInitPopMethod);
-var runtimeInSeconds = 10;
-var resultTuple = newScatterSearch.Solve(runtimeInSeconds, true);
+var runtimeInSeconds = 30;
+var resultTuple = newScatterSearch.Solve(runtimeInSeconds, 4, SubSetGenerationMethodType.Cycle, true);
 
 Console.WriteLine();
 Console.WriteLine($"QAP Instance solved after {resultTuple.Item2} iterations (Runtime: {runtimeInSeconds} [s])");

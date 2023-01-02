@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
+using Microsoft.Win32.SafeHandles;
 using QAPAlgorithms.Contracts;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,11 @@ namespace QAPAlgorithms.ScatterSearch
         /// </summary>
         /// <param name="runTimeInSeconds"></param>
         /// <returns></returns>
-        public Tuple<IInstanceSolution, long> Solve(int runTimeInSeconds, bool displayProgressInConsole = false)
+        public Tuple<IInstanceSolution, long> Solve(
+            int runTimeInSeconds,
+            int subSetGenerationTypes = 4,
+            SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
+            bool displayProgressInConsole = false)
         {
             var currentTime = DateTime.Now;
             var timeToEnd = currentTime.AddSeconds(runTimeInSeconds);
@@ -69,7 +74,7 @@ namespace QAPAlgorithms.ScatterSearch
             IterationCount = 0;
             var thousendsCount = 0;
 
-            var typeCount = 1;
+            var typeCount = subSetGenerationTypes;
             var newSubSets = new List<IInstanceSolution>();
 
 
@@ -82,7 +87,9 @@ namespace QAPAlgorithms.ScatterSearch
                 if(thousendsCount == 1000)
                 {
                     if (displayProgressInConsole)
-                        Console.WriteLine(IterationCount);
+                    {
+                        Console.WriteLine($"Iteration: {IterationCount} Result: {ReferenceSet.First().SolutionValue}");
+                    }
 
                     thousendsCount = 0;
                     currentTime = DateTime.Now;
@@ -116,8 +123,8 @@ namespace QAPAlgorithms.ScatterSearch
                         foundNewSolutions = true;
                 }
 
-                typeCount++;
-
+                if(subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
+                    typeCount++;
             }
 
             return new Tuple<IInstanceSolution, long>(ReferenceSet[0], IterationCount);
@@ -182,5 +189,11 @@ namespace QAPAlgorithms.ScatterSearch
             }
         }
 
+    }
+
+    public enum SubSetGenerationMethodType
+    {
+        Cycle,
+        UseOnlyOne
     }
 }
