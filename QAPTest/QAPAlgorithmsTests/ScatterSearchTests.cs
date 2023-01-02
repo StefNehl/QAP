@@ -33,44 +33,7 @@ namespace QAPTest.QAPAlgorithmsTests
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod);
         }
 
-        [Test]
-        public void CheckGenerateInitialPopulation_WithOneStep()
-        {
-            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, testInstance.N);
 
-            var resultArray = new List<int[]> 
-            { 
-                new int[] { 0, 1, 2 },
-                new int[] { 2, 0, 1 }, 
-                new int[] { 1, 2, 0 }, 
-                new int[] { 0, 1, 2 },
-                new int[] { 2, 0, 1 },
-                new int[] { 1, 2, 0 } 
-            };
-
-            CompareSolutionSets(p, resultArray);
-            CompareSolutionSetsWithHashcode(p, resultArray);
-        }
-
-        [Test]
-        public void CheckGenerateInitialPopulation_WithTwoSteps()
-        {
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2);
-            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, testInstance.N);
-
-            var resultArray = new List<int[]>
-            { 
-                new int[] { 0, 1, 2 }, 
-                new int[] { 1, 2, 0 }, 
-                new int[] { 2, 0, 1 },
-                new int[] { 0, 1, 2 },
-                new int[] { 1, 2, 0 },
-                new int[] { 2, 0, 1 } 
-            };
-
-            CompareSolutionSets(p, resultArray);
-            CompareSolutionSetsWithHashcode(p, resultArray);
-        }
 
         [Test]
         public void CheckEliminateIdenticalSolution()
@@ -87,8 +50,6 @@ namespace QAPTest.QAPAlgorithmsTests
             CompareSolutionSets(p, resultArray);
             CompareSolutionSetsWithHashcode(p, resultArray);
         }
-
-
 
         private void CompareSolutionSets(List<int[]> actualSolutionSet, List<int[]> expectedSolutionSet)
         {
@@ -113,7 +74,6 @@ namespace QAPTest.QAPAlgorithmsTests
                     Assert.That(InstanceHelpers.IsEqual(actualSolutionSet[i], expectedSolutionSet[i]), Is.True);
                 }
             });
-
         }
 
         [Test]

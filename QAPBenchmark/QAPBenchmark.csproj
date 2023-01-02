@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.2" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QAPAlgorithms\QAPAlgorithms.csproj" />
+    <ProjectReference Include="..\QAPInstanceReader\QAPInstanceReader.csproj" />
   </ItemGroup>
 
 </Project>

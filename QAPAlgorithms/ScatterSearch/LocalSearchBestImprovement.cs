@@ -62,6 +62,12 @@ namespace QAPAlgorithms.ScatterSearch
             }
         }
 
+        public void ImproveSolutions(List<IInstanceSolution> instanceSolutions)
+        {
+            foreach(var solution in instanceSolutions)
+                ImproveSolution(solution);
+        }
+
         public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
             await Parallel.ForEachAsync(instanceSolutions, async (i, ct) =>

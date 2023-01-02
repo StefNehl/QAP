@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace QAPBenchmark.ScatterSearchBenchmarks
 {
+    [MemoryDiagnoser]
     [RPlotExporter]
     public class GenerateInitialPopulationBenchmarks
     {
@@ -20,7 +22,6 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         public void Setup() 
         {
             solutionSize = 10;
-            var newInstance = new QAPInstance(10, null, null);
             generationMethod = new StepWisePopulationGenerationMethod(1);
         }
 
@@ -29,5 +30,6 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             generationMethod.GeneratePopulation(10, solutionSize);
         }
+
     }
 }
