@@ -15,6 +15,7 @@ namespace QAPAlgorithms.ScatterSearch
     public class ExhaustingPairwiseCombination : ICombinationMethod
     {
         private readonly int stepSizeForPairs;
+        private HashSet<long> alreadyCombinedSolutions;
 
         /// <summary>
         /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
@@ -22,9 +23,10 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="stepSizeForPairs">this parameter sets the step for the pairs. 
         /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
         /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
-        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1)
+        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, bool checkIfSolutionsWereAlreadyCombined = true)
         {
             this.stepSizeForPairs = stepSizeForPairs;
+            alreadyCombinedSolutions = new HashSet<long>();
         }
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
@@ -39,6 +41,12 @@ namespace QAPAlgorithms.ScatterSearch
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
             List<int[]> newSolutions = new List<int[]>();
+           
+            var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
+            if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
+                return newSolutions;
+
+            alreadyCombinedSolutions.Add(hashCodeOfSolutions);
             var solutionPairs = new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
@@ -117,6 +125,16 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             return newSolutions;
+        }
+
+        private long GenerateHashCodeFromCombinedSolutions(List<IInstanceSolution> solutions)
+        {
+            long newHashCode = 0;
+            for (int i = 0; i < solutions.Count; i++)
+            {
+                newHashCode += (long)Math.Pow(solutions[i].HashCode, i+1);
+            }
+            return newHashCode;
         }
 
         private static bool IsPairAlreadyInList(int[] newPair, List<int[]> listOfPairs)

@@ -82,9 +82,9 @@ namespace QAPAlgorithms.ScatterSearch
             {
                 IterationCount++;
                 thousendsCount++;
+
                 //Check only every 1000 Iterations the Time
-                
-                if(thousendsCount == 1000)
+                if(thousendsCount == 10)
                 {
                     if (displayProgressInConsole)
                     {
@@ -97,7 +97,7 @@ namespace QAPAlgorithms.ScatterSearch
                         break;
                 }
 
-                foundNewSolutions = false;
+                //foundNewSolutions = false;
                 newSubSets.Clear();
 
                 switch (typeCount)
@@ -119,11 +119,13 @@ namespace QAPAlgorithms.ScatterSearch
 
                 foreach(var subSet in newSubSets) 
                 {
-                    if (ReferenceSetUpdate(subSet))
-                        foundNewSolutions = true;
+                    ReferenceSetUpdate(subSet);
+                    //foundNewSolutions = true;
+
+                    //if ()
                 }
 
-                if(subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
+                if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
                     typeCount++;
             }
 

@@ -16,6 +16,7 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly IImprovementMethod improvementMethod;
         private readonly QAPInstance qapInstance;
 
+
         public SubSetGenerationMethod(QAPInstance qapInstance,
             ICombinationMethod combinationMethod, 
             IImprovementMethod improvementMethod)
@@ -137,8 +138,5 @@ namespace QAPAlgorithms.ScatterSearch
 
             return result;
         }
-
-
-
     }
 }
