@@ -4,6 +4,7 @@ using QAPAlgorithms.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,6 +71,12 @@ namespace QAPAlgorithms.ScatterSearch
 
         public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
+            if (instanceSolutions.Count <= 10)
+            {
+                ImproveSolutions(instanceSolutions);
+                return;
+            }
+
             await Parallel.ForEachAsync(instanceSolutions, async (i, ct) =>
             {
                 ImproveSolution(i);
