@@ -160,20 +160,17 @@ namespace QAPTest.QAPAlgorithmsTests
         }
 
         [Test]
-        public void CheckReferenceSetUpdate_AddBiggerSolutionValues_CheckCount()
+        public void CheckReferenceSetUpdate_AddBetterSolutionValues_CheckCount()
         {
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 5);
 
             var solutionList = new List<IInstanceSolution>();
             for(int i = 1; i <= 100; i++)
             {
-                var newTestSolution = new TestInstanceSolution()
-                {
-                    HashCode = i,
-                    SolutionValue = i  * 10
-                };
-
-                scatterSearch.ReferenceSetUpdate(newTestSolution);
+                var newTestSolution = new Mock<IInstanceSolution>();
+                newTestSolution.Setup(p => p.HashCode).Returns(i);
+                newTestSolution.Setup(p => p.SolutionValue).Returns(i * 10);
+                scatterSearch.ReferenceSetUpdate(newTestSolution.Object);
             }
 
             Assert.Multiple(() =>
@@ -192,42 +189,13 @@ namespace QAPTest.QAPAlgorithmsTests
 
             for (int i = 1; i <= 100; i++)
             {
-                var newTestSolution = new TestInstanceSolution()
-                {
-                    HashCode = i,
-                    SolutionValue = rg.Next(1, 10) * 10
-                };
-
-                scatterSearch.ReferenceSetUpdate(newTestSolution);
+                var newTestSolution = new Mock<IInstanceSolution>();
+                newTestSolution.Setup(p => p.HashCode).Returns(i);
+                newTestSolution.Setup(p => p.HashCode).Returns(rg.Next());
+                scatterSearch.ReferenceSetUpdate(newTestSolution.Object);
             }
 
             Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));
-        }
-    }
-
-    public class TestInstanceSolution : IInstanceSolution
-    {
-        public long HashCode { get; set; }
-
-        public int[] SolutionPermutation => throw new NotImplementedException();
-
-        public long SolutionValue { get; set; }
-
-        public int CompareTo(IInstanceSolution? other)
-        {
-            if (other == null)
-                return 1;
-            return SolutionValue.CompareTo(other.SolutionValue);
-        }
-
-        public string DisplayInConsole()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RefreshSolutionValue(QAPInstance instance)
-        {
-            throw new NotImplementedException();
         }
     }
 }

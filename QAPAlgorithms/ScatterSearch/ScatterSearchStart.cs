@@ -19,7 +19,7 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
         private List<int[]> population;
-        private SortedSet<IInstanceSolution> referenceSet;
+        private List<IInstanceSolution> referenceSet;
 
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
@@ -39,7 +39,7 @@ namespace QAPAlgorithms.ScatterSearch
             this.generateInitPopulationMethod = generateInitPopulationMethod;
 
             population = new List<int[]>();
-            referenceSet = new SortedSet<IInstanceSolution>();
+            referenceSet = new List<IInstanceSolution>();
         }
 
         public long IterationCount { get; set; }
@@ -88,7 +88,7 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     if (displayProgressInConsole)
                     {
-                        Console.WriteLine($"Iteration: {IterationCount} Result: {referenceSet.First().SolutionValue}");
+                        Console.WriteLine($"Iteration: {IterationCount} Result: {GetBestSolution().SolutionValue}");
                     }
 
                     thousendsCount = 0;
@@ -121,7 +121,6 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
-                    //ReferenceSetUpdate(subSet);
                 }
 
                 if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
@@ -139,17 +138,41 @@ namespace QAPAlgorithms.ScatterSearch
                 return true;
             }
 
-            referenceSet.Add(newSolution);
+            if (IsSolutionAlreadyInReferenceSet(newSolution))
+                return false;
+
             if (referenceSet.Count > refrerenceSetSize)
+                Console.WriteLine("!");
+
+            var worstItem = referenceSet.Last();
+            if(referenceSet.Count == refrerenceSetSize)
             {
-                var entryToDelete = referenceSet.Last();
-                referenceSet.Remove(entryToDelete);
-                
-                if(entryToDelete.HashCode == newSolution.HashCode)
+                if (!InstanceHelpers.IsBetterSolution(worstItem.SolutionValue, newSolution.SolutionValue))
                     return false;
             }
 
+            for(int i = 0; i < referenceSet.Count; i++)
+            {
+                if (InstanceHelpers.IsBetterSolution(referenceSet[i].SolutionValue, newSolution.SolutionValue))
+                {
+                    referenceSet.Insert(i, newSolution);
+                    if(referenceSet.Count > refrerenceSetSize)
+                        referenceSet.Remove(worstItem);
+                    return true;
+                }
+            }
+
+            referenceSet.Add(newSolution);
             return true;
+        }
+
+        private bool IsSolutionAlreadyInReferenceSet(IInstanceSolution instanceSolution)
+        {
+            foreach (var solution in referenceSet)
+                if (solution.HashCode == instanceSolution.HashCode)
+                    return true;
+
+            return false;
         }
 
         public IInstanceSolution GetBestSolution()

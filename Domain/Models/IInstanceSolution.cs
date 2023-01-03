@@ -1,6 +1,6 @@
 ﻿namespace Domain.Models
 {
-    public interface IInstanceSolution : IComparable<IInstanceSolution>
+    public interface IInstanceSolution
     {
         long HashCode { get; }
         int[] SolutionPermutation { get; }

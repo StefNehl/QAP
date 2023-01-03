@@ -33,7 +33,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType1SubSet(SortedSet<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType1SubSet(List<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>();
             return GetSolutionForSubSets(referenceSolutions, listForSubSets, 0);
@@ -46,7 +46,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType2SubSet(SortedSet<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType2SubSet(List<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>
             {
@@ -63,7 +63,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType3SubSet(SortedSet<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType3SubSet(List<IInstanceSolution> referenceSolutions)
         {
             var listForSubSets = new List<IInstanceSolution>
             {
@@ -81,7 +81,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType4SubSet(SortedSet<IInstanceSolution> referenceSolutions)
+        public List<IInstanceSolution> GenerateType4SubSet(List<IInstanceSolution> referenceSolutions)
         {
             var result = new List<IInstanceSolution>();
             var listForSubSets = new List<IInstanceSolution>();
@@ -102,7 +102,7 @@ namespace QAPAlgorithms.ScatterSearch
         }
 
         private List<IInstanceSolution> GetSolutionForSubSets(
-            SortedSet<IInstanceSolution> referenceSolutions,
+            List<IInstanceSolution> referenceSolutions,
             List<IInstanceSolution> listForSubSets,
             int startIndex)
         {

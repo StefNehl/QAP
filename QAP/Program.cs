@@ -39,7 +39,7 @@ for(int i = 0; i < testResults.Count; i++)
 
 TestResult GetTestResult(TestInstance testInstance, QAPInstance instance)
 {
-    return testInstance.StartTest(instance, 20, 10, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, false);
+    return testInstance.StartTest(instance, 20, 10, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, true);
 }
 
 TestInstance GetInstanceWithFirstImprove(QAPInstance instance)      
@@ -54,7 +54,7 @@ TestInstance GetInstanceWithFirstImprove(QAPInstance instance)
 TestInstance GetInstanceWithBestImprove(QAPInstance instance)
 {
     var improvementMethod = new LocalSearchBestImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, false);
     var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
 
     return new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);

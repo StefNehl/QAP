@@ -43,8 +43,6 @@ namespace QAPAlgorithms.ScatterSearch
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
             List<int[]> newSolutions = new List<int[]>();
-           
-
             if(checkIfSolutionsWereAlreadyCombined)
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
@@ -53,9 +51,7 @@ namespace QAPAlgorithms.ScatterSearch
                 alreadyCombinedSolutions.Add(hashCodeOfSolutions);
             }
 
-
             var solutionPairs = new List<int[]>();
-
             var solutionLenght = solutions[0].SolutionPermutation.Length;
             var nrOfPairsPerSolution = (int)Math.Ceiling(solutionLenght / (decimal)stepSizeForPairs);
 
@@ -127,7 +123,6 @@ namespace QAPAlgorithms.ScatterSearch
                             newSolutions.Add(newSolution);
                         break;
                     }
-
                 }
             }
 
