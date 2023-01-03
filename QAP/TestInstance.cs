@@ -15,13 +15,19 @@ namespace QAP
         private ICombinationMethod combinationMethod;
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
         private IImprovementMethod improvementMethod;
+        private IDiversificationMethod diversificationMethod;
         private ScatterSearchStart scatterSearch;
 
-        public TestInstance(ICombinationMethod combinationMethod, IGenerateInitPopulationMethod generateInitPopulationMethod, IImprovementMethod improvementMethod)
+        public TestInstance(
+            IGenerateInitPopulationMethod generateInitPopulationMethod, 
+            IDiversificationMethod diversificationMethod, 
+            ICombinationMethod combinationMethod, 
+            IImprovementMethod improvementMethod)
         {
             this.combinationMethod = combinationMethod;
             this.generateInitPopulationMethod= generateInitPopulationMethod;  
             this.improvementMethod= improvementMethod;
+            this.diversificationMethod= diversificationMethod;
         }
 
         public TestResult StartTest(QAPInstance instance, 
@@ -32,7 +38,7 @@ namespace QAP
             SubSetGenerationMethodType subSetGenerationMethodType,
             bool displayProgressInConsole)
         {
-            scatterSearch = new ScatterSearchStart(instance, improvementMethod, combinationMethod, generateInitPopulationMethod, populationSize, referenceSetSize);
+            scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
             var result = scatterSearch.Solve(runTimeInSeconds, subSetGenerationTypes, subSetGenerationMethodType, displayProgressInConsole);
 
             var newTestResult = new TestResult(

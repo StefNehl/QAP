@@ -23,11 +23,13 @@ namespace QAPAlgorithms.ScatterSearch
 
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
+        private readonly IDiversificationMethod diversificationMethod;
 
         public ScatterSearchStart(QAPInstance instance,
-            IImprovementMethod improvementMethod,
-            ICombinationMethod combinationMethod,
             IGenerateInitPopulationMethod generateInitPopulationMethod,
+            IDiversificationMethod diversificationMethod,
+            ICombinationMethod combinationMethod,
+            IImprovementMethod improvementMethod,
             int populationSize = 10,
             int referenceSetSize = 5)
         {
@@ -37,6 +39,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             this.generateInitPopulationMethod = generateInitPopulationMethod;
+            this.diversificationMethod = diversificationMethod;
 
             population = new List<int[]>();
             referenceSet = new List<IInstanceSolution>();
@@ -78,7 +81,7 @@ namespace QAPAlgorithms.ScatterSearch
             var newSubSets = new List<IInstanceSolution>();
 
             var currentTime = DateTime.Now;
-            while (foundNewSolutions)
+            while (true)
             {
                 IterationCount++;
                 thousendsCount++;
@@ -121,6 +124,16 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
+
+                    if (referenceSet.Count > refrerenceSetSize)
+                        throw new Exception("ReferenceSet Count is higher than allowed");
+                }
+
+
+                if(!foundNewSolutions)
+                {
+                    diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
+                    foundNewSolutions = true;
                 }
 
                 if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
@@ -140,9 +153,6 @@ namespace QAPAlgorithms.ScatterSearch
 
             if (IsSolutionAlreadyInReferenceSet(newSolution))
                 return false;
-
-            if (referenceSet.Count > refrerenceSetSize)
-                Console.WriteLine("!");
 
             var worstItem = referenceSet.Last();
             if(referenceSet.Count == refrerenceSetSize)
