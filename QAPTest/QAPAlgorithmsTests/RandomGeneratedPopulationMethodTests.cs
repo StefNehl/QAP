@@ -1,0 +1,53 @@
+﻿using QAPAlgorithms.Contracts;
+using QAPAlgorithms.ScatterSearch;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace QAPTest.QAPAlgorithmsTests
+{
+    [TestFixture]
+    public class RandomGeneratedPopulationMethodTests
+    {
+        private IGenerateInitPopulationMethod generateInitPopulationMethod;
+
+        [SetUp]
+        public void SetUp()
+        {
+            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(); 
+        }
+
+        [Test]
+        public void CheckGeneratePopulation_CheckPermutationSizeAndPopulationSize()
+        {
+            var populationSize = 10;
+            var permutationSize = 10;
+
+            var population = generateInitPopulationMethod.GeneratePopulation(populationSize, permutationSize);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(population, Has.Count.EqualTo(populationSize));
+                foreach (var solution in population)
+                {
+                    CheckPermutation(solution);
+                }
+            });
+        }
+
+        private void CheckPermutation(int[] permutation)
+        {
+            for(int i = 0; i < permutation.Length-1; i++)
+            {
+                for (int j = (i+1); j < permutation.Length; j++)
+                {
+                    Assert.That(permutation[i], Is.Not.EqualTo(permutation[j]));
+                }
+            }
+        }
+
+    }
+}
