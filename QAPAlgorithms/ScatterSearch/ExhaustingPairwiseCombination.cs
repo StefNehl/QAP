@@ -53,19 +53,16 @@ namespace QAPAlgorithms.ScatterSearch
 
             var solutionPairs = new List<int[]>();
             var solutionLenght = solutions[0].SolutionPermutation.Length;
-            var nrOfPairsPerSolution = (int)Math.Ceiling(solutionLenght / (decimal)stepSizeForPairs);
 
             foreach (var instanceSolution in solutions)
             {
                 var solution = instanceSolution.SolutionPermutation;
-                var startIndex = 0;
-                for (int i = 0; i < nrOfPairsPerSolution; i++)
+                for (int i = 0; i < solutionLenght; i+=stepSizeForPairs)
                 {
                     var newSolutionPair = new int[2];
+                    newSolutionPair[0] = solution[i];
 
-                    newSolutionPair[0] = solution[startIndex];
-
-                    var nextIndex = startIndex + 1;
+                    var nextIndex = i + 1;
                     if (nextIndex == solution.Length)
                     {
                         nextIndex = 0;
@@ -74,8 +71,6 @@ namespace QAPAlgorithms.ScatterSearch
 
                     if (!IsPairAlreadyInList(newSolutionPair, solutionPairs))
                         solutionPairs.Add(newSolutionPair);
-
-                    startIndex += stepSizeForPairs;
                 }
             }
 

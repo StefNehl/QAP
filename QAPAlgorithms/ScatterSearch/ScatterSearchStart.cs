@@ -73,6 +73,8 @@ namespace QAPAlgorithms.ScatterSearch
                 ReferenceSetUpdate(newSolution);
             }
 
+            diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
+
             var foundNewSolutions = true;
             IterationCount = 0;
             var thousendsCount = 0;
@@ -87,7 +89,7 @@ namespace QAPAlgorithms.ScatterSearch
                 thousendsCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(thousendsCount == 1)
+                if(thousendsCount == 100)
                 {
                     if (displayProgressInConsole)
                     {

@@ -39,16 +39,17 @@ namespace QAPAlgorithms.ScatterSearch
 
             int refSetSize = referenceSet.Count;
             int halfRefSetSize = (int)(refSetSize / (double)2);
+            int countForAverage = halfRefSetSize;
 
             long hashCodeOfReferenceSet = 0;
 
-            for(int i = 0; i < halfRefSetSize; i++)
+            for(int i = 0; i < countForAverage; i++)
             {
                 var solution = referenceSet[i];
                 hashCodeOfReferenceSet += solution.HashCode;
             }
 
-            var averageRefSetHashCode = hashCodeOfReferenceSet / halfRefSetSize;
+            var averageRefSetHashCode = hashCodeOfReferenceSet / countForAverage;
 
 
             while(referenceSet.Count != halfRefSetSize) 
