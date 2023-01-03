@@ -55,7 +55,7 @@ namespace QAPAlgorithms.ScatterSearch
                 }
             }
 
-            if(minValueIndex >= -1)
+            if(minValueIndex > -1)
             {
                 (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) = 
                     (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);

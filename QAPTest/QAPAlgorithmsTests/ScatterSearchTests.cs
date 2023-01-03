@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
+using Moq;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using System;
@@ -39,7 +40,7 @@ namespace QAPTest.QAPAlgorithmsTests
         public void CheckEliminateIdenticalSolution()
         {
             var p = generateInitPopulationMethod.GeneratePopulation(1, testInstance.N);
-            scatterSearch.EliminateIdenticalSolutionsFromSet(scatterSearch.Population);
+            scatterSearch.EliminateIdenticalSolutionsFromSet(p);
 
             var resultArray = new List<int[]> 
             { 
@@ -82,7 +83,6 @@ namespace QAPTest.QAPAlgorithmsTests
             var result = scatterSearch.ReferenceSetUpdate(new InstanceSolution( testInstance, new[] { 0, 1, 2 }));
 
             Assert.That(result, Is.EqualTo(true));
-            Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -92,9 +92,8 @@ namespace QAPTest.QAPAlgorithmsTests
             testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
             
-            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
             var newSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
-            scatterSearch.ReferenceSet.Add(newSolution);
+            scatterSearch.ReferenceSetUpdate(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -102,17 +101,16 @@ namespace QAPTest.QAPAlgorithmsTests
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(false));
-                Assert.That(scatterSearch.ReferenceSet, Has.Count.EqualTo(1));
-                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.Not.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(1));
+                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.Not.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
 
         [Test]
         public void CheckReferenceSetUpdate_AddToWorseList()
         {
-            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
-            var newSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
-            scatterSearch.ReferenceSet.Add(newSolution);
+            var bestSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
+            scatterSearch.ReferenceSetUpdate(bestSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -120,17 +118,16 @@ namespace QAPTest.QAPAlgorithmsTests
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(true));
-                Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
-                Assert.That(scatterSearch.ReferenceSet.ElementAt(1).SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(2));
+                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.EqualTo(bestSolution.SolutionValue));
             });
         }
 
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList()
         {
-            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
             var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
-            scatterSearch.ReferenceSet.Add(newSolution);
+            scatterSearch.ReferenceSetUpdate(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -138,8 +135,8 @@ namespace QAPTest.QAPAlgorithmsTests
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(true));
-                Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(2));
-                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(2));
+                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
         }
 
@@ -148,9 +145,8 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 1);
 
-            scatterSearch.ReferenceSet = new SortedSet<IInstanceSolution>();
             var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
-            scatterSearch.ReferenceSet.Add(newSolution);
+            scatterSearch.ReferenceSetUpdate(newSolution);
 
             var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
@@ -158,9 +154,80 @@ namespace QAPTest.QAPAlgorithmsTests
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(true));
-                Assert.That(scatterSearch.ReferenceSet.Count, Is.EqualTo(1));
-                Assert.That(scatterSearch.ReferenceSet.First().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
+                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(1));
+                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.EqualTo(newInstanceSolution.SolutionValue));
             });
+        }
+
+        [Test]
+        public void CheckReferenceSetUpdate_AddBiggerSolutionValues_CheckCount()
+        {
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 5);
+
+            var solutionList = new List<IInstanceSolution>();
+            for(int i = 1; i <= 100; i++)
+            {
+                var newTestSolution = new TestInstanceSolution()
+                {
+                    HashCode = i,
+                    SolutionValue = i  * 10
+                };
+
+                scatterSearch.ReferenceSetUpdate(newTestSolution);
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));
+                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.EqualTo(10));
+            });
+        }
+
+        [Test]
+        public void CheckReferenceSetUpdate_AddRandomSolutionValues_CheckCount()
+        {
+            scatterSearch = new ScatterSearchStart(testInstance, improvementMethod, combinationMethod, generateInitPopulationMethod, 6, 5);
+
+            var rg = new Random();
+
+            for (int i = 1; i <= 100; i++)
+            {
+                var newTestSolution = new TestInstanceSolution()
+                {
+                    HashCode = i,
+                    SolutionValue = rg.Next(1, 10) * 10
+                };
+
+                scatterSearch.ReferenceSetUpdate(newTestSolution);
+            }
+
+            Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));
+        }
+    }
+
+    public class TestInstanceSolution : IInstanceSolution
+    {
+        public long HashCode { get; set; }
+
+        public int[] SolutionPermutation => throw new NotImplementedException();
+
+        public long SolutionValue { get; set; }
+
+        public int CompareTo(IInstanceSolution? other)
+        {
+            if (other == null)
+                return 1;
+            return SolutionValue.CompareTo(other.SolutionValue);
+        }
+
+        public string DisplayInConsole()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RefreshSolutionValue(QAPInstance instance)
+        {
+            throw new NotImplementedException();
         }
     }
 }

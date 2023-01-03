@@ -124,8 +124,8 @@ namespace QAP
 
             sb.AppendLine($"Permutation: {arrayString.ToString()}");
             sb.AppendLine($"Combination Method: {CombinationMethodName}");
-            sb.AppendLine($"Init Pop Generation: {CombinationMethodName}");
-            sb.AppendLine($"Improvement Method: {CombinationMethodName}");
+            sb.AppendLine($"Init Pop Generation: {InitPopulationGenerationMethodName}");
+            sb.AppendLine($"Improvement Method: {ImprovementMethodName}");
 
 
 

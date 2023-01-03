@@ -30,7 +30,7 @@ namespace QAPInstanceReader
             get; private set;
         }
 
-        public string[] GetFilesInFolder(string folder)
+        public List<string> GetFilesInFolder(string folder)
         {
             var files = Directory.GetFiles(GetFolderPath(folder));
 
@@ -40,7 +40,7 @@ namespace QAPInstanceReader
                 files[i] = fullFilePathArray.Last();
             }
 
-            return files;
+            return files.ToList();
         }
 
         private string GetFolderPath(string folder)

@@ -18,8 +18,8 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int populationSize; //size of the complete population (max = 20)
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
-        public List<int[]> Population { get; set; }
-        public SortedSet<IInstanceSolution> ReferenceSet { get; set; }
+        private List<int[]> population;
+        private SortedSet<IInstanceSolution> referenceSet;
 
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
@@ -38,8 +38,8 @@ namespace QAPAlgorithms.ScatterSearch
             this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             this.generateInitPopulationMethod = generateInitPopulationMethod;
 
-            Population = new List<int[]>();
-            ReferenceSet = new SortedSet<IInstanceSolution>();
+            population = new List<int[]>();
+            referenceSet = new SortedSet<IInstanceSolution>();
         }
 
         public long IterationCount { get; set; }
@@ -58,13 +58,13 @@ namespace QAPAlgorithms.ScatterSearch
             var startTime = DateTime.Now;
             var timeToEnd = startTime.AddSeconds(runTimeInSeconds);
 
-            ReferenceSet.Clear();
-            Population.Clear();
-            Population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
+            referenceSet.Clear();
+            population.Clear();
+            population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
 
-            EliminateIdenticalSolutionsFromSet(Population);
+            EliminateIdenticalSolutionsFromSet(population);
 
-            foreach(var permutation in Population) 
+            foreach(var permutation in population) 
             {
                 var newSolution = new InstanceSolution(currentInstance, permutation);
                 ReferenceSetUpdate(newSolution);
@@ -84,11 +84,11 @@ namespace QAPAlgorithms.ScatterSearch
                 thousendsCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(thousendsCount == 1000)
+                if(thousendsCount == 1)
                 {
                     if (displayProgressInConsole)
                     {
-                        Console.WriteLine($"Iteration: {IterationCount} Result: {ReferenceSet.First().SolutionValue}");
+                        Console.WriteLine($"Iteration: {IterationCount} Result: {referenceSet.First().SolutionValue}");
                     }
 
                     thousendsCount = 0;
@@ -103,52 +103,63 @@ namespace QAPAlgorithms.ScatterSearch
                 switch (typeCount)
                 {
                     case 1:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSet(ReferenceSet));
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSet(referenceSet));
                         break;
                     case 2:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSet(ReferenceSet));
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSet(referenceSet));
                         break;
                     case 3:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSet(ReferenceSet));
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSet(referenceSet));
                         break;
                     case 4:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSet(ReferenceSet));
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSet(referenceSet));
                         typeCount = 0;
                         break;
                 }
 
                 foreach(var subSet in newSubSets) 
                 {
-                    foundNewSolutions = ReferenceSetUpdate(subSet);
-                    //foundNewSolutions = true;
+                    if (ReferenceSetUpdate(subSet))
+                        foundNewSolutions = true;
+                    //ReferenceSetUpdate(subSet);
                 }
 
                 if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
                     typeCount++;
             }
 
-            return new Tuple<IInstanceSolution, long, long>(ReferenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
+            return new Tuple<IInstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
         }
 
         public bool ReferenceSetUpdate(IInstanceSolution newSolution)
         {
-            if (!ReferenceSet.Any())
+            if (!referenceSet.Any())
             {
-                ReferenceSet.Add(newSolution);
+                referenceSet.Add(newSolution);
                 return true;
             }
 
-            ReferenceSet.Add(newSolution);
-            if (ReferenceSet.Count > refrerenceSetSize)
+            referenceSet.Add(newSolution);
+            if (referenceSet.Count > refrerenceSetSize)
             {
-                var entryToDelete = ReferenceSet.Last();
-                ReferenceSet.Remove(entryToDelete);
+                var entryToDelete = referenceSet.Last();
+                referenceSet.Remove(entryToDelete);
                 
                 if(entryToDelete.HashCode == newSolution.HashCode)
                     return false;
             }
 
             return true;
+        }
+
+        public IInstanceSolution GetBestSolution()
+        {
+            return referenceSet.First();
+        }
+
+        public int GetReferenceSetCount()
+        {
+            return referenceSet.Count;
         }
 
         public void EliminateIdenticalSolutionsFromSet(List<int[]> solutionSet)
@@ -165,7 +176,6 @@ namespace QAPAlgorithms.ScatterSearch
                 }
             }
         }
-
     }
 
     public enum SubSetGenerationMethodType
