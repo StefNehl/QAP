@@ -37,7 +37,7 @@ namespace Domain
             long hashCode = 0;
             for (int i = 0; i < permutation.Length; i++)
             {
-                hashCode += i * (long)Math.Pow(permutation[i], 2);
+                hashCode += (i + 1) * (long)Math.Pow((permutation[i] + 1), 2);
             }
 
             return hashCode;

@@ -46,7 +46,7 @@ TestInstance GetInstanceWithFirstImprove(QAPInstance instance)
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, true);
-    var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod();
 
     return new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);
 }
@@ -55,7 +55,7 @@ TestInstance GetInstanceWithBestImprove(QAPInstance instance)
 {
     var improvementMethod = new LocalSearchBestImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, false);
-    var generationInitPopMethod = new StepWisePopulationGenerationMethod(1);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod();
 
     return new TestInstance(combinationMethod, generationInitPopMethod, improvementMethod);
 }
