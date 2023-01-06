@@ -38,7 +38,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = combinationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutions(list);
 
             var expectedCount = 2;
             var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
@@ -76,7 +76,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
             combinationMethod = new ExhaustingPairwiseCombination(2);
-            var result = combinationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutions(list);
 
             var expectedCount = 2;
             var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
@@ -113,7 +113,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
             combinationMethod = new ExhaustingPairwiseCombination(3);
-            Assert.Throws<Exception>(() => combinationMethod.CombineSolutionsPairWise(list));
+            Assert.Throws<Exception>(() => combinationMethod.CombineSolutions(list));
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
-            var result = combinationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutions(list);
 
             var expectedCount = 3;
 
@@ -159,7 +159,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
 
             combinationMethod = new ExhaustingPairwiseCombination(2);
-            var result = combinationMethod.CombineSolutionsPairWise(list);
+            var result = combinationMethod.CombineSolutions(list);
 
             var expectedCount = 4;
 
@@ -185,7 +185,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
             combinationMethod = new ExhaustingPairwiseCombination(3);
-            Assert.Throws<Exception>(() => combinationMethod.CombineSolutionsPairWise(list));
+            Assert.Throws<Exception>(() => combinationMethod.CombineSolutions(list));
         }
     }
 }

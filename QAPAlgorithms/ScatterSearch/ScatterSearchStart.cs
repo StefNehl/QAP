@@ -26,6 +26,9 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly IDiversificationMethod diversificationMethod;
         private readonly IImprovementMethod improvementMethod;
 
+        private DateTime startTime;
+        private DateTime endTime;
+
         public ScatterSearchStart(QAPInstance instance,
             IGenerateInitPopulationMethod generateInitPopulationMethod,
             IDiversificationMethod diversificationMethod,
@@ -60,28 +63,9 @@ namespace QAPAlgorithms.ScatterSearch
             SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
             bool displayProgressInConsole = false)
         {
-            var startTime = DateTime.Now;
-            var timeToEnd = startTime.AddSeconds(runTimeInSeconds);
-
-            referenceSet.Clear();
-            population.Clear();
-            population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
-
-            EliminateIdenticalSolutionsFromSet(population);
-
-            improvementMethod.ImproveSolutionsInParallelAsync(population);
-
-            foreach (var solution in population) 
-            {
-                ReferenceSetUpdate(solution);
-            }
-
-            diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
-            
-
+            InitScattersearch(runTimeInSeconds);
 
             var foundNewSolutions = true;
-            IterationCount = 0;
             var thousendsCount = 0;
 
             var typeCount = subSetGenerationTypes;
@@ -103,29 +87,29 @@ namespace QAPAlgorithms.ScatterSearch
 
                     thousendsCount = 0;
                     currentTime = DateTime.Now;
-                    if (currentTime > timeToEnd)
+                    if (currentTime > endTime)
                         break;
                 }
 
                 foundNewSolutions = false;
                 newSubSets.Clear();
 
-                switch (typeCount)
-                {
-                    case 1:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSet(referenceSet));
-                        break;
-                    case 2:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSet(referenceSet));
-                        break;
-                    case 3:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSet(referenceSet));
-                        break;
-                    case 4:
-                        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSet(referenceSet));
-                        typeCount = 0;
-                        break;
-                }
+                //switch (typeCount)
+                //{
+                //    case 1:
+                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSetAsync(referenceSet));
+                //        break;
+                //    case 2:
+                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSetAsync(referenceSet));
+                //        break;
+                //    case 3:
+                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSetAsync(referenceSet));
+                //        break;
+                //    case 4:
+                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSetAsync(referenceSet));
+                //        typeCount = 0;
+                //        break;
+                //}
 
                 foreach(var subSet in newSubSets) 
                 {
@@ -139,8 +123,87 @@ namespace QAPAlgorithms.ScatterSearch
 
                 if(!foundNewSolutions)
                 {
-                    population = generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N);
-                    diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
+                    GenerateNewPopulation();
+                    foundNewSolutions = true;
+                }
+
+                if (subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
+                    typeCount++;
+            }
+
+            return new Tuple<IInstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
+        }
+
+        public async Task<Tuple<IInstanceSolution, long, long>> SolveAsync(
+                        int runTimeInSeconds,
+                        int subSetGenerationTypes = 4,
+                        SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
+                        bool displayProgressInConsole = false,
+                        CancellationToken cancellationToken = default)
+        {
+
+            InitScattersearch(runTimeInSeconds);
+
+            bool foundNewSolutions;
+            var thousendsCount = 0;
+
+            var typeCount = subSetGenerationTypes;
+            var newSubSets = new List<IInstanceSolution>();
+
+            var currentTime = DateTime.Now;
+
+            while (true)
+            {
+                IterationCount++;
+                thousendsCount++;
+
+                //Check only every 1000 Iterations the Time
+                if (thousendsCount == 10)
+                {
+                    if (displayProgressInConsole)
+                    {
+                        Console.WriteLine($"Iteration: {IterationCount} Result: {GetBestSolution().SolutionValue}");
+                    }
+
+                    thousendsCount = 0;
+                    currentTime = DateTime.Now;
+                    if (currentTime > endTime)
+                        break;
+                }
+
+                foundNewSolutions = false;
+                newSubSets.Clear();
+
+                switch (typeCount)
+                {
+                    case 1:
+                        newSubSets.AddRange(await subSetGenerationMethod.GenerateType1SubSetAsync(referenceSet, cancellationToken));
+                        break;
+                    case 2:
+                        newSubSets.AddRange(await subSetGenerationMethod.GenerateType2SubSetAsync(referenceSet, cancellationToken));
+                        break;
+                    case 3:
+                        newSubSets.AddRange(await subSetGenerationMethod.GenerateType3SubSetAsync(referenceSet, cancellationToken));
+                        break;
+                    case 4:
+                        newSubSets.AddRange(await subSetGenerationMethod.GenerateType4SubSetAsync(referenceSet, cancellationToken));
+                        typeCount = 0;
+                        break;
+                }
+
+                foreach (var subSet in newSubSets)
+                {
+                    if (ReferenceSetUpdate(subSet))
+                        foundNewSolutions = true;
+
+                    if (referenceSet.Count > refrerenceSetSize)
+                        throw new Exception("ReferenceSet Count is higher than allowed");
+                }
+
+
+                if (!foundNewSolutions)
+                {
+                    GenerateNewPopulation();
                     foundNewSolutions = true;
                 }
 
@@ -184,6 +247,34 @@ namespace QAPAlgorithms.ScatterSearch
 
             referenceSet.Add(newSolution);
             return true;
+        }
+
+        private void InitScattersearch(int runTimeInSeconds)
+        {
+            startTime = DateTime.Now;
+            endTime = startTime.AddSeconds(runTimeInSeconds);
+
+            referenceSet.Clear();
+            population.Clear();
+            population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
+
+            EliminateIdenticalSolutionsFromSet(population);
+
+            improvementMethod.ImproveSolutions(population);
+
+            foreach (var solution in population)
+            {
+                ReferenceSetUpdate(solution);
+            }
+
+            diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
+            IterationCount = 0;
+        }
+
+        private void GenerateNewPopulation()
+        {
+            population = generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N);
+            diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
         }
 
         private bool IsSolutionAlreadyInReferenceSet(IInstanceSolution instanceSolution)

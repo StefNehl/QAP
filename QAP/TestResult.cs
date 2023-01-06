@@ -11,7 +11,7 @@ namespace QAP
         int N, 
         long SolutionValue, 
         long Time, 
-        long SolutionsTried,
+        long Iterations,
         int[] Solution,
         string CombinationMethodName,
         string InitPopulationGenerationMethodName, 
@@ -55,7 +55,7 @@ namespace QAP
             sb.Append(";");
             sb.Append(Time);
             sb.Append(";");
-            sb.Append(SolutionsTried);
+            sb.Append(Iterations);
             sb.Append(";");
 
             var arrayString = new StringBuilder();
@@ -109,7 +109,7 @@ namespace QAP
             sb.AppendLine($"N: {N}");
             sb.AppendLine($"Solution Value: {SolutionValue}");
             sb.AppendLine($"Time[s]: {Time}");
-            sb.AppendLine($"Solutions Tried: {SolutionsTried}");
+            sb.AppendLine($"Iterations: {Iterations}");
 
             var arrayString = new StringBuilder();
             arrayString.Append("[");

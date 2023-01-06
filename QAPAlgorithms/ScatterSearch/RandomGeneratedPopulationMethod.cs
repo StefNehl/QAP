@@ -11,16 +11,21 @@ namespace QAPAlgorithms.ScatterSearch
     public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
     {
         private readonly QAPInstance qAPInstance;
+        private readonly Random randomGenerator;
 
-        public RandomGeneratedPopulationMethod(QAPInstance qAPInstance)
+        public RandomGeneratedPopulationMethod(QAPInstance qAPInstance, int? seed = null)
         {
             this.qAPInstance = qAPInstance;
+
+            if(seed.HasValue)
+                randomGenerator = new Random(Seed:seed.Value);
+            else
+                randomGenerator = new Random();
         }
 
         public List<IInstanceSolution> GeneratePopulation(int populationSize, int permutationSize)
         {
             var population = new List<IInstanceSolution>();
-            var rg = new Random();
 
             for(int j = 0; j < populationSize; j++)
             {
@@ -33,7 +38,7 @@ namespace QAPAlgorithms.ScatterSearch
 
                 for (int i = 0; i < permutationSize; i++)
                 {
-                    var newRandomIndex = rg.Next(listWithPossibilities.Count - 1);
+                    var newRandomIndex = randomGenerator.Next(listWithPossibilities.Count - 1);
                     permutation[i] = listWithPossibilities[newRandomIndex];
                     listWithPossibilities.RemoveAt(newRandomIndex);
                 }
