@@ -1,5 +1,6 @@
 ﻿using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
+using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;

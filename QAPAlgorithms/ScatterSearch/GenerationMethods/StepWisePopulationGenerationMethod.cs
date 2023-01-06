@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 {
     public class StepWisePopulationGenerationMethod : IGenerateInitPopulationMethod
     {

@@ -3,6 +3,10 @@
 using Domain.Models;
 using QAP;
 using QAPAlgorithms.ScatterSearch;
+using QAPAlgorithms.ScatterSearch.CombinationMethods;
+using QAPAlgorithms.ScatterSearch.DiversificationMethods;
+using QAPAlgorithms.ScatterSearch.GenerationMethods;
+using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
@@ -31,7 +35,7 @@ for(int i = 0; i < filesInFolder.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(folderName, filesInFolder[i]);
 
-    var testResult = await GetTestResultAsync(GetInstanceWithFirstImprove(instance), instance, cancellationTokenSource.Token);
+    var testResult = GetTestResult(GetInstanceWithFirstImprove(instance), instance);
     Console.WriteLine(testResult.ToStringForConsole());
     testResults.Add(testResult);
 
@@ -44,6 +48,15 @@ for(int i = 0; i < testResults.Count; i++)
     Console.WriteLine(testResults[i].ToString());
 }
 
+
+TestResult GetTestResult(TestInstance testInstance, QAPInstance instance)
+{
+    int refSetSize = 10;
+    //17 P_25 P is generally set at max(lOO, 5*refSetSize)
+    int populationSetSize = 5 * refSetSize;
+
+    return testInstance.StartTest(instance, populationSetSize, refSetSize, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, false);
+}
 
 async Task<TestResult> GetTestResultAsync(TestInstance testInstance, QAPInstance instance, CancellationToken ct)
 {

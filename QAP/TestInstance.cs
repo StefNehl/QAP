@@ -16,7 +16,7 @@ namespace QAP
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
         private IImprovementMethod improvementMethod;
         private IDiversificationMethod diversificationMethod;
-        private ScatterSearchStart scatterSearch;
+        private ScatterSearchStart? scatterSearch;
 
         public TestInstance(
             IGenerateInitPopulationMethod generateInitPopulationMethod, 

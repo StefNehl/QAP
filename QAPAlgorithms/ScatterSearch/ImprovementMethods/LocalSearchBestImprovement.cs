@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 {
     /// <summary>
     /// 
@@ -24,11 +24,11 @@ namespace QAPAlgorithms.ScatterSearch
         public void ImproveSolution(IInstanceSolution instanceSolution)
         {
             var permutation = instanceSolution.SolutionPermutation.ToArray();
-            
+
             //Tuple (SolutionValue, startIndexForExchange
             var solutionValues = new List<Tuple<long, int>>();
             var oldSolutionValue = instanceSolution.SolutionValue;
-            
+
             for (int i = 0; i < permutation.Length - 1; i++)
             {
                 int backUpFirstItem = permutation[i];
@@ -38,15 +38,15 @@ namespace QAPAlgorithms.ScatterSearch
 
                 var newSolutionValue = InstanceHelpers.GetSolutionValue(instance, permutation);
                 if (InstanceHelpers.IsBetterSolution(oldSolutionValue, newSolutionValue))
-                    solutionValues.Add(new (newSolutionValue, i));
-                
+                    solutionValues.Add(new(newSolutionValue, i));
+
                 permutation[i] = backUpFirstItem;
                 permutation[i + 1] = backUpSecondItem;
             }
 
             long minValue = long.MaxValue;
             var minValueIndex = -1;
-            for(int i = 0; i < solutionValues.Count; i++) 
+            for (int i = 0; i < solutionValues.Count; i++)
             {
                 if (solutionValues[i].Item1 < minValue)
                 {
@@ -55,9 +55,9 @@ namespace QAPAlgorithms.ScatterSearch
                 }
             }
 
-            if(minValueIndex > -1)
+            if (minValueIndex > -1)
             {
-                (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) = 
+                (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) =
                     (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
                 instanceSolution.RefreshSolutionValue(instance);
             }
@@ -65,7 +65,7 @@ namespace QAPAlgorithms.ScatterSearch
 
         public void ImproveSolutions(List<IInstanceSolution> instanceSolutions)
         {
-            foreach(var solution in instanceSolutions)
+            foreach (var solution in instanceSolutions)
                 ImproveSolution(solution);
         }
 

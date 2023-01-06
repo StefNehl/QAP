@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 {
     /// <summary>
     /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
@@ -46,7 +46,7 @@ namespace QAPAlgorithms.ScatterSearch
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
             List<int[]> newSolutions = new List<int[]>();
-            if(checkIfSolutionsWereAlreadyCombined)
+            if (checkIfSolutionsWereAlreadyCombined)
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
                 if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
@@ -60,7 +60,7 @@ namespace QAPAlgorithms.ScatterSearch
             foreach (var instanceSolution in solutions)
             {
                 var solution = instanceSolution.SolutionPermutation;
-                for (int i = 0; i < solutionLenght; i+=stepSizeForPairs)
+                for (int i = 0; i < solutionLenght; i += stepSizeForPairs)
                 {
                     var newSolutionPair = new int[2];
                     newSolutionPair[0] = solution[i];
@@ -87,12 +87,12 @@ namespace QAPAlgorithms.ScatterSearch
                 newSolution[1] = pair[1];
 
                 int pairCounter = 1;
-                var newIndex = 0 + (pairCounter * 2);
+                var newIndex = 0 + pairCounter * 2;
 
                 foreach (var nextPair in solutionPairs)
                 {
                     //Fill last element
-                    if ((solutionLenght - newIndex) == 1)
+                    if (solutionLenght - newIndex == 1)
                     {
                         if (!IsNumberAlreadyInTheSolution(nextPair[0], newSolution))
                         {
@@ -113,7 +113,7 @@ namespace QAPAlgorithms.ScatterSearch
                         newSolution[newIndex + 1] = nextPair[1];
 
                     pairCounter++;
-                    newIndex = 0 + (pairCounter * 2);
+                    newIndex = 0 + pairCounter * 2;
 
                     if (newIndex == solutionLenght)
                     {
@@ -127,11 +127,9 @@ namespace QAPAlgorithms.ScatterSearch
             return newSolutions;
         }
 
-        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions, CancellationToken ct)
+        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions)
         {
             List<int[]> newSolutions = new List<int[]>();
-            if (ct.IsCancellationRequested)
-                return newSolutions;
 
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
@@ -177,12 +175,12 @@ namespace QAPAlgorithms.ScatterSearch
                 newSolution[1] = pair[1];
 
                 int pairCounter = 1;
-                var newIndex = 0 + (pairCounter * 2);
+                var newIndex = 0 + pairCounter * 2;
 
                 foreach (var nextPair in solutionPairs)
                 {
                     //Fill last element
-                    if ((solutionLenght - newIndex) == 1)
+                    if (solutionLenght - newIndex == 1)
                     {
                         if (!IsNumberAlreadyInTheSolution(nextPair[0], newSolution))
                         {
@@ -203,7 +201,7 @@ namespace QAPAlgorithms.ScatterSearch
                         newSolution[newIndex + 1] = nextPair[1];
 
                     pairCounter++;
-                    newIndex = 0 + (pairCounter * 2);
+                    newIndex = 0 + pairCounter * 2;
 
                     if (newIndex == solutionLenght)
                     {
@@ -222,7 +220,7 @@ namespace QAPAlgorithms.ScatterSearch
             long newHashCode = 0;
             for (int i = 0; i < solutions.Count; i++)
             {
-                newHashCode += (long)Math.Pow(solutions[i].HashCode, i+1);
+                newHashCode += (long)Math.Pow(solutions[i].HashCode, i + 1);
             }
             return newHashCode;
         }

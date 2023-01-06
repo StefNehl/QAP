@@ -21,13 +21,17 @@ namespace QAPAlgorithms.ScatterSearch
         private List<IInstanceSolution> population;
         private List<IInstanceSolution> referenceSet;
 
-        private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
         private readonly IDiversificationMethod diversificationMethod;
+        private readonly ICombinationMethod combinationMethod;
         private readonly IImprovementMethod improvementMethod;
 
         private DateTime startTime;
+        private DateTime currentTime;
         private DateTime endTime;
+        private int typeCount;
+        private int displayCount;
+        private bool foundNewSolutions;
 
         public ScatterSearchStart(QAPInstance instance,
             IGenerateInitPopulationMethod generateInitPopulationMethod,
@@ -41,9 +45,9 @@ namespace QAPAlgorithms.ScatterSearch
             this.populationSize = populationSize;
             this.refrerenceSetSize = referenceSetSize;
 
-            this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             this.generateInitPopulationMethod = generateInitPopulationMethod;
             this.diversificationMethod = diversificationMethod;
+            this.combinationMethod = combinationMethod;
             this.improvementMethod = improvementMethod;
 
             population = new List<IInstanceSolution>();
@@ -63,29 +67,24 @@ namespace QAPAlgorithms.ScatterSearch
             SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
             bool displayProgressInConsole = false)
         {
-            InitScattersearch(runTimeInSeconds);
-
-            var foundNewSolutions = true;
-            var thousendsCount = 0;
-
-            var typeCount = subSetGenerationTypes;
+            InitScattersearch(runTimeInSeconds, subSetGenerationTypes);
+            var subSetGenerationMethod = new SubSetGenerationMethod(currentInstance, combinationMethod, improvementMethod);
             var newSubSets = new List<IInstanceSolution>();
 
-            var currentTime = DateTime.Now;
             while (true)
             {
                 IterationCount++;
-                thousendsCount++;
+                displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(thousendsCount == 10)
+                if(displayCount == 10)
                 {
                     if (displayProgressInConsole)
                     {
                         Console.WriteLine($"Iteration: {IterationCount} Result: {GetBestSolution().SolutionValue}");
                     }
 
-                    thousendsCount = 0;
+                    displayCount = 0;
                     currentTime = DateTime.Now;
                     if (currentTime > endTime)
                         break;
@@ -94,24 +93,24 @@ namespace QAPAlgorithms.ScatterSearch
                 foundNewSolutions = false;
                 newSubSets.Clear();
 
-                //switch (typeCount)
-                //{
-                //    case 1:
-                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSetAsync(referenceSet));
-                //        break;
-                //    case 2:
-                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSetAsync(referenceSet));
-                //        break;
-                //    case 3:
-                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSetAsync(referenceSet));
-                //        break;
-                //    case 4:
-                //        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSetAsync(referenceSet));
-                //        typeCount = 0;
-                //        break;
-                //}
+                switch (typeCount)
+                {
+                    case 1:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType1SubSet(referenceSet));
+                        break;
+                    case 2:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType2SubSet(referenceSet));
+                        break;
+                    case 3:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType3SubSet(referenceSet));
+                        break;
+                    case 4:
+                        newSubSets.AddRange(subSetGenerationMethod.GenerateType4SubSet(referenceSet));
+                        typeCount = 0;
+                        break;
+                }
 
-                foreach(var subSet in newSubSets) 
+                foreach (var subSet in newSubSets) 
                 {
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
@@ -142,30 +141,24 @@ namespace QAPAlgorithms.ScatterSearch
                         CancellationToken cancellationToken = default)
         {
 
-            InitScattersearch(runTimeInSeconds);
-
-            bool foundNewSolutions;
-            var thousendsCount = 0;
-
-            var typeCount = subSetGenerationTypes;
+            InitScattersearch(runTimeInSeconds, subSetGenerationTypes);
             var newSubSets = new List<IInstanceSolution>();
-
-            var currentTime = DateTime.Now;
+            var subSetGenerationMethod = new ParallelSubSetGenerationMethod(currentInstance, combinationMethod, improvementMethod);
 
             while (true)
             {
                 IterationCount++;
-                thousendsCount++;
+                displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if (thousendsCount == 10)
+                if (displayCount == 10)
                 {
                     if (displayProgressInConsole)
                     {
                         Console.WriteLine($"Iteration: {IterationCount} Result: {GetBestSolution().SolutionValue}");
                     }
 
-                    thousendsCount = 0;
+                    displayCount = 0;
                     currentTime = DateTime.Now;
                     if (currentTime > endTime)
                         break;
@@ -249,10 +242,13 @@ namespace QAPAlgorithms.ScatterSearch
             return true;
         }
 
-        private void InitScattersearch(int runTimeInSeconds)
+        private void InitScattersearch(int runTimeInSeconds, int subSetGenerationTypes)
         {
             startTime = DateTime.Now;
+            currentTime = DateTime.Now;
             endTime = startTime.AddSeconds(runTimeInSeconds);
+
+            typeCount = subSetGenerationTypes;
 
             referenceSet.Clear();
             population.Clear();
@@ -269,6 +265,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
             IterationCount = 0;
+            displayCount = 0;
         }
 
         private void GenerateNewPopulation()

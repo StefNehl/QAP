@@ -2,7 +2,7 @@
 using Domain.Models;
 using Moq;
 using QAPAlgorithms.Contracts;
-using QAPAlgorithms.ScatterSearch;
+using QAPAlgorithms.ScatterSearch.CombinationMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 {
     public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
     {
@@ -17,8 +17,8 @@ namespace QAPAlgorithms.ScatterSearch
         {
             this.qAPInstance = qAPInstance;
 
-            if(seed.HasValue)
-                randomGenerator = new Random(Seed:seed.Value);
+            if (seed.HasValue)
+                randomGenerator = new Random(Seed: seed.Value);
             else
                 randomGenerator = new Random();
         }
@@ -27,7 +27,7 @@ namespace QAPAlgorithms.ScatterSearch
         {
             var population = new List<IInstanceSolution>();
 
-            for(int j = 0; j < populationSize; j++)
+            for (int j = 0; j < populationSize; j++)
             {
                 var permutation = new int[permutationSize];
 

@@ -10,6 +10,6 @@ namespace QAPAlgorithms.Contracts
     public interface ICombinationMethod
     {
         List<int[]> CombineSolutions(List<IInstanceSolution> solutions);
-        List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions, CancellationToken ct);
+        List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions);
     }
 }

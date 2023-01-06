@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 {
     public class HashCodeDiversificationMethod : IDiversificationMethod
     {
@@ -32,7 +32,7 @@ namespace QAPAlgorithms.ScatterSearch
             minHashCode = InstanceHelpers.GenerateHashCode(permutationWithMinHashCode);
             maxHashCode = InstanceHelpers.GenerateHashCode(permutationWithMaxHashCode);
             averageHashCode = (minHashCode + maxHashCode) / 2;
-            
+
         }
         public void ApplyDiversificationMethod(List<IInstanceSolution> referenceSet, List<IInstanceSolution> population, ScatterSearchStart scatterSearchStart)
         {
@@ -43,7 +43,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             long hashCodeOfReferenceSet = 0;
 
-            for(int i = 0; i < countForAverage; i++)
+            for (int i = 0; i < countForAverage; i++)
             {
                 var solution = referenceSet[i];
                 hashCodeOfReferenceSet += solution.HashCode;
@@ -52,7 +52,7 @@ namespace QAPAlgorithms.ScatterSearch
             var averageRefSetHashCode = hashCodeOfReferenceSet / countForAverage;
             //Console.WriteLine(averageRefSetHashCode);
 
-            while(referenceSet.Count != halfRefSetSize) 
+            while (referenceSet.Count != halfRefSetSize)
                 referenceSet.RemoveAt(referenceSet.Count - 1);
 
             var orderdPopulationAfterHashCode = new List<IInstanceSolution>();

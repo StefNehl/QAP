@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
+using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
