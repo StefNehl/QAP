@@ -9,13 +9,20 @@ var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
 
 var folderName = "QAPLIB";
-var instanceName = "chr12a.dat";
+var chr12a = "chr12a.dat";
+var chr25a = "chr25a.dat";
+var tho150 = "tho150.dat";
 
-var filesInFolder = new List<string>() { instanceName };
+var filesInFolder = new List<string>() 
+{
+    chr12a,  
+    chr25a,
+    tho150
+};
 
-var runtimeInSeconds = 60;
+var runtimeInSeconds = 30;
 
-filesInFolder = qapReader.GetFilesInFolder(folderName);
+//filesInFolder = qapReader.GetFilesInFolder(folderName);
 
 var testResults = new List<TestResult>();
 
@@ -23,11 +30,11 @@ for(int i = 0; i < filesInFolder.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(folderName, filesInFolder[i]);
 
-    testResults.Add(GetTestResult(GetInstanceWithFirstImprove(instance), instance));
-    testResults.Add(GetTestResult(GetInstanceWithBestImprove(instance), instance));
+    var testResult = GetTestResult(GetInstanceWithFirstImprove(instance), instance);
+    Console.WriteLine(testResult.ToStringForConsole());
+    testResults.Add(testResult);
 
     Console.WriteLine($"{i + 1} of {filesInFolder.Count} calculated");
-
 }
 
 Console.WriteLine(testResults.First().ToStringColumnNames());
@@ -47,9 +54,9 @@ TestResult GetTestResult(TestInstance testInstance, QAPInstance instance)
 
 TestInstance GetInstanceWithFirstImprove(QAPInstance instance)      
 {
-    var improvementMethod = new LocalSearchBestImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(2, false);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod();
+    var improvementMethod = new LocalSearchFirstImprovement(instance);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 
     return new TestInstance(generationInitPopMethod, diversificationMethod, combinationMethod, improvementMethod);
@@ -58,8 +65,8 @@ TestInstance GetInstanceWithFirstImprove(QAPInstance instance)
 TestInstance GetInstanceWithBestImprove(QAPInstance instance)
 {
     var improvementMethod = new LocalSearchBestImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(1, false);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod();
+    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 
     return new TestInstance(generationInitPopMethod, diversificationMethod, combinationMethod, improvementMethod);

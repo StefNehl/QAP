@@ -20,11 +20,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [SetUp]
         public async Task SetUp()
         {
-            var folderName = "QAPLIB";
-            var fileName = "chr12a.dat";
-
-            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-            instance = await qapReader.ReadFileAsync(folderName, fileName);
+            instance = await QAPInstanceProvider.GetChr12a();
             improvementMethod = new LocalSearchBestImprovement(instance);
 
             worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };

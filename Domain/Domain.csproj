@@ -296,7 +296,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="TestInstances\QAPLIB\tho150.dat">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="TestInstances\QAPLIB\tho30.dat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

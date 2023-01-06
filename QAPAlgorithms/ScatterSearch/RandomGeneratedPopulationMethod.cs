@@ -1,4 +1,5 @@
-﻿using QAPAlgorithms.Contracts;
+﻿using Domain.Models;
+using QAPAlgorithms.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,16 @@ namespace QAPAlgorithms.ScatterSearch
 {
     public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
     {
-        public List<int[]> GeneratePopulation(int populationSize, int permutationSize)
+        private readonly QAPInstance qAPInstance;
+
+        public RandomGeneratedPopulationMethod(QAPInstance qAPInstance)
         {
-            var population = new List<int[]>();
+            this.qAPInstance = qAPInstance;
+        }
+
+        public List<IInstanceSolution> GeneratePopulation(int populationSize, int permutationSize)
+        {
+            var population = new List<IInstanceSolution>();
             var rg = new Random();
 
             for(int j = 0; j < populationSize; j++)
@@ -30,7 +38,8 @@ namespace QAPAlgorithms.ScatterSearch
                     listWithPossibilities.RemoveAt(newRandomIndex);
                 }
 
-                population.Add(permutation);
+                var newSolution = new InstanceSolution(qAPInstance, permutation);
+                population.Add(newSolution);
             }
 
             return population;

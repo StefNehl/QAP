@@ -93,7 +93,7 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     var newTrialPermutations = combinationMethod.CombineSolutionsPairWise(listForSubSets);
                     var newTrialSolutions = CreateSolutions(newTrialPermutations);
-                    improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, default);
+                    improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions).Wait();
                     result.AddRange(newTrialSolutions);
                 }
             }
@@ -116,7 +116,7 @@ namespace QAPAlgorithms.ScatterSearch
                     listForSubSets.Add(referenceSolutions.ElementAt(j));
                     var newTrialPermutations = combinationMethod.CombineSolutionsPairWise(listForSubSets);
                     var newTrialSolutions = CreateSolutions(newTrialPermutations);
-                    improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, default);
+                    improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions).Wait();
                     result.AddRange(newTrialSolutions);
 
                     listForSubSets.Remove(referenceSolutions.ElementAt(j));

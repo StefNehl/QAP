@@ -15,9 +15,10 @@ namespace QAPTest.QAPAlgorithmsTests
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
-            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(); 
+            var testInstance = await QAPInstanceProvider.GetTestN3();
+            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(testInstance); 
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace QAPTest.QAPAlgorithmsTests
                 Assert.That(population, Has.Count.EqualTo(populationSize));
                 foreach (var solution in population)
                 {
-                    CheckPermutation(solution);
+                    CheckPermutation(solution.SolutionPermutation);
                 }
             });
         }

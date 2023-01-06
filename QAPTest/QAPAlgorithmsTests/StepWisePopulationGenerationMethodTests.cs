@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using System;
@@ -15,11 +16,13 @@ namespace QAPTest.QAPAlgorithmsTests
         private int populationSize = 6;
         private int instanceSize = 3;
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
+        private QAPInstance instance;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            instance = await QAPInstanceProvider.GetTestN3();
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance);
         }
 
         [Test]
@@ -37,14 +40,14 @@ namespace QAPTest.QAPAlgorithmsTests
                 new int[] { 1, 2, 0 }
             };
 
-            CompareSolutionSets(p, resultArray);
-            CompareSolutionSetsWithHashcode(p, resultArray);
+            CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
+            CompareSolutionSetsWithHashcode(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
         }
 
         [Test]
         public void CheckGenerateInitialPopulation_WithTwoSteps()
         {
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2);
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance);
             var p = generateInitPopulationMethod.GeneratePopulation(populationSize, instanceSize);
 
             var resultArray = new List<int[]>
@@ -57,8 +60,8 @@ namespace QAPTest.QAPAlgorithmsTests
                 new int[] { 2, 0, 1 }
             };
 
-            CompareSolutionSets(p, resultArray);
-            CompareSolutionSetsWithHashcode(p, resultArray);
+            CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
+            CompareSolutionSetsWithHashcode(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
         }
 
         private void CompareSolutionSets(List<int[]> actualSolutionSet, List<int[]> expectedSolutionSet)

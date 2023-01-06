@@ -8,6 +8,6 @@ namespace QAPAlgorithms.Contracts
 
         void ImproveSolutions(List<IInstanceSolution> instanceSolutions);
 
-        Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct);
+        Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct = default);
     }
 }

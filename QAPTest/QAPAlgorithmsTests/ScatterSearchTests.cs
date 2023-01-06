@@ -24,13 +24,12 @@ namespace QAPTest.QAPAlgorithmsTests
         private int populationSize;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
-            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-            testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
+            testInstance = await QAPInstanceProvider.GetTestN3();
             improvementMethod = new LocalSearchFirstImprovement(testInstance);
             combinationMethod = new ExhaustingPairwiseCombination();
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, testInstance);
             populationSize = 6;
             scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
         }
@@ -49,8 +48,8 @@ namespace QAPTest.QAPAlgorithmsTests
                 new int[] { 2, 0, 1 },
                 new int[] { 1, 2, 0 },
             };
-            CompareSolutionSets(p, resultArray);
-            CompareSolutionSetsWithHashcode(p, resultArray);
+            CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
+            CompareSolutionSetsWithHashcode(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
         }
 
         private void CompareSolutionSets(List<int[]> actualSolutionSet, List<int[]> expectedSolutionSet)

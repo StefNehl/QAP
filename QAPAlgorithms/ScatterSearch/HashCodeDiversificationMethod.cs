@@ -34,7 +34,7 @@ namespace QAPAlgorithms.ScatterSearch
             averageHashCode = (minHashCode + maxHashCode) / 2;
             
         }
-        public void ApplyDiversificationMethod(List<IInstanceSolution> referenceSet, List<int[]> population, ScatterSearchStart scatterSearchStart)
+        public void ApplyDiversificationMethod(List<IInstanceSolution> referenceSet, List<IInstanceSolution> population, ScatterSearchStart scatterSearchStart)
         {
 
             int refSetSize = referenceSet.Count;
@@ -50,21 +50,20 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             var averageRefSetHashCode = hashCodeOfReferenceSet / countForAverage;
-
+            //Console.WriteLine(averageRefSetHashCode);
 
             while(referenceSet.Count != halfRefSetSize) 
                 referenceSet.RemoveAt(referenceSet.Count - 1);
 
-            var orderdPopulationAfterHashCode = new List<int[]>();
+            var orderdPopulationAfterHashCode = new List<IInstanceSolution>();
 
             if (averageRefSetHashCode > averageHashCode)
-                orderdPopulationAfterHashCode = population.OrderBy(InstanceHelpers.GenerateHashCode).ToList();
+                orderdPopulationAfterHashCode = population.OrderBy(s => s.HashCode).ToList();
             else
-                orderdPopulationAfterHashCode = population.OrderByDescending(InstanceHelpers.GenerateHashCode).ToList();
+                orderdPopulationAfterHashCode = population.OrderByDescending(s => s.HashCode).ToList();
 
-            foreach (var permutation in orderdPopulationAfterHashCode)
+            foreach (var newSolution in orderdPopulationAfterHashCode)
             {
-                var newSolution = new InstanceSolution(qAPInstance, permutation);
                 scatterSearchStart.ReferenceSetUpdate(newSolution);
             }
         }

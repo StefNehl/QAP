@@ -18,12 +18,13 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int populationSize; //size of the complete population (max = 20)
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
-        private List<int[]> population;
+        private List<IInstanceSolution> population;
         private List<IInstanceSolution> referenceSet;
 
         private readonly SubSetGenerationMethod subSetGenerationMethod;
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
         private readonly IDiversificationMethod diversificationMethod;
+        private readonly IImprovementMethod improvementMethod;
 
         public ScatterSearchStart(QAPInstance instance,
             IGenerateInitPopulationMethod generateInitPopulationMethod,
@@ -40,8 +41,9 @@ namespace QAPAlgorithms.ScatterSearch
             this.subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             this.generateInitPopulationMethod = generateInitPopulationMethod;
             this.diversificationMethod = diversificationMethod;
+            this.improvementMethod = improvementMethod;
 
-            population = new List<int[]>();
+            population = new List<IInstanceSolution>();
             referenceSet = new List<IInstanceSolution>();
         }
 
@@ -67,13 +69,16 @@ namespace QAPAlgorithms.ScatterSearch
 
             EliminateIdenticalSolutionsFromSet(population);
 
-            foreach(var permutation in population) 
+            improvementMethod.ImproveSolutionsInParallelAsync(population);
+
+            foreach (var solution in population) 
             {
-                var newSolution = new InstanceSolution(currentInstance, permutation);
-                ReferenceSetUpdate(newSolution);
+                ReferenceSetUpdate(solution);
             }
 
             diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
+            
+
 
             var foundNewSolutions = true;
             IterationCount = 0;
@@ -89,7 +94,7 @@ namespace QAPAlgorithms.ScatterSearch
                 thousendsCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(thousendsCount == 100)
+                if(thousendsCount == 10)
                 {
                     if (displayProgressInConsole)
                     {
@@ -134,6 +139,7 @@ namespace QAPAlgorithms.ScatterSearch
 
                 if(!foundNewSolutions)
                 {
+                    population = generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N);
                     diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
                     foundNewSolutions = true;
                 }
@@ -168,8 +174,10 @@ namespace QAPAlgorithms.ScatterSearch
                 if (InstanceHelpers.IsBetterSolution(referenceSet[i].SolutionValue, newSolution.SolutionValue))
                 {
                     referenceSet.Insert(i, newSolution);
-                    if(referenceSet.Count > refrerenceSetSize)
+
+                    if (referenceSet.Count > refrerenceSetSize)
                         referenceSet.Remove(worstItem);
+
                     return true;
                 }
             }
@@ -197,17 +205,16 @@ namespace QAPAlgorithms.ScatterSearch
             return referenceSet.Count;
         }
 
-        public void EliminateIdenticalSolutionsFromSet(List<int[]> solutionSet)
+        public void EliminateIdenticalSolutionsFromSet(List<IInstanceSolution> solutionSet)
         {
             for(int i = 0; i < solutionSet.Count; i++) 
             {
                 for(int j = i+1; j < solutionSet.Count; j++) 
                 {
-                    if (InstanceHelpers.IsEqual(solutionSet[i], solutionSet[j]))
+                    if (InstanceHelpers.IsEqual(solutionSet[i].SolutionPermutation, solutionSet[j].SolutionPermutation))
                     {
                         solutionSet.RemoveAt(j);
                     }
-
                 }
             }
         }
