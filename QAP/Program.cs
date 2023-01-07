@@ -70,7 +70,7 @@ async Task<TestResult> GetTestResultAsync(TestInstance testInstance, QAPInstance
 TestInstance GetInstanceWithFirstImprove(QAPInstance instance)      
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
     var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 
@@ -80,7 +80,7 @@ TestInstance GetInstanceWithFirstImprove(QAPInstance instance)
 TestInstance GetInstanceWithBestImprove(QAPInstance instance)
 {
     var improvementMethod = new LocalSearchBestImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(1, true);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, checkIfSolutionsWereAlreadyCombined: true);
     var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 

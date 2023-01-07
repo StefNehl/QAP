@@ -48,15 +48,41 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            List<int[]> newSolutions = new List<int[]>();
             if (checkIfSolutionsWereAlreadyCombined)
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
                 if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
-                    return newSolutions;
+                    return new List<int[]>();
                 alreadyCombinedSolutions.Add(hashCodeOfSolutions);
             }
 
+            var solutionLenght = solutions[0].SolutionPermutation.Length;
+            var solutionPairs = GetSolutionPairs(solutions);
+
+            return CombinePairs(solutionPairs, solutionLenght, solutions);
+        }
+
+        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions)
+        {
+            if (stepSizeForPairs > 2)
+                throw new Exception("Stepsize higher than 2 is not supported and verified");
+
+            if (checkIfSolutionsWereAlreadyCombined)
+            {
+                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
+                if (alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
+                    return new List<int[]>();
+                alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
+            }
+
+            var solutionLenght = solutions[0].SolutionPermutation.Length;
+            var solutionPairs = GetSolutionPairs(solutions);
+
+            return CombinePairs(solutionPairs, solutionLenght, solutions);
+        }
+
+        private List<int[]> GetSolutionPairs(List<IInstanceSolution> solutions)
+        {
             var solutionPairs = new List<int[]>();
             var solutionLenght = solutions[0].SolutionPermutation.Length;
 
@@ -79,6 +105,13 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                         solutionPairs.Add(newSolutionPair);
                 }
             }
+
+            return solutionPairs;
+        }
+
+        private List<int[]> CombinePairs(List<int[]> solutionPairs, int solutionLenght, List<IInstanceSolution> solutions)
+        {
+            var newSolutions = new List<int[]>();
 
             foreach (var pair in solutionPairs)
             {
@@ -105,7 +138,6 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
                             if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
                                 return newSolutions;
-
                             break;
                         }
 
@@ -129,95 +161,6 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
                         if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
                             return newSolutions;
-
-                        break;
-                    }
-                }
-            }
-
-            return newSolutions;
-        }
-
-        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions)
-        {
-            List<int[]> newSolutions = new List<int[]>();
-
-            if (stepSizeForPairs > 2)
-                throw new Exception("Stepsize higher than 2 is not supported and verified");
-
-            if (checkIfSolutionsWereAlreadyCombined)
-            {
-                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-                if (alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
-                    return newSolutions;
-                alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
-            }
-
-            var solutionPairs = new List<int[]>();
-            var solutionLenght = solutions[0].SolutionPermutation.Length;
-
-            foreach (var instanceSolution in solutions)
-            {
-                var solution = instanceSolution.SolutionPermutation;
-                for (int i = 0; i < solutionLenght; i += stepSizeForPairs)
-                {
-                    var newSolutionPair = new int[2];
-                    newSolutionPair[0] = solution[i];
-
-                    var nextIndex = i + 1;
-                    if (nextIndex == solution.Length)
-                    {
-                        nextIndex = 0;
-                    }
-                    newSolutionPair[1] = solution[nextIndex];
-
-                    if (!IsPairAlreadyInList(newSolutionPair, solutionPairs))
-                        solutionPairs.Add(newSolutionPair);
-                }
-            }
-
-            foreach (var pair in solutionPairs)
-            {
-                var newSolution = new int[solutionLenght];
-                for (int i = 0; i < newSolution.Length; i++)
-                    newSolution[i] = -1;
-
-                newSolution[0] = pair[0];
-                newSolution[1] = pair[1];
-
-                int pairCounter = 1;
-                var newIndex = 0 + pairCounter * 2;
-
-                foreach (var nextPair in solutionPairs)
-                {
-                    //Fill last element
-                    if (solutionLenght - newIndex == 1)
-                    {
-                        if (!IsNumberAlreadyInTheSolution(nextPair[0], newSolution))
-                        {
-                            newSolution[newIndex] = nextPair[0];
-                            if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
-                                newSolutions.Add(newSolution);
-                            break;
-                        }
-
-                    }
-
-                    if (!IsPairFeasible(nextPair, newSolution))
-                        continue;
-
-                    newSolution[newIndex] = nextPair[0];
-
-                    if (newIndex < solutionLenght)
-                        newSolution[newIndex + 1] = nextPair[1];
-
-                    pairCounter++;
-                    newIndex = 0 + pairCounter * 2;
-
-                    if (newIndex == solutionLenght)
-                    {
-                        if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
-                            newSolutions.Add(newSolution);
                         break;
                     }
                 }
