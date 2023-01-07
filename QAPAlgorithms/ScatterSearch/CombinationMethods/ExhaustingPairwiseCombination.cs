@@ -19,6 +19,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         private HashSet<long> alreadyCombinedSolutions;
         private ConcurrentDictionary<long, long> alreadyCombinedSolutionsForAsync;
         private bool checkIfSolutionsWereAlreadyCombined;
+        private int maxNumbersOfPairs;
 
         /// <summary>
         /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
@@ -26,12 +27,14 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// <param name="stepSizeForPairs">this parameter sets the step for the pairs. 
         /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
         /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
-        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, bool checkIfSolutionsWereAlreadyCombined = true)
+        /// <param name="maxNumbersOfPairs">Limites the nr of pairs. If 0 no limit is present</param>
+        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, int maxNumbersOfPairs = 0, bool checkIfSolutionsWereAlreadyCombined = true)
         {
             this.stepSizeForPairs = stepSizeForPairs;
             alreadyCombinedSolutions = new HashSet<long>();
             alreadyCombinedSolutionsForAsync = new ConcurrentDictionary<long, long>();
             this.checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined;
+            this.maxNumbersOfPairs = maxNumbersOfPairs;
         }
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
@@ -99,6 +102,10 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                             newSolution[newIndex] = nextPair[0];
                             if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
                                 newSolutions.Add(newSolution);
+
+                            if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
+                                return newSolutions;
+
                             break;
                         }
 
@@ -119,6 +126,10 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                     {
                         if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
                             newSolutions.Add(newSolution);
+
+                        if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
+                            return newSolutions;
+
                         break;
                     }
                 }

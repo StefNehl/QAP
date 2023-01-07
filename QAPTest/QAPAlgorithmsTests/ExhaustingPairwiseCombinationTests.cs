@@ -187,5 +187,25 @@ namespace QAPTest.QAPAlgorithmsTests
             combinationMethod = new ExhaustingPairwiseCombination(3);
             Assert.Throws<Exception>(() => combinationMethod.CombineSolutions(list));
         }
+
+        [Test]
+        public void CombineTwoSolutions_MaxPairs2()
+        {
+            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+
+            var newSolutionA = new Mock<IInstanceSolution>();
+            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
+            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+
+            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new Mock<IInstanceSolution>();
+            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
+            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+
+            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+            combinationMethod = new ExhaustingPairwiseCombination(2, 2);
+            var result = combinationMethod.CombineSolutions(list);
+            Assert.That(result, Has.Count.EqualTo(2));
+        }
     }
 }

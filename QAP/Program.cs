@@ -20,13 +20,13 @@ var tho150 = "tho150.dat";
 var filesInFolder = new List<string>() 
 {
     chr12a,
-    chr25a,
-    tho150
+    //chr25a,
+    //tho150
 };
 
 var runtimeInSeconds = 60;
 
-filesInFolder = qapReader.GetFilesInFolder(folderName);
+//filesInFolder = qapReader.GetFilesInFolder(folderName);
 
 var testResults = new List<TestResult>();
 var cancellationTokenSource = new CancellationTokenSource();
