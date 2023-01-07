@@ -13,12 +13,9 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
     /// <summary>
     /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
     /// </summary>
-    public class ExhaustingPairwiseCombination : ICombinationMethod
+    public class ExhaustingPairwiseCombination : CombinationBase, ICombinationMethod
     {
         private readonly int stepSizeForPairs;
-        private readonly HashSet<long> alreadyCombinedSolutions;
-        private readonly ConcurrentDictionary<long, long> alreadyCombinedSolutionsForAsync;
-        private readonly bool checkIfSolutionsWereAlreadyCombined;
         private readonly int maxNumbersOfPairs;
 
         /// <summary>
@@ -28,12 +25,9 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
         /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
         /// <param name="maxNumbersOfPairs">Limites the nr of pairs. If 0 no limit is present</param>
-        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, int maxNumbersOfPairs = 0, bool checkIfSolutionsWereAlreadyCombined = true)
+        public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, int maxNumbersOfPairs = 0, bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined)
         {
             this.stepSizeForPairs = stepSizeForPairs;
-            alreadyCombinedSolutions = new HashSet<long>();
-            alreadyCombinedSolutionsForAsync = new ConcurrentDictionary<long, long>();
-            this.checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined;
             this.maxNumbersOfPairs = maxNumbersOfPairs;
         }
         /// <summary>
@@ -48,13 +42,8 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (checkIfSolutionsWereAlreadyCombined)
-            {
-                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-                if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
-                    return new List<int[]>();
-                alreadyCombinedSolutions.Add(hashCodeOfSolutions);
-            }
+            if (base.WereSolutionsAlreadyCombined(solutions))
+                return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
             var solutionPairs = GetSolutionPairs(solutions);
@@ -67,13 +56,8 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (checkIfSolutionsWereAlreadyCombined)
-            {
-                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-                if (alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
-                    return new List<int[]>();
-                alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
-            }
+            if (base.WereSolutionsAlreadyCombinedThreadSafe(solutions))
+                return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
             var solutionPairs = GetSolutionPairs(solutions);
@@ -169,15 +153,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return newSolutions;
         }
 
-        private long GenerateHashCodeFromCombinedSolutions(List<IInstanceSolution> solutions)
-        {
-            long newHashCode = 0;
-            for (int i = 0; i < solutions.Count; i++)
-            {
-                newHashCode += (long)Math.Pow(solutions[i].HashCode, i + 1);
-            }
-            return newHashCode;
-        }
+
 
         private static bool IsPairAlreadyInList(int[] newPair, List<int[]> listOfPairs)
         {
