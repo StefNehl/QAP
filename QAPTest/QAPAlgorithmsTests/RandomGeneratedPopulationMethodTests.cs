@@ -26,7 +26,7 @@ namespace QAPTest.QAPAlgorithmsTests
         public void CheckGeneratePopulation_CheckPermutationSizeAndPopulationSize()
         {
             var populationSize = 10;
-            var permutationSize = 10;
+            var permutationSize = 3;
 
             var population = generateInitPopulationMethod.GeneratePopulation(populationSize, permutationSize);
 
