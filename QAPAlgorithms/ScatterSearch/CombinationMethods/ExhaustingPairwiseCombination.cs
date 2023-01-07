@@ -16,10 +16,10 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
     public class ExhaustingPairwiseCombination : ICombinationMethod
     {
         private readonly int stepSizeForPairs;
-        private HashSet<long> alreadyCombinedSolutions;
-        private ConcurrentDictionary<long, long> alreadyCombinedSolutionsForAsync;
-        private bool checkIfSolutionsWereAlreadyCombined;
-        private int maxNumbersOfPairs;
+        private readonly HashSet<long> alreadyCombinedSolutions;
+        private readonly ConcurrentDictionary<long, long> alreadyCombinedSolutionsForAsync;
+        private readonly bool checkIfSolutionsWereAlreadyCombined;
+        private readonly int maxNumbersOfPairs;
 
         /// <summary>
         /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
