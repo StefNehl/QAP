@@ -19,7 +19,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         private readonly QAPInstance qAPInstance;
 
         /// <summary>
-        /// This combination method deletes a part (determined by the percentage value) of a solution and filles the deleted with parts of the other solutions
+        /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and filles the deleted with parts of the other solutions
         /// </summary>
         /// <param name="deleteWorstPart">True to delete the worst part of the solution. If false the method deletes the parts random</param>
         /// <param name="percentageOfSolutionToDelete">percentage of the solution to delete</param>
