@@ -63,5 +63,61 @@ namespace Domain
                 return true;
             return false;
         }
+
+        public static bool IsValueAlreadyInThePermutation(int newValue, int[] permutation)
+        {
+            return IsValueAlreadyInThePermutation(newValue, permutation, 0, permutation.Length-1);
+        }
+
+        public static bool IsValueAlreadyInThePermutation(int newValue, int[] permutation, int startIndexToLook, int endIndexToLook)
+        {
+            for (int i = startIndexToLook; i <= endIndexToLook; i++)
+            {
+                if (permutation[i] == newValue)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static int GetIndexOfWorstPart(int[] permutation, int sizeOfPart, QAPInstance qAPInstance)
+        {
+            if (sizeOfPart < 2)
+                throw new Exception("Size of Part can't be smaller than 2");
+            var worstIndex = -1;
+            long worstSolutionValue = 0;
+
+            for (int i = 0; i <= permutation.Length - sizeOfPart; i++)
+            {
+                var endIndex = (i + sizeOfPart) - 1;
+                var solutionValue = GetSolutionValue(qAPInstance, permutation, i, endIndex);
+                if (!IsBetterSolution(worstSolutionValue, solutionValue))
+                {
+                    worstSolutionValue = solutionValue;
+                    worstIndex = i;
+                }
+            }
+            return worstIndex;
+        }
+
+        public static int GetIndexOfBestPart(int[] permutation, int sizeOfPart, QAPInstance qAPInstance)
+        {
+            if (sizeOfPart < 2)
+                throw new Exception("Size of Part can't be smaller than 2");
+            var worstIndex = -1;
+            long worstSolutionValue = long.MaxValue;
+
+            for (int i = 0; i <= permutation.Length - sizeOfPart; i++)
+            {
+                var endIndex = (i + sizeOfPart) - 1;
+                var solutionValue = GetSolutionValue(qAPInstance, permutation, i, endIndex);
+                if (IsBetterSolution(worstSolutionValue, solutionValue))
+                {
+                    worstSolutionValue = solutionValue;
+                    worstIndex = i;
+                }
+            }
+            return worstIndex;
+        }
     }
 }

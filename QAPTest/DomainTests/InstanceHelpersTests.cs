@@ -24,7 +24,7 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public void CheckGenerateHashcode_CheckHashCode()
+        public void GenerateHashcode_HashCode()
         {
             var permutation = new[] { 0, 1, 2 };
             var hashCode = InstanceHelpers.GenerateHashCode(permutation);
@@ -34,7 +34,7 @@ namespace QAPTest.DomainTests
 
 
         [Test]
-        public void CheckGetSolutionValue_CheckOptimalPermutations()
+        public void GetSolutionValue_OptimalPermutations()
         {
             var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a());
             var solutionValueChr12b = InstanceHelpers.GetSolutionValue(chr12b, QAPInstanceProvider.GetOptimalPermutationForChr12b());
@@ -49,7 +49,7 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public void CheckGetSolutionValue_CheckWithStartAndEndIndex_StartToEnd()
+        public void GetSolutionValue_WithStartAndEndIndex_StartToEnd()
         {
             var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a(), 0, chr12a.N - 1);
 
@@ -60,24 +60,116 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public void CheckGetSolutionValue_CheckWithStartAndEndIndex_StartTo5()
+        public void GetSolutionValue_WithStartAndEndIndex_StartTo5()
         {
             var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a(), 0, 5);
             Assert.That(solutionValueChr12a, Is.EqualTo(5554));
         }
 
         [Test]
-        public void CheckGetSolutionValue_CheckWithStartAndEndIndex_5ToEnd()
+        public void GetSolutionValue_WithStartAndEndIndex_5ToEnd()
         {
             var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a(), 5, chr12a.N-1);
             Assert.That(solutionValueChr12a, Is.EqualTo(1706));
         }
 
         [Test]
-        public void CheckGetSolutionValue_CheckWithStartAndEndIndex_5To7()
+        public void GetSolutionValue_WithStartAndEndIndex_5To7()
         {
             var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a(), 5, 9);
             Assert.That(solutionValueChr12a, Is.EqualTo(122));
+        }
+
+        [Test]
+        public void IsNumberAlreadyInTheSolution_IsFalse()
+        {
+            var permutation = new int[3] { 1, 2, 3 };
+            var result = InstanceHelpers.IsValueAlreadyInThePermutation(0, permutation);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNumberAlreadyInTheSolution_IsTrue()
+        {
+            var permutation = new int[3] { 1, 2, 3 };
+            var result = InstanceHelpers.IsValueAlreadyInThePermutation(1, permutation);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsValueAlreadyInTheSolution_WithStartEndIndex_IsFalse()
+        {
+            var permutation = new int[3] { 1, 2, 3 };
+            var result = InstanceHelpers.IsValueAlreadyInThePermutation(3, permutation, 0, 1);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsValueAlreadyInTheSolution_WithStartEndIndex_IsTrue()
+        {
+            var permutation = new int[3] { 1, 2, 3 };
+            var result = InstanceHelpers.IsValueAlreadyInThePermutation(1, permutation, 0, 1);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void GetIndexOfWorstPart_GetWorstHalf()
+        {
+            var permutation = new int[12] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            var index = InstanceHelpers.GetIndexOfWorstPart(permutation, 6, chr12a);
+
+            Assert.That(index, Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task GetIndexOfWorstPart_SmallerInstance()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutation = new int[3] { 0, 1, 2 };
+
+            var index = InstanceHelpers.GetIndexOfWorstPart(permutation, 2, instance);
+            Assert.That(index, Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task GetIndexOfWorstPart_ThrowException()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutation = new int[3] { 0, 1, 2 };
+
+            Assert.Throws<Exception>(() => InstanceHelpers.GetIndexOfWorstPart(permutation, 1, instance));
+        }
+
+        [Test]
+        public void GetIndexOfBestPart_GetWorstHalf()
+        {
+            var permutation = new int[12] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            var index = InstanceHelpers.GetIndexOfBestPart(permutation, 6, chr12a);
+
+            Assert.That(index, Is.EqualTo(3));
+        }
+
+        [Test]
+        public async Task GetIndexOfBestPart_SmallerInstance()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutation = new int[3] { 0, 1, 2 };
+
+            var index = InstanceHelpers.GetIndexOfBestPart(permutation, 2, instance);
+            Assert.That(index, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetIndexOfBestPart_ThrowException()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutation = new int[3] { 0, 1, 2 };
+
+            Assert.Throws<Exception>(() => InstanceHelpers.GetIndexOfBestPart(permutation, 1, instance));
         }
     }
 }

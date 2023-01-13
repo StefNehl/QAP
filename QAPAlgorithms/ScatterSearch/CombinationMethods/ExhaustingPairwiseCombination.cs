@@ -114,7 +114,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                     //Fill last element
                     if (solutionLenght - newIndex == 1)
                     {
-                        if (!IsNumberAlreadyInTheSolution(nextPair[0], newSolution))
+                        if (!InstanceHelpers.IsValueAlreadyInThePermutation(nextPair[0], newSolution))
                         {
                             newSolution[newIndex] = nextPair[0];
                             if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
@@ -185,16 +185,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return true;
         }
 
-        private static bool IsNumberAlreadyInTheSolution(int newNumber, int[] currentSolution)
-        {
-            for (int i = 0; i < currentSolution.Length; i++)
-            {
-                if (currentSolution[i] == newNumber)
-                    return true;
-            }
 
-            return false;
-        }
 
         private static bool IsSolutionInTheStartSolutionList(int[] newSolution,
             List<IInstanceSolution> startSolutions)
