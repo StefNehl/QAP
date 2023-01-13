@@ -48,6 +48,8 @@ for(int i = 0; i < testResults.Count; i++)
     Console.WriteLine(testResults[i].ToString());
 }
 
+await CSVExport.ExportToCSV(testResults, "C:\\");
+
 
 TestResult GetTestResult(TestInstance testInstance, QAPInstance instance)
 {
