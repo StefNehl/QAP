@@ -14,21 +14,21 @@ namespace QAPTest.QAPAlgorithmsTests
     public class RandomGeneratedPopulationMethodTests
     {
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
+        private int populationSize;
 
         [SetUp]
         public async Task SetUp()
         {
             var testInstance = await QAPInstanceProvider.GetTestN3();
-            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(testInstance); 
+            populationSize = 10;
+            var permutationSize = 3;
+            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(testInstance, populationSize, permutationSize); 
         }
 
         [Test]
         public void CheckGeneratePopulation_CheckPermutationSizeAndPopulationSize()
         {
-            var populationSize = 10;
-            var permutationSize = 3;
-
-            var population = generateInitPopulationMethod.GeneratePopulation(populationSize, permutationSize);
+            var population = generateInitPopulationMethod.GeneratePopulation();
 
             Assert.Multiple(() =>
             {

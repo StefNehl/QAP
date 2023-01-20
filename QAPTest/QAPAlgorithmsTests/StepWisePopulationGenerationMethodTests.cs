@@ -23,13 +23,14 @@ namespace QAPTest.QAPAlgorithmsTests
         public async Task SetUp()
         {
             instance = await QAPInstanceProvider.GetTestN3();
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance);
+            
         }
 
         [Test]
         public void CheckGenerateInitialPopulation_WithOneStep()
         {
-            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, instanceSize);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance, populationSize, instanceSize);
+            var p = generateInitPopulationMethod.GeneratePopulation();
 
             var resultArray = new List<int[]>
             {
@@ -48,8 +49,8 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithTwoSteps()
         {
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance);
-            var p = generateInitPopulationMethod.GeneratePopulation(populationSize, instanceSize);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance, populationSize, instanceSize);
+            var p = generateInitPopulationMethod.GeneratePopulation();
 
             var resultArray = new List<int[]>
             {

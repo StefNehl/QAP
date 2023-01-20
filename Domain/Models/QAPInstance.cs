@@ -7,8 +7,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public record QAPInstance(string InstanceName, int N, int[,] A, int[,] B)
+    public record struct QAPInstance(string InstanceName, int N, int[,] A, int[,] B)
     {
+        //public QAPInstance
+        //{
+        //    this.InstanceName = instanceName;
+        //    this.N = n;
+        //    this.A = a;
+        //    this.B = b;
+        //}
+
+        //public string InstanceName { get; }
+        //public int N { get; }
+        //public int[,] A { get; }
+        //public int[,] B { get; }
+
         public override string ToString()
         {
             string instanceString = "N: " + N + Environment.NewLine;

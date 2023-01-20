@@ -3,7 +3,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch
 {
-    internal class SubSetGenerationMethod
+    public class SubSetGenerationMethod
     {
         private readonly ICombinationMethod combinationMethod;
         private readonly IImprovementMethod improvementMethod;

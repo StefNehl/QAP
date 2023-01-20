@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QAPAlgorithms.ScatterSearch.GenerationMethods;
 
 namespace QAPBenchmark.ScatterSearchBenchmarks
 {
@@ -22,13 +23,13 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         public void Setup() 
         {
             solutionSize = 10;
-            generationMethod = new StepWisePopulationGenerationMethod(1);
+            //generationMethod = new StepWisePopulationGenerationMethod(1, );
         }
 
         [Benchmark]
         public void GenerateInitialPopulation()
         {
-            generationMethod.GeneratePopulation(10, solutionSize);
+            generationMethod.GeneratePopulation();
         }
 
     }

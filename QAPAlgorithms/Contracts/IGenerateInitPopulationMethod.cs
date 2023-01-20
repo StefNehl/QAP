@@ -9,6 +9,6 @@ namespace QAPAlgorithms.Contracts
 {
     public interface IGenerateInitPopulationMethod
     {
-        List<IInstanceSolution> GeneratePopulation(int populationSize, int permutationSize);
+        List<IInstanceSolution> GeneratePopulation();
     }
 }

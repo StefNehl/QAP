@@ -252,7 +252,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             referenceSet.Clear();
             population.Clear();
-            population.AddRange(generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N));
+            population.AddRange(generateInitPopulationMethod.GeneratePopulation());
 
             EliminateIdenticalSolutionsFromSet(population);
 
@@ -270,7 +270,7 @@ namespace QAPAlgorithms.ScatterSearch
 
         private void GenerateNewPopulation()
         {
-            population = generateInitPopulationMethod.GeneratePopulation(populationSize, currentInstance.N);
+            population = generateInitPopulationMethod.GeneratePopulation();
             diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
         }
 

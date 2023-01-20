@@ -10,35 +10,21 @@ using System.Xml.XPath;
 
 namespace QAP
 {
-    public class TestInstance
+    public static class TestInstance
     {
-        private ICombinationMethod combinationMethod;
-        private IGenerateInitPopulationMethod generateInitPopulationMethod;
-        private IImprovementMethod improvementMethod;
-        private IDiversificationMethod diversificationMethod;
-        private ScatterSearchStart? scatterSearch;
-
-        public TestInstance(
-            IGenerateInitPopulationMethod generateInitPopulationMethod, 
-            IDiversificationMethod diversificationMethod, 
-            ICombinationMethod combinationMethod, 
-            IImprovementMethod improvementMethod)
-        {
-            this.combinationMethod = combinationMethod;
-            this.generateInitPopulationMethod= generateInitPopulationMethod;  
-            this.improvementMethod= improvementMethod;
-            this.diversificationMethod= diversificationMethod;
-        }
-
-        public TestResult StartTest(QAPInstance instance, 
+        public static TestResult StartTest(QAPInstance instance, 
             int populationSize, 
             int referenceSetSize, 
             int runTimeInSeconds, 
             int subSetGenerationTypes,
             SubSetGenerationMethodType subSetGenerationMethodType,
-            bool displayProgressInConsole)
+            ICombinationMethod combinationMethod,
+            IGenerateInitPopulationMethod generateInitPopulationMethod,
+            IImprovementMethod improvementMethod,
+            IDiversificationMethod diversificationMethod,
+            bool displayProgressInConsole = false)
         {
-            scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
+            var scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
             var result = scatterSearch.Solve(runTimeInSeconds, subSetGenerationTypes, subSetGenerationMethodType, displayProgressInConsole);
 
             var newTestResult = new TestResult(
@@ -54,16 +40,20 @@ namespace QAP
             return newTestResult;
         }
 
-        public async Task<TestResult> StartTestAsync(QAPInstance instance,
+        public static async Task<TestResult> StartTestAsync(QAPInstance instance,
             int populationSize,
             int referenceSetSize,
             int runTimeInSeconds,
             int subSetGenerationTypes,
             SubSetGenerationMethodType subSetGenerationMethodType,
+            ICombinationMethod combinationMethod,
+            IGenerateInitPopulationMethod generateInitPopulationMethod,
+            IImprovementMethod improvementMethod,
+            IDiversificationMethod diversificationMethod,
             bool displayProgressInConsole, 
             CancellationToken ct)
         {
-            scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
+            var scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
             var result = await scatterSearch.SolveAsync(runTimeInSeconds, subSetGenerationTypes, subSetGenerationMethodType, displayProgressInConsole, ct);
 
             var newTestResult = new TestResult(

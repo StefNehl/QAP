@@ -25,6 +25,9 @@ var filesInFolder = new List<string>()
 };
 
 var runtimeInSeconds = 60;
+int refSetSize = 10;
+//17 P_25 P is generally set at max(lOO, 5*refSetSize)
+int populationSetSize = 5 * refSetSize;
 
 //filesInFolder = qapReader.GetFilesInFolder(folderName);
 
@@ -35,7 +38,7 @@ for(int i = 0; i < filesInFolder.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(folderName, filesInFolder[i]);
 
-    var testResult = GetTestResult(GetInstanceWithFirstImprove(instance), instance);
+    var testResult = GetInstanceWithFirstImprove(instance, refSetSize, populationSetSize, runtimeInSeconds);
     Console.WriteLine(testResult.ToStringForConsole());
     testResults.Add(testResult);
 
@@ -48,43 +51,25 @@ for(int i = 0; i < testResults.Count; i++)
     Console.WriteLine(testResults[i].ToString());
 }
 
-await CSVExport.ExportToCSV(testResults, "C:\\");
+//await CSVExport.ExportToCSV(testResults, "C:\\");
 
 
-TestResult GetTestResult(TestInstance testInstance, QAPInstance instance)
-{
-    int refSetSize = 10;
-    //17 P_25 P is generally set at max(lOO, 5*refSetSize)
-    int populationSetSize = 5 * refSetSize;
-
-    return testInstance.StartTest(instance, populationSetSize, refSetSize, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, false);
-}
-
-async Task<TestResult> GetTestResultAsync(TestInstance testInstance, QAPInstance instance, CancellationToken ct)
-{
-    int refSetSize = 10;
-    //17 P_25 P is generally set at max(lOO, 5*refSetSize)
-    int populationSetSize = 5 * refSetSize; 
-
-    return await testInstance.StartTestAsync(instance, populationSetSize, refSetSize, runtimeInSeconds, 1, SubSetGenerationMethodType.Cycle, false, ct);
-}
-
-TestInstance GetInstanceWithFirstImprove(QAPInstance instance)      
+TestResult GetInstanceWithFirstImprove(QAPInstance instance, int refSetSize, int populationSize, int runTimeInSeconds)      
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
-
-    return new TestInstance(generationInitPopMethod, diversificationMethod, combinationMethod, improvementMethod);
-}
-
-TestInstance GetInstanceWithBestImprove(QAPInstance instance)
-{
-    var improvementMethod = new LocalSearchBestImprovement(instance);
-    var combinationMethod = new ExhaustingPairwiseCombination(1, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance);
-    var diversificationMethod = new HashCodeDiversificationMethod(instance);
-
-    return new TestInstance(generationInitPopMethod, diversificationMethod, combinationMethod, improvementMethod);
+    
+    return TestInstance.StartTest(
+        instance, 
+        populationSize,
+        refSetSize,
+        runTimeInSeconds,
+        1,
+        SubSetGenerationMethodType.Cycle,
+        combinationMethod,
+        generationInitPopMethod,
+        improvementMethod,
+        diversificationMethod);
 }

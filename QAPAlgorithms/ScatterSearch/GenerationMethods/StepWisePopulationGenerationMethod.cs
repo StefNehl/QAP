@@ -11,37 +11,40 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
     public class StepWisePopulationGenerationMethod : IGenerateInitPopulationMethod
     {
         private readonly QAPInstance qAPInstance;
-
+        private readonly int populationSize;
+        private readonly List<IInstanceSolution> population;
+        private readonly int[] permutation;
 
         private int nrOfIndexesToMovePerIteration;
-        public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration, QAPInstance qAPInstance)
+        public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration, 
+            QAPInstance qAPInstance, int populationSize, int permutationSize)
         {
             this.nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
             this.qAPInstance = qAPInstance;
-
+            
+            population = new List<IInstanceSolution>(populationSize);
+            permutation = new int[permutationSize];
         }
-        public List<IInstanceSolution> GeneratePopulation(int populationSize, int permutationSize)
+        public List<IInstanceSolution> GeneratePopulation()
         {
-            var population = new List<IInstanceSolution>();
 
             for (int s = 0; s < populationSize; s++)
             {
-                var newPermutation = new int[permutationSize];
-                for (int i = 0; i < newPermutation.Length; i++)
+                for (int i = 0; i < permutation.Length; i++)
                 {
                     if (s == 0)
-                        newPermutation[i] = i;
+                        permutation[i] = i;
                     else
                     {
                         int newIndex = i - nrOfIndexesToMovePerIteration;
                         if (newIndex < 0)
-                            newIndex = permutationSize + newIndex;
-                        newPermutation[i] = population[s - 1].SolutionPermutation[newIndex];
+                            newIndex = permutation.Length + newIndex;
+                        permutation[i] = population[s - 1].SolutionPermutation[newIndex];
                     }
 
                 }
 
-                var newSolution = new InstanceSolution(qAPInstance, newPermutation);
+                var newSolution = new InstanceSolution(qAPInstance, permutation);
                 population.Add(newSolution);
             }
 
