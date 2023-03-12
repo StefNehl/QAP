@@ -9,27 +9,23 @@ namespace Domain
 {
     public static class InstanceHelpers
     {
-        public static long GetSolutionValue(QAPInstance instance, int[] solution)
+        public static long GetSolutionValue(QAPInstance instance, int[] permutation)
         {
-            return GetSolutionValue(instance, solution, 0, instance.N - 1);
+            return GetSolutionValue(instance, permutation, 0, instance.N - 1);
         }
 
-        public static long GetSolutionValue(QAPInstance instance, int[] solution, int startIndex, int endIndex)
+        public static long GetSolutionValue(QAPInstance instance, int[] permutation, int startIndex, int endIndex)
         {
             if ((endIndex+1) > instance.N)
                 return long.MaxValue;
-
-            //ToDo
-            //Improve new calculation of the Value Erenda Cela p.77
-
 
             long result = 0;
             for (int i = startIndex; i <= endIndex; i++)
             {
                 for (int j = startIndex; j <= endIndex; j++)
                 {
-                    int resultA = instance.A[i, j];
-                    int resultB = instance.B[solution[i], solution[j]];
+                    long resultA = instance.A[i, j];
+                    long resultB = instance.B[permutation[i], permutation[j]];
                     result += resultA * resultB;
                 }
             }
@@ -37,6 +33,54 @@ namespace Domain
             return result;
         }
 
+        /// <summary>
+        /// Calculates the difference after a swap. Taken from Rostislav Stanek qap (File O2.hpp)
+        /// line 32.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="perm">the current permutation without the swap</param>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
+        public static long GetSolutionDifferenceAfterSwap(QAPInstance instance, 
+            int[] perm,
+            int i,
+            int j)
+        {
+            long delta = 0;
+
+            for (var k = 0; k < perm.Length; k++)
+            {
+                delta -= instance.A[i, k] * instance.B[perm[i], perm[k]];
+                delta -= instance.A[j, k] * instance.B[perm[j], perm[k]];
+                
+                delta += instance.A[i, k] * instance.B[perm[j], perm[k]];
+                delta += instance.A[j, k] * instance.B[perm[i], perm[k]];
+            }
+            delta += (instance.A[i, j] * 
+                         instance.B[perm[i], perm[j]]) * 2;
+            return delta * 2 ;
+        }
+
+        public static long GetSolutionValueOp(QAPInstance instance, int[] permutation)
+        {
+            var permutationSpan = permutation.AsSpan();
+            var n = instance.N;
+            
+            long result = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    int resultA = instance.A[i, j];
+                    int resultB = instance.B[permutationSpan[i], permutationSpan[j]];
+                    result += resultA * resultB;
+                }
+            }
+
+            return result;
+        }
+        
         //14_Principles of Scatter Search P.6
         public static long GenerateHashCode(int[] permutation)
         {

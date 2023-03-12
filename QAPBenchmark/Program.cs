@@ -4,7 +4,7 @@ using BenchmarkDotNet.Running;
 using QAPBenchmark.ScatterSearchBenchmarks;
 
 //BenchmarkRunner.Run(typeof(GenerateInitialPopulationBenchmarks).Assembly);
-BenchmarkRunner.Run(typeof(ImprovementBenchmarks).Assembly);
+BenchmarkRunner.Run<InstanceHelpersBenchmarks>();
 
 //var test = new ImprovementBenchmarks();
 //test.Setup();

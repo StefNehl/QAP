@@ -58,12 +58,38 @@ namespace QAPTest.DomainTests
                 Assert.That(solutionValueChr12a, Is.EqualTo(QAPInstanceProvider.GetOptimalSolutionValueForChr12a()));
             });
         }
+        
+        [Test]
+        public void GetSolutionValueOp_OptimalPermutations()
+        {
+            var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a());
+            var solutionValueChr12b = InstanceHelpers.GetSolutionValue(chr12b, QAPInstanceProvider.GetOptimalPermutationForChr12b());
+            var solutionValueChr25a = InstanceHelpers.GetSolutionValue(chr25a, QAPInstanceProvider.GetOptimalPermutationForChr25a());
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(solutionValueChr12a, Is.EqualTo(QAPInstanceProvider.GetOptimalSolutionValueForChr12a()));
+                Assert.That(solutionValueChr12b, Is.EqualTo(QAPInstanceProvider.GetOptimalSolutionValueForChr12b()));
+                Assert.That(solutionValueChr25a, Is.EqualTo(QAPInstanceProvider.GetOptimalSolutionValueForChr25a()));
+            });
+        }
+
+        [Test]
+        public void GetSolutionValueOp_WithStartAndEndIndex_StartToEnd()
+        {
+            var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a());
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(solutionValueChr12a, Is.EqualTo(QAPInstanceProvider.GetOptimalSolutionValueForChr12a()));
+            });
+        }
 
         [Test]
         public void GetSolutionValue_WithStartAndEndIndex_StartTo5()
         {
-            var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a(), 0, 5);
-            Assert.That(solutionValueChr12a, Is.EqualTo(5554));
+            var solutionValueChr12a = InstanceHelpers.GetSolutionValue(chr12a, QAPInstanceProvider.GetOptimalPermutationForChr12a());
+            Assert.That(solutionValueChr12a, Is.EqualTo(9552));
         }
 
         [Test]
@@ -171,5 +197,74 @@ namespace QAPTest.DomainTests
 
             Assert.Throws<Exception>(() => InstanceHelpers.GetIndexOfBestPart(permutation, 1, instance));
         }
+
+        [Test]
+        public async Task GetSolutionDifferenceAfterSwap_fromZeroToOne()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutationBefore = new int[3] { 0, 1, 2 };
+            var permutationAfter = new int[3] { 1, 0, 2 };
+
+            int indexFrom = 0;
+            int indexTo = 1;
+
+            var resultDiff = InstanceHelpers.GetSolutionDifferenceAfterSwap(
+                instance,
+                permutationBefore,
+                indexFrom,
+                indexTo);
+
+            var resultBefore = InstanceHelpers.GetSolutionValue(instance, permutationBefore);
+            var resultAfter = InstanceHelpers.GetSolutionValue(instance, permutationAfter);
+            
+            Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
+        }
+        
+        [Test]
+        public async Task GetSolutionDifferenceAfterSwap_fromOneToZero()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutationBefore = new int[3] { 0, 1, 2 };
+            var permutationAfter = new int[3] { 1, 0, 2 };
+
+            int indexFrom = 1;
+            int indexTo = 0;
+
+            var resultDiff = InstanceHelpers.GetSolutionDifferenceAfterSwap(
+                instance,
+                permutationBefore,
+                indexFrom,
+                indexTo);
+
+            var resultBefore = InstanceHelpers.GetSolutionValue(instance, permutationBefore);
+            var resultAfter = InstanceHelpers.GetSolutionValue(instance, permutationAfter);
+            
+            Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
+        }
+        
+        [Test]
+        public async Task GetSolutionDifferenceAfterSwap_fromZeroToLast()
+        {
+            var instance = await QAPInstanceProvider.GetTestN3();
+            var permutationBefore = new int[3] { 0, 1, 2 };
+            var permutationAfter = new int[3] { 2, 1, 0};
+
+            int indexFrom = 0;
+            int indexTo = 2;
+
+            var resultDiff = InstanceHelpers.GetSolutionDifferenceAfterSwap(
+                instance,
+                permutationBefore,
+                indexFrom,
+                indexTo);
+
+            var resultBefore = InstanceHelpers.GetSolutionValue(instance, permutationBefore);
+            var resultAfter = InstanceHelpers.GetSolutionValue(instance, permutationAfter);
+            
+            Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
+        }
+        
+        
+        
     }
 }
