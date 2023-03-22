@@ -25,7 +25,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
         {
             var permutation = instanceSolution.SolutionPermutation.ToArray();
 
-            //Tuple (SolutionValue, startIndexForExchange
+            //Tuple (SolutionValue, startIndexForExchange)
             var solutionValues = new List<Tuple<long, int>>();
             var oldSolutionValue = instanceSolution.SolutionValue;
 
@@ -38,7 +38,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 
                 var newSolutionValue = InstanceHelpers.GetSolutionValue(instance, permutation);
                 if (InstanceHelpers.IsBetterSolution(oldSolutionValue, newSolutionValue))
-                    solutionValues.Add(new(newSolutionValue, i));
+                    solutionValues.Add(new Tuple<long, int>(newSolutionValue, i));
 
                 permutation[i] = backUpFirstItem;
                 permutation[i + 1] = backUpSecondItem;

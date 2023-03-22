@@ -66,9 +66,6 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
                 var qapSolution = new InstanceSolution(instance, permutation);
                 _50solutions.Add(qapSolution);
             }
-
-
-
         }
 
         [Benchmark]

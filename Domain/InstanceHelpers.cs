@@ -108,6 +108,11 @@ namespace Domain
             return false;
         }
 
+        public static bool IsBetterSolutionAfterSwap(QAPInstance instance, int[] perm, int i, int j)
+        {
+            return GetSolutionDifferenceAfterSwap(instance, perm, i, j) < 0;
+        }
+
         public static bool IsValueAlreadyInThePermutation(int newValue, int[] permutation)
         {
             return IsValueAlreadyInThePermutation(newValue, permutation, 0, permutation.Length-1);

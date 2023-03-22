@@ -264,6 +264,49 @@ namespace QAPTest.DomainTests
             Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
         }
         
+        [Test]
+        public async Task GetSolutionDifferenceAfterSwap_Random()
+        {
+            var instance = await QAPInstanceProvider.GetChr25a();
+            var random = new Random();
+
+            var permutationBefore = new int[instance.N];
+            for (int i = 0; i < permutationBefore.Length; i++)
+                permutationBefore[i] = i;
+            
+            for (int i = 0; i < 100; i++)
+            {
+                var indexFrom = random.Next(0, instance.N-1);
+                var indexTo = random.Next(0, instance.N - 1);
+                
+                TestRandom(permutationBefore, indexFrom, indexTo, instance);
+            }
+
+        }
+
+        private void TestRandom(int[] permutationBefore, int indexFrom, int indexTo, QAPInstance instance)
+        {
+            var permutationAfter = Swap(permutationBefore, indexFrom, indexTo);
+
+            var resultDiff = InstanceHelpers.GetSolutionDifferenceAfterSwap(
+                instance,
+                permutationBefore,
+                indexFrom,
+                indexTo);
+
+            var resultBefore = InstanceHelpers.GetSolutionValue(instance, permutationBefore);
+            var resultAfter = InstanceHelpers.GetSolutionValue(instance, permutationAfter);
+            
+            Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
+        }
+
+        private int[] Swap(int[] permutationBefore, int indexFrom, int indexTo)
+        {
+            var permutationAfter = (int[])permutationBefore.Clone();
+            (permutationAfter[indexFrom], permutationAfter[indexTo]) = (permutationAfter[indexTo], permutationAfter[indexFrom]);
+            return permutationAfter;
+        }
+        
         
         
     }
