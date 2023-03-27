@@ -77,11 +77,31 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 return;
             }
 
-            await Parallel.ForEachAsync(instanceSolutions, async (i, ct) =>
+            var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
+            await Task.WhenAll(tasksToRun);
+        }
+        
+        public async Task ImproveSolutionsInParallelAsync_WaitAll(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
+        {
+            if (instanceSolutions.Count <= 10)
             {
-                ImproveSolution(i);
-                await Task.CompletedTask;
-            });
+                ImproveSolutions(instanceSolutions);
+                return;
+            }
+
+            var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
+            await Task.Run(() => Task.WaitAll(tasksToRun.ToArray()), ct);
+        }
+        
+        public async Task ImproveSolutionsInParallelAsync_Parallel(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
+        {
+            if (instanceSolutions.Count <= 10)
+            {
+                ImproveSolutions(instanceSolutions);
+                return;
+            }
+
+            await Task.Run(() => Parallel.ForEach(instanceSolutions, ImproveSolution), ct);
         }
     }
 }

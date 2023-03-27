@@ -31,6 +31,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     public class ImprovementBenchmarks
     {
         private IImprovementMethod bestImprovementMethod;
+        private IImprovementMethod improvedImprovementMethod;
         private IImprovementMethod firstImprovementMethod;
 
         private IInstanceSolution _solution;
@@ -48,6 +49,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
 
             bestImprovementMethod = new LocalSearchBestImprovement(instance);
+            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement(instance);
             firstImprovementMethod = new LocalSearchFirstImprovement(instance);
 
             var permutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
@@ -94,6 +96,36 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
 
         [Benchmark]
         public void LocalSearchBestImprovement_ImproveSolutionsParallel_With50Solutions()
+        {
+            bestImprovementMethod.ImproveSolutionsInParallelAsync(_50solutions, default);
+        }
+        
+        [Benchmark]
+        public void ImprovedLocalSearchBestImprovement_ImproveSolution()
+        {
+            bestImprovementMethod.ImproveSolution(_solution);
+        }
+
+        [Benchmark]
+        public void ImprovedLocalSearchBestImprovement_ImproveSolutions_With10Solutions()
+        {
+            bestImprovementMethod.ImproveSolutions(_10solutions);
+        }
+
+        [Benchmark]
+        public void ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions()
+        {
+            bestImprovementMethod.ImproveSolutions(_50solutions);
+        }
+
+        [Benchmark]
+        public void ImprovedLocalSearchBestImprovement_ImproveSolutionsParallel_With10Solutions()
+        {
+            bestImprovementMethod.ImproveSolutionsInParallelAsync(_10solutions, default);
+        }
+
+        [Benchmark]
+        public void ImprovedLocalSearchBestImprovement_ImproveSolutionsParallel_With50Solutions()
         {
             bestImprovementMethod.ImproveSolutionsInParallelAsync(_50solutions, default);
         }
