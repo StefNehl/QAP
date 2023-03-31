@@ -29,7 +29,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks;
 
 [MemoryDiagnoser]
 [RPlotExporter]
-public class ImprovementParallelBenchmarks
+public class ImprovementBestSolutionParallelBenchmarks
 {
     private LocalSearchBestImprovement bestImprovementMethod;
     

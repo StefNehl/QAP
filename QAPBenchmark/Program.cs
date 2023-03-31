@@ -6,7 +6,7 @@ using QAPBenchmark.ScatterSearchBenchmarks;
 //BenchmarkRunner.Run(typeof(GenerateInitialPopulationBenchmarks).Assembly);
 // BenchmarkRunner.Run<InstanceHelpersBenchmarks>();
 
-BenchmarkRunner.Run<ImprovementParallelBenchmarks>();
+BenchmarkRunner.Run<ImprovementBestSolutionParallelBenchmarks>();
 
 
 // var test = new ImprovementParallelBenchmarks();
