@@ -65,7 +65,6 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 
         public void ImproveSolutions(List<IInstanceSolution> instanceSolutions)
         {
-            throw new Exception("Don't use this Method. Slower than parallel method");
             foreach (var solution in instanceSolutions)
                 ImproveSolution(solution);
         }

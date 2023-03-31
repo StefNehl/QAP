@@ -38,10 +38,24 @@ for(int i = 0; i < filesInFolder.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(folderName, filesInFolder[i]);
 
-    var testResult = GetInstanceWithFirstImprove(instance, refSetSize, populationSetSize, runtimeInSeconds);
+    Console.WriteLine("First improvement without parallel");
+    var testResult = GetInstanceWithFirstImprovement(instance, refSetSize, populationSetSize, runtimeInSeconds);
     Console.WriteLine(testResult.ToStringForConsole());
     testResults.Add(testResult);
+    Console.WriteLine();
 
+    Console.WriteLine("Best improvement with parallel");
+    testResult = await GetInstanceWithBestImprovement(instance, refSetSize, populationSetSize, runtimeInSeconds);
+    Console.WriteLine(testResult.ToStringForConsole());
+    testResults.Add(testResult);
+    Console.WriteLine();
+    
+    Console.WriteLine("Improved Best improvement with parallel");
+    testResult = await GetInstanceWithImprovedBestImprovement(instance, refSetSize, populationSetSize, runtimeInSeconds);
+    Console.WriteLine(testResult.ToStringForConsole());
+    testResults.Add(testResult);
+    Console.WriteLine();
+    
     Console.WriteLine($"{i + 1} of {filesInFolder.Count} calculated");
 }
 
@@ -54,22 +68,68 @@ for(int i = 0; i < testResults.Count; i++)
 //await CSVExport.ExportToCSV(testResults, "C:\\");
 
 
-TestResult GetInstanceWithFirstImprove(QAPInstance instance, int refSetSize, int populationSize, int runTimeInSeconds)      
+TestResult GetInstanceWithFirstImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
     var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
-    
-    return TestInstance.StartTest(
+
+    var testSettings = new TestSettings(
         instance, 
-        populationSize,
-        refSetSize,
-        runTimeInSeconds,
+        populationSize, 
+        referenceSetSize, 
+        runtimeInSeconds, 
         1,
-        SubSetGenerationMethodType.Cycle,
+        SubSetGenerationMethodType.Cycle, 
         combinationMethod,
         generationInitPopMethod,
         improvementMethod,
         diversificationMethod);
+    
+    return TestInstance.StartTest(testSettings);
+}
+
+async Task<TestResult> GetInstanceWithBestImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
+{
+    var improvementMethod = new LocalSearchBestImprovement(instance);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var diversificationMethod = new HashCodeDiversificationMethod(instance);
+    
+    var testSettings = new TestSettings(
+        instance, 
+        populationSize, 
+        referenceSetSize, 
+        runtimeInSeconds, 
+        1,
+        SubSetGenerationMethodType.Cycle, 
+        combinationMethod,
+        generationInitPopMethod,
+        improvementMethod,
+        diversificationMethod);
+    return await TestInstance.StartTestAsync(testSettings,
+        cancellationTokenSource.Token);
+}
+
+async Task<TestResult> GetInstanceWithImprovedBestImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
+{
+    var improvementMethod = new ImprovedLocalSearchBestImprovement(instance);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var diversificationMethod = new HashCodeDiversificationMethod(instance);
+    
+    var testSettings = new TestSettings(
+        instance, 
+        populationSize, 
+        referenceSetSize, 
+        runtimeInSeconds, 
+        1,
+        SubSetGenerationMethodType.Cycle, 
+        combinationMethod,
+        generationInitPopMethod,
+        improvementMethod,
+        diversificationMethod);
+    return await TestInstance.StartTestAsync(testSettings,
+        cancellationTokenSource.Token);
 }

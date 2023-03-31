@@ -56,17 +56,13 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
 
     public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
     {
-        if (instanceSolutions.Count <= 10)
+        if (instanceSolutions.Count <= 5)
         {
             ImproveSolutions(instanceSolutions);
             return;
         }
 
-        await Parallel.ForEachAsync(instanceSolutions, async (i, ct) =>
-        {
-            ImproveSolution(i);
-            await Task.CompletedTask;
-        });
-
+        var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
+        await Task.WhenAll(tasksToRun);
     }
 }

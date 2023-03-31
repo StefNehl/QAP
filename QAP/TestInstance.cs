@@ -12,60 +12,63 @@ namespace QAP
 {
     public static class TestInstance
     {
-        public static TestResult StartTest(QAPInstance instance, 
-            int populationSize, 
-            int referenceSetSize, 
-            int runTimeInSeconds, 
-            int subSetGenerationTypes,
-            SubSetGenerationMethodType subSetGenerationMethodType,
-            ICombinationMethod combinationMethod,
-            IGenerateInitPopulationMethod generateInitPopulationMethod,
-            IImprovementMethod improvementMethod,
-            IDiversificationMethod diversificationMethod,
-            bool displayProgressInConsole = false)
+        public static TestResult StartTest(TestSettings testSettings)
         {
-            var scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
-            var result = scatterSearch.Solve(runTimeInSeconds, subSetGenerationTypes, subSetGenerationMethodType, displayProgressInConsole);
+            var scatterSearch = new ScatterSearchStart(
+                testSettings.Instance, 
+                testSettings.GenerateInitPopulationMethod, 
+                testSettings.DiversificationMethod,
+                testSettings.CombinationMethod,
+                testSettings.ImprovementMethod,
+                testSettings.PopulationSize,
+                testSettings.ReferenceSetSize);
+            var result = scatterSearch.Solve(
+                testSettings.RunTimeInSeconds, 
+                testSettings.SubSetGenerationTypes,
+                testSettings.SubSetGenerationMethodType,
+                testSettings.DisplayProgressInConsole);
 
             var newTestResult = new TestResult(
-                instance.InstanceName, 
-                instance.N, 
+                testSettings.Instance.InstanceName, 
+                testSettings.Instance.N, 
                 result.Item1.SolutionValue, 
                 result.Item3, 
                 result.Item2,
                 result.Item1.SolutionPermutation, 
-                combinationMethod.GetType().Name, 
-                generateInitPopulationMethod.GetType().Name, 
-                improvementMethod.GetType().Name);
+                testSettings.CombinationMethod.GetType().Name, 
+                testSettings.GenerateInitPopulationMethod.GetType().Name, 
+                testSettings.ImprovementMethod.GetType().Name);
             return newTestResult;
         }
 
-        public static async Task<TestResult> StartTestAsync(QAPInstance instance,
-            int populationSize,
-            int referenceSetSize,
-            int runTimeInSeconds,
-            int subSetGenerationTypes,
-            SubSetGenerationMethodType subSetGenerationMethodType,
-            ICombinationMethod combinationMethod,
-            IGenerateInitPopulationMethod generateInitPopulationMethod,
-            IImprovementMethod improvementMethod,
-            IDiversificationMethod diversificationMethod,
-            bool displayProgressInConsole, 
+        public static async Task<TestResult> StartTestAsync(TestSettings testSettings, 
             CancellationToken ct)
         {
-            var scatterSearch = new ScatterSearchStart(instance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, populationSize, referenceSetSize);
-            var result = await scatterSearch.SolveAsync(runTimeInSeconds, subSetGenerationTypes, subSetGenerationMethodType, displayProgressInConsole, ct);
+            var scatterSearch = new ScatterSearchStart(
+                testSettings.Instance, 
+                testSettings.GenerateInitPopulationMethod, 
+                testSettings.DiversificationMethod,
+                testSettings.CombinationMethod,
+                testSettings.ImprovementMethod,
+                testSettings.PopulationSize,
+                testSettings.ReferenceSetSize);
+            var result = await scatterSearch.SolveAsync(
+                testSettings.RunTimeInSeconds, 
+                testSettings.SubSetGenerationTypes,
+                testSettings.SubSetGenerationMethodType,
+                testSettings.DisplayProgressInConsole,
+                ct);
 
             var newTestResult = new TestResult(
-                instance.InstanceName,
-                instance.N,
-                result.Item1.SolutionValue,
-                result.Item3,
+                testSettings.Instance.InstanceName, 
+                testSettings.Instance.N, 
+                result.Item1.SolutionValue, 
+                result.Item3, 
                 result.Item2,
-                result.Item1.SolutionPermutation,
-                combinationMethod.GetType().Name,
-                generateInitPopulationMethod.GetType().Name,
-                improvementMethod.GetType().Name);
+                result.Item1.SolutionPermutation, 
+                testSettings.CombinationMethod.GetType().Name, 
+                testSettings.GenerateInitPopulationMethod.GetType().Name, 
+                testSettings.ImprovementMethod.GetType().Name);
             return newTestResult;
         }
     }
