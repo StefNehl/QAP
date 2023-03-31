@@ -65,6 +65,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 
         public void ImproveSolutions(List<IInstanceSolution> instanceSolutions)
         {
+            throw new Exception("Don't use this Method. Slower than parallel method");
             foreach (var solution in instanceSolutions)
                 ImproveSolution(solution);
         }
@@ -83,6 +84,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
         
         public async Task ImproveSolutionsInParallelAsync_WaitAll(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
+            throw new Exception("Don't use this Method. Slower than parallel method");
             if (instanceSolutions.Count <= 10)
             {
                 ImproveSolutions(instanceSolutions);
@@ -95,6 +97,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
         
         public async Task ImproveSolutionsInParallelAsync_Parallel(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
+            throw new Exception("Don't use this Method. Slower than parallel method");
             if (instanceSolutions.Count <= 10)
             {
                 ImproveSolutions(instanceSolutions);

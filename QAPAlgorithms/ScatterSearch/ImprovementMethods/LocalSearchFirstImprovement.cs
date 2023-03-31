@@ -52,17 +52,15 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 
         public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
-            if (instanceSolutions.Count <= 10)
-            {
-                ImproveSolutions(instanceSolutions);
-                return;
-            }
+            throw new Exception("Don't use this Method. Slower than sync method");
+            // if (instanceSolutions.Count <= 5)
+            // {
+            //     ImproveSolutions(instanceSolutions);
+            //     return;
+            // }
 
-            await Parallel.ForEachAsync(instanceSolutions, async (i, ct) =>
-            {
-                ImproveSolution(i);
-                await Task.CompletedTask;
-            });
+            var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
+            await Task.WhenAll(tasksToRun);
 
         }
     }
