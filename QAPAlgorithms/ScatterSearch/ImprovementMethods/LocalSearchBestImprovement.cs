@@ -71,7 +71,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 
         public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
         {
-            if (instanceSolutions.Count <= 10)
+            if (instanceSolutions.Count <= 5)
             {
                 ImproveSolutions(instanceSolutions);
                 return;

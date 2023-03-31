@@ -9,6 +9,6 @@ using QAPBenchmark.ScatterSearchBenchmarks;
 BenchmarkRunner.Run<ImprovementParallelBenchmarks>();
 
 
-//var test = new ImprovementBenchmarks();
-//test.Setup();
-//test.LocalSearchFirstImprovement_ImproveSolutionsParallel_With50Solutions();
+// var test = new ImprovementParallelBenchmarks();
+// test.Setup();
+// await test.ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions_Parallel_ParallelForEach();
