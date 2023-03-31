@@ -43,6 +43,12 @@ for(int i = 0; i < filesInFolder.Count; i++)
     Console.WriteLine(testResult.ToStringForConsole());
     testResults.Add(testResult);
     Console.WriteLine();
+    
+    Console.WriteLine("Improved First improvement without parallel");
+    testResult = GetInstanceWithImprovedFirstImprovement(instance, refSetSize, populationSetSize, runtimeInSeconds);
+    Console.WriteLine(testResult.ToStringForConsole());
+    testResults.Add(testResult);
+    Console.WriteLine();
 
     Console.WriteLine("Best improvement with parallel");
     testResult = await GetInstanceWithBestImprovement(instance, refSetSize, populationSetSize, runtimeInSeconds);
@@ -71,6 +77,28 @@ for(int i = 0; i < testResults.Count; i++)
 TestResult GetInstanceWithFirstImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
+    var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var diversificationMethod = new HashCodeDiversificationMethod(instance);
+
+    var testSettings = new TestSettings(
+        instance, 
+        populationSize, 
+        referenceSetSize, 
+        runtimeInSeconds, 
+        1,
+        SubSetGenerationMethodType.Cycle, 
+        combinationMethod,
+        generationInitPopMethod,
+        improvementMethod,
+        diversificationMethod);
+    
+    return TestInstance.StartTest(testSettings);
+}
+
+TestResult GetInstanceWithImprovedFirstImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
+{
+    var improvementMethod = new ImprovedLocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
     var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);

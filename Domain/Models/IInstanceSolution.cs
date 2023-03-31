@@ -4,7 +4,7 @@
     {
         long HashCode { get; }
         int[] SolutionPermutation { get; }
-        long SolutionValue { get; }
+        long SolutionValue { get; set; }
         void RefreshSolutionValue(QAPInstance instance);
         string DisplayInConsole();
 

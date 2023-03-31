@@ -12,12 +12,12 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
     /// <summary>
     /// Switches the values in the permutation pair wise. Updates the solution as soon as a better solution is found
     /// </summary>
-    public class LocalSearchFirstImprovement : IImprovementMethod
+    public class ImprovedLocalSearchFirstImprovement : IImprovementMethod
     {
-        private readonly QAPInstance _instance;
-        public LocalSearchFirstImprovement(QAPInstance qAPInstance)
+        private readonly QAPInstance instance;
+        public ImprovedLocalSearchFirstImprovement(QAPInstance qAPInstance)
         {
-            _instance = qAPInstance;
+            instance = qAPInstance;
         }
         public void ImproveSolution(IInstanceSolution instanceSolution)
         {
@@ -25,21 +25,14 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
             var solutionValue = instanceSolution.SolutionValue;
             for (int i = 0; i < permutation.Length - 1; i++)
             {
-                int backUpFirstItem = permutation[i];
-                int backUpSecondItem = permutation[i + 1];
-                permutation[i] = backUpSecondItem;
-                permutation[i + 1] = backUpFirstItem;
-
-                //ToDo
-                //Improve new calculation of the Value Erenda Cela p.77
-                instanceSolution.RefreshSolutionValue(_instance);
-                var newSolutionValue = instanceSolution.SolutionValue;
-                if (InstanceHelpers.IsBetterSolution(solutionValue, newSolutionValue))
-                {
+                var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(instance, permutation, i, i + 1);
+                var newSolutionValue = solutionValue + solutionDifference;
+                if (!InstanceHelpers.IsBetterSolution(solutionValue, newSolutionValue))
                     break;
-                }
-                permutation[i] = backUpFirstItem;
-                permutation[i + 1] = backUpSecondItem;
+                
+                (instanceSolution.SolutionPermutation[i + 1], instanceSolution.SolutionPermutation[i]) =
+                    (instanceSolution.SolutionPermutation[i], instanceSolution.SolutionPermutation[i + 1]);
+                instanceSolution.SolutionValue = newSolutionValue;
             }
 
         }

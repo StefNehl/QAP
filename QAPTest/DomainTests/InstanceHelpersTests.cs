@@ -263,6 +263,26 @@ namespace QAPTest.DomainTests
             
             Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
         }
+
+        [Test]
+        public async Task GetSolutionDifferenceAfterSwap_CHR12A()
+        {
+            var folderName = "QAPLIB";
+            var fileName = "chr12a.dat";
+
+            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
+            var instance = await qapReader.ReadFileAsync(folderName, fileName);
+            
+            var worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            var betterPermutation = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+
+            var resultDiff = InstanceHelpers.GetSolutionDifferenceAfterSwap(instance, worsePermutation, 0, 1);
+            
+            var resultBefore = InstanceHelpers.GetSolutionValue(instance, worsePermutation);
+            var resultAfter = InstanceHelpers.GetSolutionValue(instance, betterPermutation);
+            
+            Assert.That(resultDiff, Is.EqualTo(resultAfter - resultBefore));
+        }
         
         [Test]
         public async Task GetSolutionDifferenceAfterSwap_Random()

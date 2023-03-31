@@ -6,23 +6,22 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
 public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
 {
-    private readonly QAPInstance _instance;
+    private readonly QAPInstance instance;
     public ImprovedLocalSearchBestImprovement(QAPInstance qAPInstance)
     {
-        _instance = qAPInstance;
+        instance = qAPInstance;
     }
     
     public void ImproveSolution(IInstanceSolution instanceSolution)
     {
         var permutation = instanceSolution.SolutionPermutation.ToArray();
-
         //Tuple (SolutionValue, startIndexForExchange)
         var solutionValues = new List<Tuple<long, int>>();
         var oldSolutionValue = instanceSolution.SolutionValue;
 
         for (int i = 0; i < permutation.Length - 1; i++)
         {
-            var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(_instance, permutation, i, i + 1);
+            var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(instance, permutation, i, i + 1);
             var newSolutionValue = oldSolutionValue + solutionDifference;
             
             if (InstanceHelpers.IsBetterSolution(oldSolutionValue, newSolutionValue))
@@ -44,7 +43,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
         {
             (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) =
                 (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
-            instanceSolution.RefreshSolutionValue(_instance);
+            instanceSolution.SolutionValue = minValue;
         }
     } 
     

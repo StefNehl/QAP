@@ -9,7 +9,7 @@ namespace Domain.Models
     public class InstanceSolution : IInstanceSolution
     {
         public int[] SolutionPermutation { get; }
-        public long SolutionValue { get; private set; }
+        public long SolutionValue { get; set; }
         public long HashCode { get; }
 
         public InstanceSolution(QAPInstance instance, int[] permutation)
