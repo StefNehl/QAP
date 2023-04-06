@@ -32,7 +32,7 @@ namespace QAPTest.QAPAlgorithmsTests
             testInstance = await QAPInstanceProvider.GetTestN3();
             improvementMethod = new LocalSearchFirstImprovement(testInstance);
             combinationMethod = new ExhaustingPairwiseCombination();
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, testInstance, 1, testInstance.N);
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, testInstance, 1);
             populationSize = 6;
             scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
         }

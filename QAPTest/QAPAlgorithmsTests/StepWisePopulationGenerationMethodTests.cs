@@ -29,7 +29,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithOneStep()
         {
-            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance, populationSize, instanceSize);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance, populationSize);
             var p = generateInitPopulationMethod.GeneratePopulation();
 
             var resultArray = new List<int[]>
@@ -49,7 +49,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithTwoSteps()
         {
-            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance, populationSize, instanceSize);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance, populationSize);
             var p = generateInitPopulationMethod.GeneratePopulation();
 
             var resultArray = new List<int[]>

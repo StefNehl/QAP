@@ -17,13 +17,14 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 
         private int nrOfIndexesToMovePerIteration;
         public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration, 
-            QAPInstance qAPInstance, int populationSize, int permutationSize)
+            QAPInstance qAPInstance, int populationSize)
         {
             this.nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
             this.qAPInstance = qAPInstance;
-            
+
+            this.populationSize = populationSize;
             population = new List<IInstanceSolution>(populationSize);
-            permutation = new int[permutationSize];
+            permutation = new int[qAPInstance.N];
         }
         public List<IInstanceSolution> GeneratePopulation()
         {
