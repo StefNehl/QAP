@@ -44,7 +44,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             this.qAPInstance = qAPInstance;
         }
 
-        public List<int[]> CombineSolutions(List<IInstanceSolution> solutions)
+        public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
         {
             if (base.WereSolutionsAlreadyCombined(solutions))
                 return new List<int[]>();
@@ -52,7 +52,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return Combine(solutions);
         }
 
-        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions)
+        public List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions)
         {
             if (base.WereSolutionsAlreadyCombinedThreadSafe(solutions))
                 return new List<int[]>();
@@ -60,7 +60,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return Combine(solutions);
         }
 
-        private List<int[]> Combine(List<IInstanceSolution> solutions)
+        private List<int[]> Combine(List<InstanceSolution> solutions)
         {
             var newSolutions = new List<int[]>();
 

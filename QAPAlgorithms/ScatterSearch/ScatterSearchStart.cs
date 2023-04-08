@@ -18,13 +18,15 @@ namespace QAPAlgorithms.ScatterSearch
         private readonly int populationSize; //size of the complete population (max = 20)
         private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
-        private List<IInstanceSolution> population;
-        private List<IInstanceSolution> referenceSet;
+        private List<InstanceSolution> population;
+        private List<InstanceSolution> referenceSet;
 
         private readonly IGenerateInitPopulationMethod generateInitPopulationMethod;
         private readonly IDiversificationMethod diversificationMethod;
         private readonly ICombinationMethod combinationMethod;
         private readonly IImprovementMethod improvementMethod;
+        private readonly int subSetGenerationTypes;
+        private readonly SubSetGenerationMethodType subSetGenerationMethodType;
 
         private DateTime startTime;
         private DateTime currentTime;
@@ -38,6 +40,8 @@ namespace QAPAlgorithms.ScatterSearch
             IDiversificationMethod diversificationMethod,
             ICombinationMethod combinationMethod,
             IImprovementMethod improvementMethod,
+            int subSetGenerationTypes = 4,
+            SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
             int populationSize = 10,
             int referenceSetSize = 5)
         {
@@ -49,9 +53,11 @@ namespace QAPAlgorithms.ScatterSearch
             this.diversificationMethod = diversificationMethod;
             this.combinationMethod = combinationMethod;
             this.improvementMethod = improvementMethod;
+            this.subSetGenerationTypes = subSetGenerationTypes;
+            this.subSetGenerationMethodType = subSetGenerationMethodType;
 
-            population = new List<IInstanceSolution>();
-            referenceSet = new List<IInstanceSolution>();
+            population = new List<InstanceSolution>();
+            referenceSet = new List<InstanceSolution>();
         }
 
         public long IterationCount { get; set; }
@@ -61,15 +67,14 @@ namespace QAPAlgorithms.ScatterSearch
         /// </summary>
         /// <param name="runTimeInSeconds"></param>
         /// <returns></returns>
-        public Tuple<IInstanceSolution, long, long> Solve(
+        public Tuple<InstanceSolution, long, long> Solve(
             int runTimeInSeconds,
-            int subSetGenerationTypes = 4,
-            SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
+
             bool displayProgressInConsole = false)
         {
-            InitScattersearch(runTimeInSeconds, subSetGenerationTypes);
+            InitScatterSearch(runTimeInSeconds);
             var subSetGenerationMethod = new SubSetGenerationMethod(currentInstance, combinationMethod, improvementMethod);
-            var newSubSets = new List<IInstanceSolution>();
+            var newSubSets = new List<InstanceSolution>();
 
             while (true)
             {
@@ -130,19 +135,17 @@ namespace QAPAlgorithms.ScatterSearch
                     typeCount++;
             }
 
-            return new Tuple<IInstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
+            return new Tuple<InstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
         }
 
-        public async Task<Tuple<IInstanceSolution, long, long>> SolveAsync(
+        public async Task<Tuple<InstanceSolution, long, long>> SolveAsync(
                         int runTimeInSeconds,
-                        int subSetGenerationTypes = 4,
-                        SubSetGenerationMethodType subSetGenerationMethodType = SubSetGenerationMethodType.Cycle,
                         bool displayProgressInConsole = false,
                         CancellationToken cancellationToken = default)
         {
 
-            InitScattersearch(runTimeInSeconds, subSetGenerationTypes);
-            var newSubSets = new List<IInstanceSolution>();
+            InitScatterSearch(runTimeInSeconds);
+            var newSubSets = new List<InstanceSolution>();
             var subSetGenerationMethod = new ParallelSubSetGenerationMethod(currentInstance, combinationMethod, improvementMethod);
 
             while (true)
@@ -204,10 +207,10 @@ namespace QAPAlgorithms.ScatterSearch
                     typeCount++;
             }
 
-            return new Tuple<IInstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
+            return new Tuple<InstanceSolution, long, long>(referenceSet.First(), IterationCount, (long)(currentTime - startTime).TotalSeconds);
         }
 
-        public bool ReferenceSetUpdate(IInstanceSolution newSolution)
+        public bool ReferenceSetUpdate(InstanceSolution newSolution)
         {
             if (!referenceSet.Any())
             {
@@ -242,7 +245,7 @@ namespace QAPAlgorithms.ScatterSearch
             return true;
         }
 
-        private void InitScattersearch(int runTimeInSeconds, int subSetGenerationTypes)
+        private void InitScatterSearch(int runTimeInSeconds)
         {
             startTime = DateTime.Now;
             currentTime = DateTime.Now;
@@ -274,7 +277,7 @@ namespace QAPAlgorithms.ScatterSearch
             diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
         }
 
-        private bool IsSolutionAlreadyInReferenceSet(IInstanceSolution instanceSolution)
+        private bool IsSolutionAlreadyInReferenceSet(InstanceSolution instanceSolution)
         {
             foreach (var solution in referenceSet)
                 if (solution.HashCode == instanceSolution.HashCode)
@@ -283,7 +286,7 @@ namespace QAPAlgorithms.ScatterSearch
             return false;
         }
 
-        public IInstanceSolution GetBestSolution()
+        public InstanceSolution GetBestSolution()
         {
             return referenceSet.First();
         }
@@ -293,7 +296,7 @@ namespace QAPAlgorithms.ScatterSearch
             return referenceSet.Count;
         }
 
-        public void EliminateIdenticalSolutionsFromSet(List<IInstanceSolution> solutionSet)
+        public void EliminateIdenticalSolutionsFromSet(List<InstanceSolution> solutionSet)
         {
             for(int i = 0; i < solutionSet.Count; i++) 
             {

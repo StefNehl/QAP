@@ -1,48 +1,39 @@
-﻿using Domain;
-using Domain.Models;
-using Moq;
-using QAPAlgorithms.Contracts;
+﻿using Domain.Models;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPTest.QAPAlgorithmsTests
 {
     [TestFixture]
     public class ExhaustingPairwiseCombinationTests
     {
-        private ExhaustingPairwiseCombination combinationMethod;
+        private ExhaustingPairwiseCombination _combinationMethod;
+        private QAPInstance _qapInstanceN4;
+        private QAPInstance _qapInstanceN5;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
-            combinationMethod = new ExhaustingPairwiseCombination();
+            _combinationMethod = new ExhaustingPairwiseCombination();
+            _qapInstanceN4 = await QAPInstanceProvider.GetTestN4();
+            _qapInstanceN5 = await QAPInstanceProvider.GetTestN5();
         }
 
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_1()
         {
-            var firstPermutation = new int[4] { 0, 1, 2, 3 };
+            var firstPermutation = new [] { 0, 1, 2, 3 };
+            var newSolutionA = new InstanceSolution(_qapInstanceN4, firstPermutation);
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN4, secondPermutation);
 
-            var secondPermutation = new int[4] { 1, 2, 3, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-
-            var result = combinationMethod.CombineSolutions(list);
+            var result = _combinationMethod.CombineSolutions(list);
 
             var expectedCount = 2;
-            var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
-            var secondExpectedSolution = new int[4] { 3, 0, 1, 2 };
+            var firstExpectedSolution = new [] { 2, 3, 0, 1 };
+            var secondExpectedSolution = new [] { 3, 0, 1, 2 };
 
             Assert.Multiple(() =>
             {
@@ -62,25 +53,21 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_2()
         {
-            var firstPermutation = new int[4] { 0, 1, 2, 3 };
+            var firstPermutation = new [] { 0, 1, 2, 3 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN4, firstPermutation);
 
-            var secondPermutation = new int[4] { 1, 2, 3, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN4, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
 
-            combinationMethod = new ExhaustingPairwiseCombination(2);
-            var result = combinationMethod.CombineSolutions(list);
+            _combinationMethod = new ExhaustingPairwiseCombination(2);
+            var result = _combinationMethod.CombineSolutions(list);
 
             var expectedCount = 2;
-            var firstExpectedSolution = new int[4] { 2, 3, 0, 1 };
-            var secondExpectedSolution = new int[4] { 3, 0, 1, 2 };
+            var firstExpectedSolution = new [] { 2, 3, 0, 1 };
+            var secondExpectedSolution = new [] { 3, 0, 1, 2 };
 
             Assert.Multiple(() =>
             {
@@ -100,39 +87,31 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN4_StepSize_3()
         {
-            var firstPermutation = new int[4] { 0, 1, 2, 3 };
+            var firstPermutation = new [] { 0, 1, 2, 3 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN4, firstPermutation);
 
-            var secondPermutation = new int[4] { 1, 2, 3, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN4, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-            combinationMethod = new ExhaustingPairwiseCombination(3);
-            Assert.Throws<Exception>(() => combinationMethod.CombineSolutions(list));
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
+            _combinationMethod = new ExhaustingPairwiseCombination(3);
+            Assert.Throws<Exception>(() => _combinationMethod.CombineSolutions(list));
         }
 
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_1()
         {
-            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+            var firstPermutation = new [] { 0, 1, 2, 3, 4 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN5, firstPermutation);
 
-            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN5, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
 
-            var result = combinationMethod.CombineSolutions(list);
+            var result = _combinationMethod.CombineSolutions(list);
 
             var expectedCount = 3;
 
@@ -145,21 +124,17 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_2()
         {
-            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+            var firstPermutation = new [] { 0, 1, 2, 3, 4 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN5, firstPermutation);
 
-            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN5, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
 
-            combinationMethod = new ExhaustingPairwiseCombination(2);
-            var result = combinationMethod.CombineSolutions(list);
+            _combinationMethod = new ExhaustingPairwiseCombination(2);
+            var result = _combinationMethod.CombineSolutions(list);
 
             var expectedCount = 4;
 
@@ -172,39 +147,31 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CombineTwoSolutionsPairWise_WithTwoDifferentSolutions_WithN5_StepSize_3()
         {
-            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+            var firstPermutation = new [] { 0, 1, 2, 3, 4 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN5, firstPermutation);
 
-            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN5, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-            combinationMethod = new ExhaustingPairwiseCombination(3);
-            Assert.Throws<Exception>(() => combinationMethod.CombineSolutions(list));
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
+            _combinationMethod = new ExhaustingPairwiseCombination(3);
+            Assert.Throws<Exception>(() => _combinationMethod.CombineSolutions(list));
         }
 
         [Test]
         public void CombineTwoSolutions_MaxPairs2()
         {
-            var firstPermutation = new int[5] { 0, 1, 2, 3, 4 };
+            var firstPermutation = new [] { 0, 1, 2, 3, 4 };
 
-            var newSolutionA = new Mock<IInstanceSolution>();
-            newSolutionA.Setup(p => p.SolutionPermutation).Returns(firstPermutation);
-            newSolutionA.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(firstPermutation));
+            var newSolutionA = new InstanceSolution(_qapInstanceN5, firstPermutation);
 
-            var secondPermutation = new int[5] { 1, 2, 3, 4, 0 };
-            var newSolutionB = new Mock<IInstanceSolution>();
-            newSolutionB.Setup(p => p.SolutionPermutation).Returns(secondPermutation);
-            newSolutionB.Setup(p => p.HashCode).Returns(InstanceHelpers.GenerateHashCode(secondPermutation));
+            var secondPermutation = new [] { 1, 2, 3, 4, 0 };
+            var newSolutionB = new InstanceSolution(_qapInstanceN5, secondPermutation);
 
-            var list = new List<IInstanceSolution> { newSolutionA.Object, newSolutionB.Object };
-            combinationMethod = new ExhaustingPairwiseCombination(2, 2);
-            var result = combinationMethod.CombineSolutions(list);
+            var list = new List<InstanceSolution> { newSolutionA, newSolutionB };
+            _combinationMethod = new ExhaustingPairwiseCombination(2, 2);
+            var result = _combinationMethod.CombineSolutions(list);
             Assert.That(result, Has.Count.EqualTo(2));
         }
     }

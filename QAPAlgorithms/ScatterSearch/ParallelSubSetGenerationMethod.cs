@@ -36,9 +36,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public Task<List<IInstanceSolution>> GenerateType1SubSetAsync(List<IInstanceSolution> referenceSolutions, CancellationToken ct = default)
+        public Task<List<InstanceSolution>> GenerateType1SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
-            var listForSubSets = new List<IInstanceSolution>();
+            var listForSubSets = new List<InstanceSolution>();
             return GetSolutionForSubSetsAsync(referenceSolutions, listForSubSets, 0, ct);
         }
 
@@ -49,9 +49,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public  Task<List<IInstanceSolution>> GenerateType2SubSetAsync(List<IInstanceSolution> referenceSolutions, CancellationToken ct = default)
+        public  Task<List<InstanceSolution>> GenerateType2SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
-            var listForSubSets = new List<IInstanceSolution>
+            var listForSubSets = new List<InstanceSolution>
             {
                 referenceSolutions.First()
             };
@@ -66,9 +66,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public Task<List<IInstanceSolution>> GenerateType3SubSetAsync(List<IInstanceSolution> referenceSolutions, CancellationToken ct = default)
+        public Task<List<InstanceSolution>> GenerateType3SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
-            var listForSubSets = new List<IInstanceSolution>
+            var listForSubSets = new List<InstanceSolution>
             {
                 referenceSolutions.First(),
                 referenceSolutions.ElementAt(1)
@@ -84,10 +84,10 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public async Task<List<IInstanceSolution>> GenerateType4SubSetAsync(List<IInstanceSolution> referenceSolutions, CancellationToken ct)
+        public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct)
         {
-            var result = new List<IInstanceSolution>();
-            var listForSubSets = new List<IInstanceSolution>();
+            var result = new List<InstanceSolution>();
+            var listForSubSets = new List<InstanceSolution>();
 
             for(int i = 0; i < referenceSolutions.Count; i++)
             {
@@ -104,13 +104,13 @@ namespace QAPAlgorithms.ScatterSearch
             return result;
         }
 
-        private async Task<List<IInstanceSolution>> GetSolutionForSubSetsAsync(
-            List<IInstanceSolution> referenceSolutions,
-            List<IInstanceSolution> listForSubSets,
+        private async Task<List<InstanceSolution>> GetSolutionForSubSetsAsync(
+            List<InstanceSolution> referenceSolutions,
+            List<InstanceSolution> listForSubSets,
             int startIndex, 
             CancellationToken ct = default)
         {
-            var result = new ConcurrentBag<IInstanceSolution>();
+            var result = new ConcurrentBag<InstanceSolution>();
             var tasksToFinish = new List<Task>();
 
             for (int i = startIndex; i < referenceSolutions.Count - 1; i++)
@@ -141,7 +141,7 @@ namespace QAPAlgorithms.ScatterSearch
             return result.ToList();
         }
 
-        private async Task<List<IInstanceSolution>> CreateNewSolutionsFromSolutionsAsync(List<IInstanceSolution> solutions, CancellationToken ct)
+        private async Task<List<InstanceSolution>> CreateNewSolutionsFromSolutionsAsync(List<InstanceSolution> solutions, CancellationToken ct)
         {
             var newTrialPermutations = combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
@@ -149,9 +149,9 @@ namespace QAPAlgorithms.ScatterSearch
             return newTrialSolutions;
         }
 
-        private List<IInstanceSolution> CreateSolutions(List<int[]> newPermutations)
+        private List<InstanceSolution> CreateSolutions(List<int[]> newPermutations)
         {
-            var result = new List<IInstanceSolution>();
+            var result = new List<InstanceSolution>();
 
             foreach (var permutation in newPermutations)
             {

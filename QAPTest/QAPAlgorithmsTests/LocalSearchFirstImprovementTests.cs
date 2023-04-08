@@ -1,12 +1,7 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
-using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace QAPTest.QAPAlgorithmsTests
 {
@@ -30,8 +25,8 @@ namespace QAPTest.QAPAlgorithmsTests
             improvementMethod = new LocalSearchFirstImprovement(instance);
             improvedImprovementMethod = new ImprovedLocalSearchFirstImprovement(instance);
 
-            worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            betterPermutation = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            worsePermutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            betterPermutation = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
         }
 
         [Test]
@@ -58,7 +53,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvementMethod.ImproveSolutionsInParallelAsync(new List<IInstanceSolution>() { qapSolution }, default);
+            await improvementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution });
             var betterSolutionValue = qapSolution.SolutionValue;
 
             Assert.Multiple(() =>
@@ -93,7 +88,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(new List<IInstanceSolution>() { qapSolution }, default);
+            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution });
             var betterSolutionValue = qapSolution.SolutionValue;
 
             Assert.Multiple(() =>

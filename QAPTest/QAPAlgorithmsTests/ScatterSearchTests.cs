@@ -1,40 +1,31 @@
 ﻿using Domain;
 using Domain.Models;
-using Moq;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
 using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
-using System;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPTest.QAPAlgorithmsTests
 {
     [TestFixture]
     public class ScatterSearchTests
     {
-        private QAPInstance testInstance;
+        private QAPInstance _testInstance;
         private ScatterSearchStart scatterSearch;
         private IImprovementMethod improvementMethod;
         private ICombinationMethod combinationMethod;
         private IGenerateInitPopulationMethod generateInitPopulationMethod;
         private IDiversificationMethod diversificationMethod;
-        private int populationSize;
 
         [SetUp]
         public async Task SetUp()
         {
-            testInstance = await QAPInstanceProvider.GetTestN3();
-            improvementMethod = new LocalSearchFirstImprovement(testInstance);
+            _testInstance = await QAPInstanceProvider.GetTestN3();
+            improvementMethod = new LocalSearchFirstImprovement(_testInstance);
             combinationMethod = new ExhaustingPairwiseCombination();
-            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, testInstance, 1);
-            populationSize = 6;
-            scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
+            generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, _testInstance, 1);
+            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
         }
 
 
@@ -47,9 +38,9 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var resultArray = new List<int[]> 
             { 
-                new int[] { 0, 1, 2 }, 
-                new int[] { 2, 0, 1 },
-                new int[] { 1, 2, 0 },
+                new [] { 0, 1, 2 }, 
+                new [] { 2, 0, 1 },
+                new [] { 1, 2, 0 },
             };
             CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
             CompareSolutionSetsWithHashcode(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
@@ -83,7 +74,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddEmptyList()
         {
-            var result = scatterSearch.ReferenceSetUpdate(new InstanceSolution( testInstance, new[] { 0, 1, 2 }));
+            var result = scatterSearch.ReferenceSetUpdate(new InstanceSolution( _testInstance, new[] { 0, 1, 2 }));
 
             Assert.That(result, Is.EqualTo(true));
         }
@@ -92,13 +83,13 @@ namespace QAPTest.QAPAlgorithmsTests
         public void CheckReferenceSetUpdate_AddToWorseList_ReferenceSetFull()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-            testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, 6, 1);
+            _testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
+            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod,  4, SubSetGenerationMethodType.Cycle,6, 1);
             
-            var newSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
+            var newSolution = new InstanceSolution(_testInstance, new [] { 1, 0, 2 });
             scatterSearch.ReferenceSetUpdate(newSolution);
 
-            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
+            var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
@@ -112,10 +103,10 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddToWorseList()
         {
-            var bestSolution = new InstanceSolution(testInstance, new int[] { 1, 0, 2 });
+            var bestSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
             scatterSearch.ReferenceSetUpdate(bestSolution);
 
-            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 0, 1, 2 });
+            var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
@@ -129,10 +120,10 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList()
         {
-            var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
+            var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
             scatterSearch.ReferenceSetUpdate(newSolution);
 
-            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
+            var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
@@ -146,12 +137,12 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList_ReferenceSetFull()
         {
-            scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, 6, 1);
+            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, 4, SubSetGenerationMethodType.Cycle,6, 1);
 
-            var newSolution = new InstanceSolution(testInstance, new int[] { 0, 1, 2 });
+            var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
             scatterSearch.ReferenceSetUpdate(newSolution);
 
-            var newInstanceSolution = new InstanceSolution(testInstance, new[] { 1, 0, 2 });
+            var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
             var result = scatterSearch.ReferenceSetUpdate(newInstanceSolution);
 
             Assert.Multiple(() =>
@@ -165,15 +156,12 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterSolutionValues_CheckCount()
         {
-            scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, 6, 5);
+            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
 
-            var solutionList = new List<IInstanceSolution>();
             for(int i = 1; i <= 100; i++)
             {
-                var newTestSolution = new Mock<IInstanceSolution>();
-                newTestSolution.Setup(p => p.HashCode).Returns(i);
-                newTestSolution.Setup(p => p.SolutionValue).Returns(i * 10);
-                scatterSearch.ReferenceSetUpdate(newTestSolution.Object);
+                var newTestSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
+                scatterSearch.ReferenceSetUpdate(newTestSolution);
             }
 
             Assert.Multiple(() =>
@@ -186,16 +174,12 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddRandomSolutionValues_CheckCount()
         {
-            scatterSearch = new ScatterSearchStart(testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, 6, 5);
-
-            var rg = new Random();
+            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
 
             for (int i = 1; i <= 100; i++)
             {
-                var newTestSolution = new Mock<IInstanceSolution>();
-                newTestSolution.Setup(p => p.HashCode).Returns(i);
-                newTestSolution.Setup(p => p.HashCode).Returns(rg.Next());
-                scatterSearch.ReferenceSetUpdate(newTestSolution.Object);
+                var newTestSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
+                scatterSearch.ReferenceSetUpdate(newTestSolution);
             }
 
             Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));

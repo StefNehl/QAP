@@ -44,7 +44,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         private IImprovementMethod improvementMethod;
         private ICombinationMethod combinationMethod;
 
-        private List<IInstanceSolution> referenceList;
+        private List<InstanceSolution> referenceList;
 
         [Params(100, 200)] 
         public int NrOfCalls { get; set; } = 10;

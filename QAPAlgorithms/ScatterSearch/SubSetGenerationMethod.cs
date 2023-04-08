@@ -28,9 +28,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType1SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<InstanceSolution> GenerateType1SubSet(List<InstanceSolution> referenceSolutions)
         {
-            var listForSubSets = new List<IInstanceSolution>();
+            var listForSubSets = new List<InstanceSolution>();
             return GetSolutionForSubSets(referenceSolutions, listForSubSets, 0);
         }
 
@@ -41,9 +41,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType2SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<InstanceSolution> GenerateType2SubSet(List<InstanceSolution> referenceSolutions)
         {
-            var listForSubSets = new List<IInstanceSolution>
+            var listForSubSets = new List<InstanceSolution>
             {
                 referenceSolutions.First()
             };
@@ -58,9 +58,9 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType3SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<InstanceSolution> GenerateType3SubSet(List<InstanceSolution> referenceSolutions)
         {
-            var listForSubSets = new List<IInstanceSolution>
+            var listForSubSets = new List<InstanceSolution>
             {
                 referenceSolutions.First(),
                 referenceSolutions.ElementAt(1)
@@ -76,10 +76,10 @@ namespace QAPAlgorithms.ScatterSearch
         /// <param name="sizeOfSubSet">size of the array</param>
         /// <param name="storedCombinations"></param>
         /// <returns></returns>
-        public List<IInstanceSolution> GenerateType4SubSet(List<IInstanceSolution> referenceSolutions)
+        public List<InstanceSolution> GenerateType4SubSet(List<InstanceSolution> referenceSolutions)
         {
-            var result = new List<IInstanceSolution>();
-            var listForSubSets = new List<IInstanceSolution>();
+            var result = new List<InstanceSolution>();
+            var listForSubSets = new List<InstanceSolution>();
 
             for (int i = 0; i < referenceSolutions.Count; i++)
             {
@@ -96,12 +96,12 @@ namespace QAPAlgorithms.ScatterSearch
             return result;
         }
 
-        private List<IInstanceSolution> GetSolutionForSubSets(
-            List<IInstanceSolution> referenceSolutions,
-            List<IInstanceSolution> listForSubSets,
+        private List<InstanceSolution> GetSolutionForSubSets(
+            List<InstanceSolution> referenceSolutions,
+            List<InstanceSolution> listForSubSets,
             int startIndex)
         {
-            var result = new List<IInstanceSolution>();
+            var result = new List<InstanceSolution>();
 
             for (int i = startIndex; i < referenceSolutions.Count - 1; i++)
             {
@@ -127,7 +127,7 @@ namespace QAPAlgorithms.ScatterSearch
             return result.ToList();
         }
 
-        private List<IInstanceSolution> CreateNewSolutionsFromSolutions(List<IInstanceSolution> solutions)
+        private List<InstanceSolution> CreateNewSolutionsFromSolutions(List<InstanceSolution> solutions)
         {
             var newTrialPermutations = combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
@@ -135,9 +135,9 @@ namespace QAPAlgorithms.ScatterSearch
             return newTrialSolutions;
         }
 
-        private List<IInstanceSolution> CreateSolutions(List<int[]> newPermutations)
+        private List<InstanceSolution> CreateSolutions(List<int[]> newPermutations)
         {
-            var result = new List<IInstanceSolution>();
+            var result = new List<InstanceSolution>();
 
             foreach (var permutation in newPermutations)
             {

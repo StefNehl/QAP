@@ -12,7 +12,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
         instance = qAPInstance;
     }
     
-    public void ImproveSolution(IInstanceSolution instanceSolution)
+    public void ImproveSolution(InstanceSolution instanceSolution)
     {
         var permutation = instanceSolution.SolutionPermutation.ToArray();
         //Tuple (SolutionValue, startIndexForExchange)
@@ -47,13 +47,13 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
         }
     } 
     
-    public void ImproveSolutions(List<IInstanceSolution> instanceSolutions)
+    public void ImproveSolutions(List<InstanceSolution> instanceSolutions)
     {
         foreach (var solution in instanceSolutions)
             ImproveSolution(solution);
     }
 
-    public async Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct)
+    public async Task ImproveSolutionsInParallelAsync(List<InstanceSolution> instanceSolutions, CancellationToken ct)
     {
         if (instanceSolutions.Count <= 5)
         {

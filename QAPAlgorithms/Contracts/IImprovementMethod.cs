@@ -4,10 +4,10 @@ namespace QAPAlgorithms.Contracts
 {
     public interface IImprovementMethod
     {
-        void ImproveSolution(IInstanceSolution instanceSolution);
+        void ImproveSolution(InstanceSolution instanceSolution);
 
-        void ImproveSolutions(List<IInstanceSolution> instanceSolutions);
+        void ImproveSolutions(List<InstanceSolution> instanceSolutions);
 
-        Task ImproveSolutionsInParallelAsync(List<IInstanceSolution> instanceSolutions, CancellationToken ct = default);
+        Task ImproveSolutionsInParallelAsync(List<InstanceSolution> instanceSolutions, CancellationToken ct = default);
     }
 }

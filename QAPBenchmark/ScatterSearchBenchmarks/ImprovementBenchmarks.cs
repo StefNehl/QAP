@@ -34,9 +34,9 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         private IImprovementMethod improvedImprovementMethod;
         private IImprovementMethod firstImprovementMethod;
 
-        private IInstanceSolution _solution;
-        private List<IInstanceSolution> _10solutions;
-        private List<IInstanceSolution> _50solutions;
+        private InstanceSolution _solution;
+        private List<InstanceSolution> _10solutions;
+        private List<InstanceSolution> _50solutions;
 
 
         [GlobalSetup]
@@ -55,14 +55,14 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var permutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             _solution = new InstanceSolution(instance, permutation);
 
-            _10solutions = new List<IInstanceSolution>();
+            _10solutions = new List<InstanceSolution>();
             for (int i = 0; i < 10; i++)
             {
                 var qapSolution = new InstanceSolution(instance, permutation);
                 _10solutions.Add(qapSolution);
             }
 
-            _50solutions = new List<IInstanceSolution>();
+            _50solutions = new List<InstanceSolution>();
             for (int i = 0; i < 50; i++)
             {
                 var qapSolution = new InstanceSolution(instance, permutation);

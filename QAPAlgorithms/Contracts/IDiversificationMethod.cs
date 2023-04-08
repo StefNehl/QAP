@@ -10,6 +10,6 @@ namespace QAPAlgorithms.Contracts
 {
     public interface IDiversificationMethod
     {
-        void ApplyDiversificationMethod(List<IInstanceSolution> referenceSet, List<IInstanceSolution> population, ScatterSearchStart scatterSearchStart);
+        void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearchStart scatterSearchStart);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class InstanceSolution : IInstanceSolution
+    public struct InstanceSolution
     {
         public int[] SolutionPermutation { get; }
         public long SolutionValue { get; set; }

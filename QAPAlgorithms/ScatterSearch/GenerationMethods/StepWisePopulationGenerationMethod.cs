@@ -12,7 +12,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
     {
         private readonly QAPInstance qAPInstance;
         private readonly int populationSize;
-        private readonly List<IInstanceSolution> population;
+        private readonly List<InstanceSolution> population;
         private readonly int[] permutation;
 
         private int nrOfIndexesToMovePerIteration;
@@ -23,10 +23,10 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
             this.qAPInstance = qAPInstance;
 
             this.populationSize = populationSize;
-            population = new List<IInstanceSolution>(populationSize);
+            population = new List<InstanceSolution>(populationSize);
             permutation = new int[qAPInstance.N];
         }
-        public List<IInstanceSolution> GeneratePopulation()
+        public List<InstanceSolution> GeneratePopulation()
         {
 
             for (int s = 0; s < populationSize; s++)

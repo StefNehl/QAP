@@ -37,7 +37,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// </summary>
         /// <param name="solutions"></param>
         /// <returns></returns>
-        public List<int[]> CombineSolutions(List<IInstanceSolution> solutions)
+        public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
         {
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
@@ -51,7 +51,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return CombinePairs(solutionPairs, solutionLenght, solutions);
         }
 
-        public List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions)
+        public List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions)
         {
             if (stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
@@ -65,7 +65,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return CombinePairs(solutionPairs, solutionLenght, solutions);
         }
 
-        private List<int[]> GetSolutionPairs(List<IInstanceSolution> solutions)
+        private List<int[]> GetSolutionPairs(List<InstanceSolution> solutions)
         {
             var solutionPairs = new List<int[]>();
             var solutionLenght = solutions[0].SolutionPermutation.Length;
@@ -93,7 +93,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return solutionPairs;
         }
 
-        private List<int[]> CombinePairs(List<int[]> solutionPairs, int solutionLenght, List<IInstanceSolution> solutions)
+        private List<int[]> CombinePairs(List<int[]> solutionPairs, int solutionLenght, List<InstanceSolution> solutions)
         {
             var newSolutions = new List<int[]>();
 
@@ -188,7 +188,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
 
         private static bool IsSolutionInTheStartSolutionList(int[] newSolution,
-            List<IInstanceSolution> startSolutions)
+            List<InstanceSolution> startSolutions)
         {
             var newSolutionHashCode = InstanceHelpers.GenerateHashCode(newSolution);
 

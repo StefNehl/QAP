@@ -33,12 +33,12 @@ public class ImprovementBestSolutionParallelBenchmarks
 {
     private LocalSearchBestImprovement bestImprovementMethod;
     
-    private List<IInstanceSolution> _50Solutions;
-    private List<IInstanceSolution> _20Solutions;
-    private List<IInstanceSolution> _10Solutions;
-    private List<IInstanceSolution> _5Solutions;
-    private List<IInstanceSolution> _2Solutions;
-    private List<IInstanceSolution> _1Solution;
+    private List<InstanceSolution> _50Solutions;
+    private List<InstanceSolution> _20Solutions;
+    private List<InstanceSolution> _10Solutions;
+    private List<InstanceSolution> _5Solutions;
+    private List<InstanceSolution> _2Solutions;
+    private List<InstanceSolution> _1Solution;
     
     [GlobalSetup]
     public void Setup()
@@ -65,11 +65,11 @@ public class ImprovementBestSolutionParallelBenchmarks
 
     private static void PopulateSolutionList(
         int nrOfSolutions, 
-        ref List<IInstanceSolution> list,
+        ref List<InstanceSolution> list,
         QAPInstance instance, 
         int[] permutation)
     {
-        list = new List<IInstanceSolution>();
+        list = new List<InstanceSolution>();
         for (int i = 0; i < nrOfSolutions; i++)
         {
             var qapSolution = new InstanceSolution(instance, permutation);

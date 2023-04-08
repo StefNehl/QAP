@@ -21,7 +21,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<long, long>();
         }
 
-        public bool WereSolutionsAlreadyCombined(List<IInstanceSolution> solutions)
+        public bool WereSolutionsAlreadyCombined(List<InstanceSolution> solutions)
         {
             if (checkIfSolutionsWereAlreadyCombined)
             {
@@ -34,7 +34,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return false;
         }
 
-        public bool WereSolutionsAlreadyCombinedThreadSafe(List<IInstanceSolution> solutions)
+        public bool WereSolutionsAlreadyCombinedThreadSafe(List<InstanceSolution> solutions)
         {
             if (checkIfSolutionsWereAlreadyCombined)
             {
@@ -47,7 +47,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return false;
         }
 
-        private long GenerateHashCodeFromCombinedSolutions(List<IInstanceSolution> solutions)
+        private long GenerateHashCodeFromCombinedSolutions(List<InstanceSolution> solutions)
         {
             long newHashCode = 0;
             for (int i = 0; i < solutions.Count; i++)

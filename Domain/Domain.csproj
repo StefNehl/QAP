@@ -321,4 +321,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\IInstanceSolution.cs" />
+  </ItemGroup>
+
 </Project>

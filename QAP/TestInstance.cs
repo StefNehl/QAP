@@ -20,24 +20,20 @@ namespace QAP
                 testSettings.DiversificationMethod,
                 testSettings.CombinationMethod,
                 testSettings.ImprovementMethod,
+                testSettings.SubSetGenerationTypes,
+                testSettings.SubSetGenerationMethodType,
                 testSettings.PopulationSize,
                 testSettings.ReferenceSetSize);
             var result = scatterSearch.Solve(
                 testSettings.RunTimeInSeconds, 
-                testSettings.SubSetGenerationTypes,
-                testSettings.SubSetGenerationMethodType,
                 testSettings.DisplayProgressInConsole);
 
             var newTestResult = new TestResult(
-                testSettings.Instance.InstanceName, 
-                testSettings.Instance.N, 
+                testSettings,
                 result.Item1.SolutionValue, 
                 result.Item3, 
                 result.Item2,
-                result.Item1.SolutionPermutation, 
-                testSettings.CombinationMethod.GetType().Name, 
-                testSettings.GenerateInitPopulationMethod.GetType().Name, 
-                testSettings.ImprovementMethod.GetType().Name);
+                result.Item1.SolutionPermutation);
             return newTestResult;
         }
 
@@ -50,25 +46,22 @@ namespace QAP
                 testSettings.DiversificationMethod,
                 testSettings.CombinationMethod,
                 testSettings.ImprovementMethod,
+                testSettings.SubSetGenerationTypes,
+                testSettings.SubSetGenerationMethodType,
                 testSettings.PopulationSize,
                 testSettings.ReferenceSetSize);
             var result = await scatterSearch.SolveAsync(
                 testSettings.RunTimeInSeconds, 
-                testSettings.SubSetGenerationTypes,
-                testSettings.SubSetGenerationMethodType,
+
                 testSettings.DisplayProgressInConsole,
                 ct);
 
             var newTestResult = new TestResult(
-                testSettings.Instance.InstanceName, 
-                testSettings.Instance.N, 
+                testSettings,
                 result.Item1.SolutionValue, 
                 result.Item3, 
                 result.Item2,
-                result.Item1.SolutionPermutation, 
-                testSettings.CombinationMethod.GetType().Name, 
-                testSettings.GenerateInitPopulationMethod.GetType().Name, 
-                testSettings.ImprovementMethod.GetType().Name);
+                result.Item1.SolutionPermutation);
             return newTestResult;
         }
     }

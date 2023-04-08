@@ -9,7 +9,7 @@ namespace QAPAlgorithms.Contracts
 {
     public interface ICombinationMethod
     {
-        List<int[]> CombineSolutions(List<IInstanceSolution> solutions);
-        List<int[]> CombineSolutionsThreadSafe(List<IInstanceSolution> solutions);
+        List<int[]> CombineSolutions(List<InstanceSolution> solutions);
+        List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions);
     }
 }

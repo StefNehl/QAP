@@ -78,6 +78,18 @@ namespace QAPTest
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             return qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
         }
+        
+        public static async Task<QAPInstance> GetTestN4()
+        {
+            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
+            return qapReader.ReadFileAsync("Small", "TestN4.dat").Result;
+        }
+        
+        public static async Task<QAPInstance> GetTestN5()
+        {
+            var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
+            return qapReader.ReadFileAsync("Small", "TestN5.dat").Result;
+        }
 
         private static void ReduceIndexOfPermutation(int[] permutation)
         {
