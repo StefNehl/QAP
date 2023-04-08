@@ -19,7 +19,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
         {
             instance = qAPInstance;
         }
-        public void ImproveSolution(InstanceSolution instanceSolution)
+        public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
         {
             var permutation = instanceSolution.SolutionPermutation;
             var solutionValue = instanceSolution.SolutionValue;
@@ -35,12 +35,13 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 instanceSolution.SolutionValue = newSolutionValue;
             }
 
+            return instanceSolution;
         }
 
         public void ImproveSolutions(List<InstanceSolution> instanceSolutions)
         {
-            foreach (var solution in instanceSolutions)
-                ImproveSolution(solution);
+            for (int i = 0; i < instanceSolutions.Count; i++)
+                instanceSolutions[i] = ImproveSolution(instanceSolutions[i]);
         }
 
         public async Task ImproveSolutionsInParallelAsync(List<InstanceSolution> instanceSolutions, CancellationToken ct)
@@ -51,9 +52,14 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 return;
             }
 
-            var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
-            await Task.WhenAll(tasksToRun);
-
+            var taskList = new List<Task>();
+            for (int i = 0; i < instanceSolutions.Count; i++)
+            {
+                var i1 = i;
+                var newTask = Task.Factory.StartNew(() => instanceSolutions[i1] = ImproveSolution(instanceSolutions[i1]), ct);
+                taskList.Add(newTask);
+            }
+            await Task.WhenAll(taskList);
         }
     }
 }

@@ -69,7 +69,6 @@ namespace QAPAlgorithms.ScatterSearch
         /// <returns></returns>
         public Tuple<InstanceSolution, long, long> Solve(
             int runTimeInSeconds,
-
             bool displayProgressInConsole = false)
         {
             InitScatterSearch(runTimeInSeconds);

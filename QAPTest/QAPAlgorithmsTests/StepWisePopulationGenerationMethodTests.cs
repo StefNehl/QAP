@@ -34,12 +34,12 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var resultArray = new List<int[]>
             {
-                new int[] { 0, 1, 2 },
-                new int[] { 2, 0, 1 },
-                new int[] { 1, 2, 0 },
-                new int[] { 0, 1, 2 },
-                new int[] { 2, 0, 1 },
-                new int[] { 1, 2, 0 }
+                new [] { 0, 1, 2 },
+                new [] { 2, 0, 1 },
+                new [] { 1, 2, 0 },
+                new [] { 0, 1, 2 },
+                new [] { 2, 0, 1 },
+                new [] { 1, 2, 0 }
             };
 
             CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);
@@ -54,12 +54,12 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var resultArray = new List<int[]>
             {
-                new int[] { 0, 1, 2 },
-                new int[] { 1, 2, 0 },
-                new int[] { 2, 0, 1 },
-                new int[] { 0, 1, 2 },
-                new int[] { 1, 2, 0 },
-                new int[] { 2, 0, 1 }
+                new [] { 0, 1, 2 },
+                new [] { 1, 2, 0 },
+                new [] { 2, 0, 1 },
+                new [] { 0, 1, 2 },
+                new [] { 1, 2, 0 },
+                new [] { 2, 0, 1 }
             };
 
             CompareSolutionSets(p.Select(s => s.SolutionPermutation).ToList(), resultArray);

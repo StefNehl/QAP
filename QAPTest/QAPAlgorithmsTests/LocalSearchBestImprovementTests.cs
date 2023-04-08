@@ -27,7 +27,7 @@ namespace QAPTest.QAPAlgorithmsTests
             improvedImprovementMethod = new ImprovedLocalSearchBestImprovement(instance);
             
             worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            betterPermutation = new int[] { 1, 0, 2, 3, 5, 4, 6, 7, 8, 9, 10, 11 };
+            betterPermutation = new int[] { 1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11 };
         }
 
         [Test]
@@ -35,9 +35,7 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-
-            improvementMethod.ImproveSolution(qapSolution);
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var betterSolutionValue = improvementMethod.ImproveSolution(qapSolution).SolutionValue;
 
             Assert.Multiple(() =>
             {
@@ -54,9 +52,10 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution }, default);
-            var betterSolutionValue = qapSolution.SolutionValue;
-
+            var solutions = new List<InstanceSolution>() { qapSolution };
+            await improvementMethod.ImproveSolutionsInParallelAsync(solutions);
+            var betterSolutionValue = solutions[0].SolutionValue;
+            
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
@@ -70,9 +69,7 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-
-            improvedImprovementMethod.ImproveSolution(qapSolution);
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var betterSolutionValue = improvedImprovementMethod.ImproveSolution(qapSolution).SolutionValue;;
 
             Assert.Multiple(() =>
             {
@@ -89,8 +86,9 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution }, default);
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var solutions = new List<InstanceSolution>() { qapSolution };
+            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(solutions);
+            var betterSolutionValue = solutions[0].SolutionValue;
 
             Assert.Multiple(() =>
             {

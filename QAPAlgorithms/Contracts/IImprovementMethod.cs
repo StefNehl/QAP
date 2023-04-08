@@ -4,7 +4,7 @@ namespace QAPAlgorithms.Contracts
 {
     public interface IImprovementMethod
     {
-        void ImproveSolution(InstanceSolution instanceSolution);
+        InstanceSolution ImproveSolution(InstanceSolution instanceSolution);
 
         void ImproveSolutions(List<InstanceSolution> instanceSolutions);
 

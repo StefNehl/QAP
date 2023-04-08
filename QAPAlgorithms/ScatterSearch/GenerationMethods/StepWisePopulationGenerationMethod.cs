@@ -28,7 +28,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
         }
         public List<InstanceSolution> GeneratePopulation()
         {
-
+            population.Clear();
             for (int s = 0; s < populationSize; s++)
             {
                 for (int i = 0; i < permutation.Length; i++)
@@ -45,7 +45,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 
                 }
 
-                var newSolution = new InstanceSolution(qAPInstance, permutation);
+                var newSolution = new InstanceSolution(qAPInstance, permutation.ToArray());
                 population.Add(newSolution);
             }
 

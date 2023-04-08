@@ -12,7 +12,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
         instance = qAPInstance;
     }
     
-    public void ImproveSolution(InstanceSolution instanceSolution)
+    public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
     {
         var permutation = instanceSolution.SolutionPermutation.ToArray();
         //Tuple (SolutionValue, startIndexForExchange)
@@ -35,7 +35,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
             if (solutionValues[i].Item1 < minValue)
             {
                 minValue = solutionValues[i].Item1;
-                minValueIndex = i;
+                minValueIndex = solutionValues[i].Item2;
             }
         }
 
@@ -45,12 +45,14 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
                 (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
             instanceSolution.SolutionValue = minValue;
         }
+
+        return instanceSolution;
     } 
     
     public void ImproveSolutions(List<InstanceSolution> instanceSolutions)
     {
-        foreach (var solution in instanceSolutions)
-            ImproveSolution(solution);
+        for (int i = 0; i < instanceSolutions.Count; i++)
+            instanceSolutions[i] = ImproveSolution(instanceSolutions[i]);
     }
 
     public async Task ImproveSolutionsInParallelAsync(List<InstanceSolution> instanceSolutions, CancellationToken ct)
@@ -61,7 +63,13 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
             return;
         }
 
-        var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
-        await Task.WhenAll(tasksToRun);
+        var taskList = new List<Task>();
+        for (int i = 0; i < instanceSolutions.Count; i++)
+        {
+            var i1 = i;
+            var newTask = Task.Factory.StartNew(() => instanceSolutions[i1] = ImproveSolution(instanceSolutions[i1]), ct);
+            taskList.Add(newTask);
+        }
+        await Task.WhenAll(taskList);
     }
 }

@@ -35,9 +35,7 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-
-            improvementMethod.ImproveSolution(qapSolution);
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var betterSolutionValue = improvementMethod.ImproveSolution(qapSolution).SolutionValue;
 
             Assert.Multiple(() =>
             {
@@ -53,8 +51,9 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution });
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var solutions = new List<InstanceSolution>() { qapSolution };
+            await improvementMethod.ImproveSolutionsInParallelAsync(solutions);
+            var betterSolutionValue = solutions[0].SolutionValue;
 
             Assert.Multiple(() =>
             {
@@ -70,8 +69,8 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            improvedImprovementMethod.ImproveSolution(qapSolution);
-            var betterSolutionValue = qapSolution.SolutionValue;
+            
+            var betterSolutionValue = improvedImprovementMethod.ImproveSolution(qapSolution).SolutionValue;
 
             Assert.Multiple(() =>
             {
@@ -88,8 +87,9 @@ namespace QAPTest.QAPAlgorithmsTests
             var qapSolution = new InstanceSolution(instance, worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
-            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(new List<InstanceSolution>() { qapSolution });
-            var betterSolutionValue = qapSolution.SolutionValue;
+            var solutions = new List<InstanceSolution>() { qapSolution };
+            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(solutions);
+            var betterSolutionValue = solutions[0].SolutionValue;
 
             Assert.Multiple(() =>
             {

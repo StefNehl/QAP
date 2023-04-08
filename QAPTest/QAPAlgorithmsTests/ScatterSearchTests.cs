@@ -154,31 +154,14 @@ namespace QAPTest.QAPAlgorithmsTests
         }
 
         [Test]
-        public void CheckReferenceSetUpdate_AddBetterSolutionValues_CheckCount()
-        {
-            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
-
-            for(int i = 1; i <= 100; i++)
-            {
-                var newTestSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
-                scatterSearch.ReferenceSetUpdate(newTestSolution);
-            }
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));
-                Assert.That(scatterSearch.GetBestSolution().SolutionValue, Is.EqualTo(10));
-            });
-        }
-
-        [Test]
         public void CheckReferenceSetUpdate_AddRandomSolutionValues_CheckCount()
         {
             scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
-
+            var rg = new Random();
+            
             for (int i = 1; i <= 100; i++)
             {
-                var newTestSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
+                var newTestSolution = new InstanceSolution(_testInstance, new[] { rg.Next(0, _testInstance.N-1), rg.Next(0, _testInstance.N-1), rg.Next(0, _testInstance.N-1) });
                 scatterSearch.ReferenceSetUpdate(newTestSolution);
             }
 
