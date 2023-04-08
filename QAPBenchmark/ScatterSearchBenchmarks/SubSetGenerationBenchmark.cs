@@ -61,8 +61,8 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             improvementMethod = new ImprovedLocalSearchFirstImprovement(instance);
             combinationMethod = new ExhaustingPairwiseCombination();
 
-            var generationMethod = new StepWisePopulationGenerationMethod(2, instance, 10);
-            referenceList = generationMethod.GeneratePopulation();
+            var generationMethod = new StepWisePopulationGenerationMethod(2, instance);
+            referenceList = generationMethod.GeneratePopulation(10);
 
             parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod(instance, combinationMethod, improvementMethod);
             subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);

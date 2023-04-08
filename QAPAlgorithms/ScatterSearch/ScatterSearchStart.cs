@@ -15,8 +15,8 @@ namespace QAPAlgorithms.ScatterSearch
     {
         //16_Design of Heuristic Algorithms for Hard Optimization.pdf 215
         //14_Principles of Scatter Search P.3
-        private readonly int populationSize; //size of the complete population (max = 20)
-        private readonly int refrerenceSetSize; //size of the reference (elite) solutions (around 10) 
+        private int _populationSize; //size of the complete population (max = 20)
+        private int _referenceSetSize; //size of the reference (elite) solutions (around 10) 
         private QAPInstance currentInstance;
         private List<InstanceSolution> population;
         private List<InstanceSolution> referenceSet;
@@ -46,9 +46,6 @@ namespace QAPAlgorithms.ScatterSearch
             int referenceSetSize = 5)
         {
             currentInstance = instance;
-            this.populationSize = populationSize;
-            this.refrerenceSetSize = referenceSetSize;
-
             this.generateInitPopulationMethod = generateInitPopulationMethod;
             this.diversificationMethod = diversificationMethod;
             this.combinationMethod = combinationMethod;
@@ -56,19 +53,27 @@ namespace QAPAlgorithms.ScatterSearch
             this.subSetGenerationTypes = subSetGenerationTypes;
             this.subSetGenerationMethodType = subSetGenerationMethodType;
 
-            population = new List<InstanceSolution>();
-            referenceSet = new List<InstanceSolution>();
+            _populationSize = populationSize;
+            _referenceSetSize = referenceSetSize;
+            population = new List<InstanceSolution>(this._populationSize);
+            referenceSet = new List<InstanceSolution>(this._referenceSetSize);
         }
 
         public long IterationCount { get; set; }
+
 
         /// <summary>
         /// Returns the solved solution, the number of iterations and the runTime in seconds
         /// </summary>
         /// <param name="runTimeInSeconds"></param>
+        /// <param name="populationSize"></param>
+        /// <param name="referenceSetSize"></param>
+        /// <param name="displayProgressInConsole"></param>
         /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Tuple<InstanceSolution, long, long> Solve(
             int runTimeInSeconds,
+
             bool displayProgressInConsole = false)
         {
             InitScatterSearch(runTimeInSeconds);
@@ -119,7 +124,7 @@ namespace QAPAlgorithms.ScatterSearch
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
 
-                    if (referenceSet.Count > refrerenceSetSize)
+                    if (referenceSet.Count > _referenceSetSize)
                         throw new Exception("ReferenceSet Count is higher than allowed");
                 }
 
@@ -191,7 +196,7 @@ namespace QAPAlgorithms.ScatterSearch
                     if (ReferenceSetUpdate(subSet))
                         foundNewSolutions = true;
 
-                    if (referenceSet.Count > refrerenceSetSize)
+                    if (referenceSet.Count > _referenceSetSize)
                         throw new Exception("ReferenceSet Count is higher than allowed");
                 }
 
@@ -221,7 +226,7 @@ namespace QAPAlgorithms.ScatterSearch
                 return false;
 
             var worstItem = referenceSet.Last();
-            if(referenceSet.Count == refrerenceSetSize)
+            if(referenceSet.Count == _referenceSetSize)
             {
                 if (!InstanceHelpers.IsBetterSolution(worstItem.SolutionValue, newSolution.SolutionValue))
                     return false;
@@ -233,7 +238,7 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     referenceSet.Insert(i, newSolution);
 
-                    if (referenceSet.Count > refrerenceSetSize)
+                    if (referenceSet.Count > _referenceSetSize)
                         referenceSet.Remove(worstItem);
 
                     return true;
@@ -254,7 +259,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             referenceSet.Clear();
             population.Clear();
-            population.AddRange(generateInitPopulationMethod.GeneratePopulation());
+            population.AddRange(generateInitPopulationMethod.GeneratePopulation(_populationSize));
 
             EliminateIdenticalSolutionsFromSet(population);
 
@@ -272,7 +277,7 @@ namespace QAPAlgorithms.ScatterSearch
 
         private void GenerateNewPopulation()
         {
-            population = generateInitPopulationMethod.GeneratePopulation();
+            population = generateInitPopulationMethod.GeneratePopulation(_populationSize);
             diversificationMethod.ApplyDiversificationMethod(referenceSet, population, this);
         }
 
@@ -297,15 +302,21 @@ namespace QAPAlgorithms.ScatterSearch
 
         public void EliminateIdenticalSolutionsFromSet(List<InstanceSolution> solutionSet)
         {
-            for(int i = 0; i < solutionSet.Count; i++) 
+            int index = 0;
+            while (index < solutionSet.Count)
             {
-                for(int j = i+1; j < solutionSet.Count; j++) 
+                var solutionToCheck = solutionSet[index];
+                for (int i = index + 1; i < solutionSet.Count; i++)
                 {
-                    if (InstanceHelpers.IsEqual(solutionSet[i].SolutionPermutation, solutionSet[j].SolutionPermutation))
-                    {
-                        solutionSet.RemoveAt(j);
-                    }
+                    var solution = solutionSet[i];
+                    if (!solution.Equals(solutionToCheck))
+                        continue;
+
+                    solutionSet.RemoveAt(i);
+                    i--;
                 }
+
+                index++;
             }
         }
     }

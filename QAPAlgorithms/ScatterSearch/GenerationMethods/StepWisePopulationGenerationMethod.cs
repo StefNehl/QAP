@@ -10,25 +10,22 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 {
     public class StepWisePopulationGenerationMethod : IGenerateInitPopulationMethod
     {
-        private readonly QAPInstance qAPInstance;
-        private readonly int populationSize;
-        private readonly List<InstanceSolution> population;
-        private readonly int[] permutation;
+        private readonly QAPInstance _qAPInstance;
+        private List<InstanceSolution> population;
+        private int[] permutation;
 
-        private int nrOfIndexesToMovePerIteration;
+        private int _nrOfIndexesToMovePerIteration;
         public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration, 
-            QAPInstance qAPInstance, int populationSize)
+            QAPInstance qApInstance)
         {
-            this.nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
-            this.qAPInstance = qAPInstance;
-
-            this.populationSize = populationSize;
-            population = new List<InstanceSolution>(populationSize);
-            permutation = new int[qAPInstance.N];
+            _nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
+            _qAPInstance = qApInstance;
+            permutation = new int[qApInstance.N];
         }
-        public List<InstanceSolution> GeneratePopulation()
+        public List<InstanceSolution> GeneratePopulation(int populationSize)
         {
-            population.Clear();
+            population = new List<InstanceSolution>(populationSize);
+            
             for (int s = 0; s < populationSize; s++)
             {
                 for (int i = 0; i < permutation.Length; i++)
@@ -37,7 +34,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
                         permutation[i] = i;
                     else
                     {
-                        int newIndex = i - nrOfIndexesToMovePerIteration;
+                        int newIndex = i - _nrOfIndexesToMovePerIteration;
                         if (newIndex < 0)
                             newIndex = permutation.Length + newIndex;
                         permutation[i] = population[s - 1].SolutionPermutation[newIndex];
@@ -45,7 +42,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 
                 }
 
-                var newSolution = new InstanceSolution(qAPInstance, permutation.ToArray());
+                var newSolution = new InstanceSolution(_qAPInstance, permutation.ToArray());
                 population.Add(newSolution);
             }
 

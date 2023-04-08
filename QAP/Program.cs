@@ -78,7 +78,7 @@ TestResult GetInstanceWithFirstImprovement(QAPInstance instance, int referenceSe
 {
     var improvementMethod = new LocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 
     var testSettings = new TestSettings(
@@ -100,7 +100,7 @@ TestResult GetInstanceWithImprovedFirstImprovement(QAPInstance instance, int ref
 {
     var improvementMethod = new ImprovedLocalSearchFirstImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
 
     var testSettings = new TestSettings(
@@ -122,7 +122,7 @@ async Task<TestResult> GetInstanceWithBestImprovement(QAPInstance instance, int 
 {
     var improvementMethod = new LocalSearchBestImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
     
     var testSettings = new TestSettings(
@@ -144,7 +144,7 @@ async Task<TestResult> GetInstanceWithImprovedBestImprovement(QAPInstance instan
 {
     var improvementMethod = new ImprovedLocalSearchBestImprovement(instance);
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, populationSize, instance.N, 42);
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
     
     var testSettings = new TestSettings(

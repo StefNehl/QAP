@@ -40,5 +40,15 @@ namespace Domain.Models
 
             return resultString;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not InstanceSolution)
+                return false;
+            if (HashCode == ((InstanceSolution)obj).HashCode)
+                return true;
+
+            return false;
+        }
     }
 }

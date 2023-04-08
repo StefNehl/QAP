@@ -12,29 +12,24 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
     {
         private readonly QAPInstance qAPInstance;
         private readonly Random randomGenerator;
-        private readonly List<InstanceSolution> population;
+        private List<InstanceSolution> population;
         private readonly int[] permutation;
         private readonly List<int> listWithPossibilities;
-        private readonly List<int> copyofListWithPosibilities;
-        private readonly int populationSize;
 
         public RandomGeneratedPopulationMethod(QAPInstance qAPInstance,
-            int populationSize,
-            int permutationSize,
             int? seed = null)
         {
             this.qAPInstance = qAPInstance;
-            this.populationSize = populationSize;
-            this.population = new List<InstanceSolution>(populationSize);
-            this.permutation = new int[permutationSize];
-            
-            listWithPossibilities = new List<int>(permutationSize);
+            listWithPossibilities = new List<int>();
             randomGenerator = seed.HasValue ? new Random(Seed: seed.Value) : new Random();
+            permutation = new int[this.qAPInstance.N];
         }
 
-        public List<InstanceSolution> GeneratePopulation()
+        public List<InstanceSolution> GeneratePopulation(int populationSize)
         {
-            population.Clear();
+            population = new List<InstanceSolution>(populationSize);
+            listWithPossibilities.Clear();
+            
             for (int j = 0; j < populationSize; j++)
             {
                 for (int i = 0; i < permutation.Length; i++)

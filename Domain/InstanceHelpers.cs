@@ -97,7 +97,13 @@ namespace Domain
         {
             if (GenerateHashCode(permutation1) == GenerateHashCode(permutation2))
                 return true;
+            return false;
+        }
 
+        public static bool IsEqual(InstanceSolution solution1, InstanceSolution solution2)
+        {
+            if (solution1.HashCode == solution2.HashCode)
+                return true;
             return false;
         }
 

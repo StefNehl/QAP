@@ -29,7 +29,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         [Benchmark]
         public void GenerateInitialPopulation()
         {
-            generationMethod.GeneratePopulation();
+            generationMethod.GeneratePopulation(10);
         }
 
     }
