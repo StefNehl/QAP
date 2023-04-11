@@ -28,7 +28,7 @@ var filesInFolder = new List<string>()
     //tho150,
 };
 
-var runtimeInSeconds = 10;
+var runtimeInSeconds = 1;
 int refSetSize = 10;
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
 int populationSetSize = 5 * refSetSize;
@@ -63,7 +63,7 @@ for(int i = 0; i < testResults.Count; i++)
     Console.WriteLine(testResults[i].ToString());
 }
 
-await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh:mm:ss_dd.mm.yyyy"));
+await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-mm-yyyy"));
 
 
 TestResult GetInstanceWithImprovedFirstImprovement(QAPInstance instance, int referenceSetSize, int populationSize, int runTimeInSeconds)      
