@@ -3,20 +3,27 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch
 {
-    public class SubSetGenerationMethod
+    public class SubSetGenerationMethod : ISolutionGenerationMethod
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
         private readonly QAPInstance _qapInstance;
-
+        private readonly SubSetGenerationMethodType _subSetGenerationMethodType;
+        
+        private int _typeCount = 0;
 
         public SubSetGenerationMethod(QAPInstance qapInstance,
+            int typeCount,
+            SubSetGenerationMethodType subSetGenerationMethodType,
             ICombinationMethod combinationMethod,
             IImprovementMethod improvementMethod)
         {
-            this._qapInstance = qapInstance;
-            this._combinationMethod = combinationMethod;
-            this._improvementMethod = improvementMethod;
+            _qapInstance = qapInstance;
+            _combinationMethod = combinationMethod;
+            _improvementMethod = improvementMethod;
+            
+            _typeCount = typeCount;
+            _subSetGenerationMethodType = subSetGenerationMethodType;
         }
 
         /// <summary>
@@ -134,6 +141,32 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             return result;
+        }
+
+        public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+        {
+            var newSubSets = new List<InstanceSolution>();
+            switch (_typeCount)
+            {
+                case 1:
+                    newSubSets.AddRange(GenerateType1SubSet(referenceSolutions));
+                    break;
+                case 2:
+                    newSubSets.AddRange(GenerateType2SubSet(referenceSolutions));
+                    break;
+                case 3:
+                    newSubSets.AddRange(GenerateType3SubSet(referenceSolutions));
+                    break;
+                case 4:
+                    newSubSets.AddRange(GenerateType4SubSet(referenceSolutions));
+                    _typeCount = 0;
+                    break;
+            }
+
+            if (_subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
+                _typeCount++;
+            
+            return newSubSets;
         }
     }
 }

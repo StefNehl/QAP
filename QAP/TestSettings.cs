@@ -9,10 +9,9 @@ public record TestSettings(
     int PopulationSize,
     int ReferenceSetSize,
     int RunTimeInSeconds,
-    int SubSetGenerationTypes,
-    SubSetGenerationMethodType SubSetGenerationMethodType,
     ICombinationMethod CombinationMethod,
     IGenerateInitPopulationMethod GenerateInitPopulationMethod,
     IImprovementMethod ImprovementMethod,
     IDiversificationMethod DiversificationMethod,
+    ISolutionGenerationMethod SolutionGenerationMethod,
     bool DisplayProgressInConsole = false);

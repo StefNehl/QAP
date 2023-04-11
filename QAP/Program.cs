@@ -32,26 +32,20 @@ const int refSetSize = 10;
 const int populationSetSize = 5 * refSetSize;
 
 var testResults = new List<TestResult>();
-var cancellationTokenSource = new CancellationTokenSource();
 
 for(int i = 0; i < filesWithKnownOptimum.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].Item1, filesWithKnownOptimum[i].Item2);
     var testSettings = GetTestSettings(instance, refSetSize, populationSetSize);
-    Console.WriteLine("Sync");
+    
+    Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
     var testResult = TestInstance.StartTest(testSettings);
     Console.WriteLine(testResult.ToStringForConsole());
     testResults.Add(testResult);
     Console.WriteLine();
-
-    Console.WriteLine("Async");
-    testResult = await TestInstance.StartTestAsync(testSettings,
-        cancellationTokenSource.Token);
-    Console.WriteLine(testResult.ToStringForConsole());
-    testResults.Add(testResult);
-    Console.WriteLine();
-    
     Console.WriteLine($"{i + 1} of {filesWithKnownOptimum.Count} calculated");
+    Console.WriteLine();
+
 }
 
 Console.WriteLine(testResults.First().ToStringColumnNames());
@@ -66,18 +60,19 @@ TestSettings GetTestSettings(QAPInstance instance, int referenceSetSize, int pop
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
     var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
     var diversificationMethod = new HashCodeDiversificationMethod(instance);
+    var solutionGenerationMethod = new SubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle,
+        combinationMethod, improvementMethod);
     
     var testSettings = new TestSettings(
         instance, 
         populationSize, 
         referenceSetSize, 
-        runtimeInSeconds, 
-        1,
-        SubSetGenerationMethodType.Cycle, 
+        runtimeInSeconds,
         combinationMethod,
         generationInitPopMethod,
         improvementMethod,
-        diversificationMethod);
+        diversificationMethod,
+        solutionGenerationMethod);
 
     return testSettings;
 }

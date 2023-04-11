@@ -1,11 +1,19 @@
 ﻿using Domain;
 using Domain.Models;
+using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch;
 
-public class PathRelinking
+public class PathRelinking : ISolutionGenerationMethod
 {
-    public static List<InstanceSolution> GeneratePathAndGetSolutions(InstanceSolution startingSolution, InstanceSolution guidingSolution, QAPInstance instance)
+    private QAPInstance _qapInstance;
+
+    public PathRelinking(QAPInstance qapInstance)
+    {
+        _qapInstance = qapInstance;
+    }
+    
+    public List<InstanceSolution> GeneratePathAndGetSolutions(InstanceSolution startingSolution, InstanceSolution guidingSolution)
     {
         var newSolutions = new List<InstanceSolution>();
 
@@ -14,7 +22,7 @@ public class PathRelinking
         while (newHashCode != guidingSolution.HashCode)
         {
             AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingSolution.SolutionPermutation);
-            var newSolution = new InstanceSolution(instance, newPermutation.ToArray());
+            var newSolution = new InstanceSolution(_qapInstance, newPermutation.ToArray());
             newHashCode = newSolution.HashCode;
             newSolutions.Add(newSolution);
         }
@@ -48,6 +56,21 @@ public class PathRelinking
         
         (permutation[indexForSwap], permutation[indexOfCorrectValueInPermutation]) = (permutation[indexOfCorrectValueInPermutation], permutation[indexForSwap]);
     }
-    
-    
+
+
+    public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+    {
+        var newSolutions = new List<InstanceSolution>();
+        
+        for(int i = 0; i < referenceSolutions.Count; i++)
+        {
+            for (int j = i; j < referenceSolutions.Count; j++)
+            {
+                newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[i], referenceSolutions[j]));
+                newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[j], referenceSolutions[i]));
+            }
+        }
+
+        return newSolutions;
+    }
 }

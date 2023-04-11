@@ -7,11 +7,13 @@ namespace QAPTest.QAPAlgorithmsTests;
 public class GeneratePathAndGetSolutionsTests
 {
     private QAPInstance _qapInstance;
+    private PathRelinking _pathRelinking;
     
     [SetUp]
     public async Task SetUp()
     {
         _qapInstance = await QAPInstanceProvider.GetTestN3();
+        _pathRelinking = new PathRelinking(_qapInstance);
     }
 
     [Test]
@@ -23,7 +25,7 @@ public class GeneratePathAndGetSolutionsTests
         var secondPermutation = new[] { 2, 1, 0 };
         var guidingSolution = new InstanceSolution(_qapInstance, secondPermutation);
 
-        var solutions = PathRelinking.GeneratePathAndGetSolutions(startSolution, guidingSolution, _qapInstance);
+        var solutions = _pathRelinking.GeneratePathAndGetSolutions(startSolution, guidingSolution);
         
         Assert.That(solutions.Count, Is.EqualTo(1));
     }
@@ -37,7 +39,7 @@ public class GeneratePathAndGetSolutionsTests
         var secondPermutation = new[] { 2, 0, 1 };
         var guidingSolution = new InstanceSolution(_qapInstance, secondPermutation);
 
-        var solutions = PathRelinking.GeneratePathAndGetSolutions(startSolution, guidingSolution, _qapInstance);
+        var solutions = _pathRelinking.GeneratePathAndGetSolutions(startSolution, guidingSolution);
         
         Assert.That(solutions.Count, Is.EqualTo(2));
     }

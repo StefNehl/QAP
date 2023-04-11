@@ -4,20 +4,27 @@ using System.Collections.Concurrent;
 
 namespace QAPAlgorithms.ScatterSearch
 {
-    public class ParallelSubSetGenerationMethod
+    public class ParallelSubSetGenerationMethod : ISolutionGenerationMethod
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
         private readonly QAPInstance _qapInstance;
+        private readonly SubSetGenerationMethodType _subSetGenerationMethodType;
 
+        private int _typeCount;
 
         public ParallelSubSetGenerationMethod(QAPInstance qapInstance,
+            int typeCount,
+            SubSetGenerationMethodType subSetGenerationMethodType,
             ICombinationMethod combinationMethod, 
             IImprovementMethod improvementMethod)
         {
             _qapInstance = qapInstance;
             _combinationMethod = combinationMethod;
             _improvementMethod = improvementMethod;
+
+            _typeCount = typeCount;
+            _subSetGenerationMethodType = subSetGenerationMethodType;
         }
 
         /// <summary>
@@ -69,7 +76,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// </summary>
         /// <param name="referenceSolutions"></param>
         /// <returns></returns>
-        public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct)
+        public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
             var result = new List<InstanceSolution>();
             var listForSubSets = new List<InstanceSolution>();
@@ -142,6 +149,37 @@ namespace QAPAlgorithms.ScatterSearch
             }
 
             return result;
+        }
+
+        public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+        {
+            return GetSolutionsAsync(referenceSolutions).Result;
+        }
+
+        private async Task<List<InstanceSolution>> GetSolutionsAsync(List<InstanceSolution> referenceSolutions)
+        {
+            var newSubSets = new List<InstanceSolution>();
+            switch (_typeCount)
+            {
+                case 1:
+                    newSubSets.AddRange(await GenerateType1SubSetAsync(referenceSolutions));
+                    break;
+                case 2:
+                    newSubSets.AddRange(await GenerateType2SubSetAsync(referenceSolutions));
+                    break;
+                case 3:
+                    newSubSets.AddRange(await GenerateType3SubSetAsync(referenceSolutions));
+                    break;
+                case 4:
+                    newSubSets.AddRange(await GenerateType4SubSetAsync(referenceSolutions));
+                    _typeCount = 0;
+                    break;
+            }
+            
+            if (_subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
+                _typeCount++;
+            
+            return newSubSets;
         }
     }
 }

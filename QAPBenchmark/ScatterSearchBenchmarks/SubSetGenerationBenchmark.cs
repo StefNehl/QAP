@@ -64,8 +64,8 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var generationMethod = new StepWisePopulationGenerationMethod(2, instance);
             referenceList = generationMethod.GeneratePopulation(10);
 
-            parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod(instance, combinationMethod, improvementMethod);
-            subSetGenerationMethod = new SubSetGenerationMethod(instance, combinationMethod, improvementMethod);
+            parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            subSetGenerationMethod = new SubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
         }
 
         [Benchmark]
