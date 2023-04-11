@@ -6,10 +6,10 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
 public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
 {
-    private readonly QAPInstance instance;
+    private readonly QAPInstance _instance;
     public ImprovedLocalSearchBestImprovement(QAPInstance qAPInstance)
     {
-        instance = qAPInstance;
+        _instance = qAPInstance;
     }
     
     public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
@@ -21,7 +21,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
 
         for (int i = 0; i < permutation.Length - 1; i++)
         {
-            var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(instance, permutation, i, i + 1);
+            var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(_instance, permutation, i, i + 1);
             var newSolutionValue = oldSolutionValue + solutionDifference;
             
             if (InstanceHelpers.IsBetterSolution(oldSolutionValue, newSolutionValue))

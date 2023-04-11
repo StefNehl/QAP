@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace QAP
 {
     public class CSVExport
     {
-        public static async Task ExportToCSV(IList<TestResult> results, string filePath)
+        public static async Task ExportToCSV(IList<TestResult> results, string filePath, string fileName)
         {
             var stringBuilder = new StringBuilder();    
 

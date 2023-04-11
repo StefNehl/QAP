@@ -1,12 +1,4 @@
-﻿using Domain.Models;
-using QAPAlgorithms.Contracts;
-using QAPAlgorithms.ScatterSearch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
+﻿using QAPAlgorithms.ScatterSearch;
 
 namespace QAP
 {
@@ -15,7 +7,6 @@ namespace QAP
         public static TestResult StartTest(TestSettings testSettings)
         {
             var scatterSearch = new ScatterSearchStart(
-                testSettings.Instance, 
                 testSettings.GenerateInitPopulationMethod, 
                 testSettings.DiversificationMethod,
                 testSettings.CombinationMethod,
@@ -25,6 +16,7 @@ namespace QAP
                 testSettings.PopulationSize,
                 testSettings.ReferenceSetSize);
             var result = scatterSearch.Solve(
+                testSettings.Instance,
                 testSettings.RunTimeInSeconds, 
                 testSettings.DisplayProgressInConsole);
 
@@ -41,7 +33,6 @@ namespace QAP
             CancellationToken ct)
         {
             var scatterSearch = new ScatterSearchStart(
-                testSettings.Instance, 
                 testSettings.GenerateInitPopulationMethod, 
                 testSettings.DiversificationMethod,
                 testSettings.CombinationMethod,
@@ -51,8 +42,8 @@ namespace QAP
                 testSettings.PopulationSize,
                 testSettings.ReferenceSetSize);
             var result = await scatterSearch.SolveAsync(
+                testSettings.Instance,
                 testSettings.RunTimeInSeconds, 
-
                 testSettings.DisplayProgressInConsole,
                 ct);
 

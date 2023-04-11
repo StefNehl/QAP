@@ -1,25 +1,15 @@
 ﻿using Domain;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 {
     public class HashCodeDiversificationMethod : IDiversificationMethod
     {
-        private readonly QAPInstance qAPInstance;
-        private readonly long minHashCode;
-        private readonly long maxHashCode;
-        private readonly long averageHashCode;
+        private readonly long _averageHashCode;
 
         public HashCodeDiversificationMethod(QAPInstance qAPInstance)
         {
-            this.qAPInstance = qAPInstance;
-
             var n = qAPInstance.N;
             var permutationWithMaxHashCode = new int[n];
             var permutationWithMinHashCode = new int[n];
@@ -29,9 +19,9 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
                 permutationWithMaxHashCode[i] = i;
                 permutationWithMinHashCode[i] = n - i;
             }
-            minHashCode = InstanceHelpers.GenerateHashCode(permutationWithMinHashCode);
-            maxHashCode = InstanceHelpers.GenerateHashCode(permutationWithMaxHashCode);
-            averageHashCode = (minHashCode + maxHashCode) / 2;
+            var minHashCode = InstanceHelpers.GenerateHashCode(permutationWithMinHashCode);
+            var maxHashCode = InstanceHelpers.GenerateHashCode(permutationWithMaxHashCode);
+            _averageHashCode = (minHashCode + maxHashCode) / 2;
 
         }
         public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearchStart scatterSearchStart)
@@ -57,7 +47,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 
             var orderdPopulationAfterHashCode = new List<InstanceSolution>();
 
-            if (averageRefSetHashCode > averageHashCode)
+            if (averageRefSetHashCode > _averageHashCode)
                 orderdPopulationAfterHashCode = population.OrderBy(s => s.HashCode).ToList();
             else
                 orderdPopulationAfterHashCode = population.OrderByDescending(s => s.HashCode).ToList();

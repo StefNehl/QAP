@@ -89,17 +89,17 @@ public class ImprovementBestSolutionParallelBenchmarks
         await bestImprovementMethod.ImproveSolutionsInParallelAsync(_50Solutions, default);
     }
     
-    [Benchmark]
-    public async Task ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions_Parallel_WaitAll()
-    {
-        await bestImprovementMethod.ImproveSolutionsInParallelAsync_WaitAll(_50Solutions, default);
-    }
-    
-    [Benchmark]
-    public async Task ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions_Parallel_ParallelForEach()
-    {
-        await bestImprovementMethod.ImproveSolutionsInParallelAsync_Parallel(_50Solutions, default);
-    }
+    // [Benchmark]
+    // public async Task ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions_Parallel_WaitAll()
+    // {
+    //     await bestImprovementMethod.ImproveSolutionsInParallelAsync_WaitAll(_50Solutions, default);
+    // }
+    //
+    // [Benchmark]
+    // public async Task ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions_Parallel_ParallelForEach()
+    // {
+    //     await bestImprovementMethod.ImproveSolutionsInParallelAsync_Parallel(_50Solutions, default);
+    // }
     
     [Benchmark]
     public void ImprovedLocalSearchBestImprovement_ImproveSolutions_With20Solutions()

@@ -1,34 +1,29 @@
 ﻿using Domain.Models;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 {
     public class CombinationBase
     {
-        private readonly HashSet<long> alreadyCombinedSolutions;
-        private readonly ConcurrentDictionary<long, long> alreadyCombinedSolutionsForAsync;
-        private readonly bool checkIfSolutionsWereAlreadyCombined;
+        private readonly HashSet<long> _alreadyCombinedSolutions;
+        private readonly ConcurrentDictionary<long, long> _alreadyCombinedSolutionsForAsync;
+        private readonly bool _checkIfSolutionsWereAlreadyCombined;
 
         public CombinationBase(bool checkIfSolutionsWereAlreadyCombined)
         {
-            this.checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined; 
-            alreadyCombinedSolutions= new HashSet<long>();
-            alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<long, long>();
+            _checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined; 
+            _alreadyCombinedSolutions= new HashSet<long>();
+            _alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<long, long>();
         }
 
         public bool WereSolutionsAlreadyCombined(List<InstanceSolution> solutions)
         {
-            if (checkIfSolutionsWereAlreadyCombined)
+            if (_checkIfSolutionsWereAlreadyCombined)
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-                if (alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
+                if (_alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
                     return true;
-                alreadyCombinedSolutions.Add(hashCodeOfSolutions);
+                _alreadyCombinedSolutions.Add(hashCodeOfSolutions);
             }
 
             return false;
@@ -36,12 +31,12 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public bool WereSolutionsAlreadyCombinedThreadSafe(List<InstanceSolution> solutions)
         {
-            if (checkIfSolutionsWereAlreadyCombined)
+            if (_checkIfSolutionsWereAlreadyCombined)
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
-                if (alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
+                if (_alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
                     return true;
-                alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
+                _alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
             }
 
             return false;

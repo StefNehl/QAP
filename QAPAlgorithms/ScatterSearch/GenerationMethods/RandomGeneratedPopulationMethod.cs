@@ -1,48 +1,42 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.GenerationMethods
 {
     public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
     {
-        private readonly QAPInstance qAPInstance;
-        private readonly Random randomGenerator;
-        private List<InstanceSolution> population;
-        private readonly int[] permutation;
-        private readonly List<int> listWithPossibilities;
+        private readonly QAPInstance _qAPInstance;
+        private readonly Random _randomGenerator;
+        private readonly int[] _permutation;
+        private readonly List<int> _listWithPossibilities;
 
         public RandomGeneratedPopulationMethod(QAPInstance qAPInstance,
             int? seed = null)
         {
-            this.qAPInstance = qAPInstance;
-            listWithPossibilities = new List<int>();
-            randomGenerator = seed.HasValue ? new Random(Seed: seed.Value) : new Random();
-            permutation = new int[this.qAPInstance.N];
+            _qAPInstance = qAPInstance;
+            _listWithPossibilities = new List<int>();
+            _randomGenerator = seed.HasValue ? new Random(Seed: seed.Value) : new Random();
+            _permutation = new int[_qAPInstance.N];
         }
 
         public List<InstanceSolution> GeneratePopulation(int populationSize)
         {
-            population = new List<InstanceSolution>(populationSize);
-            listWithPossibilities.Clear();
+            var population = new List<InstanceSolution>(populationSize);
+            _listWithPossibilities.Clear();
             
             for (int j = 0; j < populationSize; j++)
             {
-                for (int i = 0; i < permutation.Length; i++)
-                    listWithPossibilities.Add(i);
+                for (int i = 0; i < _permutation.Length; i++)
+                    _listWithPossibilities.Add(i);
                 
-                for (int i = 0; i < permutation.Length; i++)
+                for (int i = 0; i < _permutation.Length; i++)
                 {
-                    var newRandomIndex = randomGenerator.Next(listWithPossibilities.Count - 1);
-                    permutation[i] = listWithPossibilities[newRandomIndex];
-                    listWithPossibilities.RemoveAt(newRandomIndex);
+                    var newRandomIndex = _randomGenerator.Next(_listWithPossibilities.Count - 1);
+                    _permutation[i] = _listWithPossibilities[newRandomIndex];
+                    _listWithPossibilities.RemoveAt(newRandomIndex);
                 }
 
-                var newSolution = new InstanceSolution(qAPInstance, permutation);
+                var newSolution = new InstanceSolution(_qAPInstance, _permutation);
                 population.Add(newSolution);
             }
 

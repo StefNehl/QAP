@@ -25,7 +25,7 @@ namespace QAPTest.QAPAlgorithmsTests
             improvementMethod = new LocalSearchFirstImprovement(_testInstance);
             combinationMethod = new ExhaustingPairwiseCombination();
             generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, _testInstance);
-            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
+            scatterSearch = new ScatterSearchStart(generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
         }
 
 
@@ -84,7 +84,7 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             _testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, referenceSetSize:1);
+            scatterSearch = new ScatterSearchStart(generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, referenceSetSize:1);
             
             var newSolution = new InstanceSolution(_testInstance, new [] { 1, 0, 2 });
             scatterSearch.ReferenceSetUpdate(newSolution);
@@ -137,7 +137,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList_ReferenceSetFull()
         {
-            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, referenceSetSize:1);
+            scatterSearch = new ScatterSearchStart(generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod, referenceSetSize:1);
 
             var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
             scatterSearch.ReferenceSetUpdate(newSolution);
@@ -156,7 +156,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddRandomSolutionValues_CheckCount()
         {
-            scatterSearch = new ScatterSearchStart(_testInstance, generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
+            scatterSearch = new ScatterSearchStart(generateInitPopulationMethod, diversificationMethod, combinationMethod, improvementMethod);
             var rg = new Random();
             
             for (int i = 1; i <= 100; i++)

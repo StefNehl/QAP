@@ -1,12 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 {
@@ -15,10 +9,10 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
     /// </summary>
     public class LocalSearchBestImprovement : IImprovementMethod
     {
-        private readonly QAPInstance instance;
+        private readonly QAPInstance _instance;
         public LocalSearchBestImprovement(QAPInstance qAPInstance)
         {
-            instance = qAPInstance;
+            _instance = qAPInstance;
         }
 
         public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
@@ -34,7 +28,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 instanceSolution.SolutionPermutation[i] = backUpSecondItem;
                 instanceSolution.SolutionPermutation[i + 1] = backUpFirstItem;
 
-                var newSolutionValue = InstanceHelpers.GetSolutionValue(instance, instanceSolution.SolutionPermutation);
+                var newSolutionValue = InstanceHelpers.GetSolutionValue(_instance, instanceSolution.SolutionPermutation);
                 if (InstanceHelpers.IsBetterSolution(oldSolutionValue, newSolutionValue))
                     solutionValues.Add(new Tuple<long, int>(newSolutionValue, i));
 
@@ -57,7 +51,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
             {
                 (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) =
                     (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
-                instanceSolution.RefreshSolutionValue(instance);
+                instanceSolution.RefreshSolutionValue(_instance);
             }
 
             return instanceSolution;
@@ -85,31 +79,6 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 taskList.Add(newTask);
             }
             await Task.WhenAll(taskList);
-        }
-        
-        public async Task ImproveSolutionsInParallelAsync_WaitAll(List<InstanceSolution> instanceSolutions, CancellationToken ct)
-        {
-            throw new Exception("Don't use this Method. Slower than parallel method");
-            // if (instanceSolutions.Count <= 10)
-            // {
-            //     ImproveSolutions(instanceSolutions);
-            //     return;
-            // }
-            //
-            // var tasksToRun = instanceSolutions.Select(s => Task.Factory.StartNew(() => ImproveSolution(s), ct));
-            // await Task.Run(() => Task.WaitAll(tasksToRun.ToArray()), ct);
-        }
-        
-        public async Task ImproveSolutionsInParallelAsync_Parallel(List<InstanceSolution> instanceSolutions, CancellationToken ct)
-        {
-            throw new Exception("Don't use this Method. Slower than parallel method");
-            // if (instanceSolutions.Count <= 10)
-            // {
-            //     ImproveSolutions(instanceSolutions);
-            //     return;
-            // }
-            //
-            // await Task.Run(() => Parallel.ForEach(instanceSolutions, ImproveSolution), ct);
         }
     }
 }

@@ -1,12 +1,6 @@
 ﻿using Domain.Models;
 using Domain;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
 
 namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 {
@@ -15,8 +9,8 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
     /// </summary>
     public class ExhaustingPairwiseCombination : CombinationBase, ICombinationMethod
     {
-        private readonly int stepSizeForPairs;
-        private readonly int maxNumbersOfPairs;
+        private readonly int _stepSizeForPairs;
+        private readonly int _maxNumbersOfPairs;
 
         /// <summary>
         /// Gets every possible pairs of the given solutions and tries to combine those pairs in every possible way.
@@ -25,10 +19,11 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// Step size 1 will take every pair => [0, 1, 2, 3] = (0,1)(1,2)(2,3)(3,0)
         /// Step size 2 => [0,1,2,3] = (0,1)(2,3)</param>
         /// <param name="maxNumbersOfPairs">Limites the nr of pairs. If 0 no limit is present</param>
+        /// <param name="checkIfSolutionsWereAlreadyCombined"></param>
         public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, int maxNumbersOfPairs = 0, bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined)
         {
-            this.stepSizeForPairs = stepSizeForPairs;
-            this.maxNumbersOfPairs = maxNumbersOfPairs;
+            this._stepSizeForPairs = stepSizeForPairs;
+            this._maxNumbersOfPairs = maxNumbersOfPairs;
         }
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
@@ -39,10 +34,10 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// <returns></returns>
         public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
         {
-            if (stepSizeForPairs > 2)
+            if (_stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (base.WereSolutionsAlreadyCombined(solutions))
+            if (WereSolutionsAlreadyCombined(solutions))
                 return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
@@ -53,10 +48,10 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions)
         {
-            if (stepSizeForPairs > 2)
+            if (_stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (base.WereSolutionsAlreadyCombinedThreadSafe(solutions))
+            if (WereSolutionsAlreadyCombinedThreadSafe(solutions))
                 return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
@@ -73,7 +68,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             foreach (var instanceSolution in solutions)
             {
                 var solution = instanceSolution.SolutionPermutation;
-                for (int i = 0; i < solutionLenght; i += stepSizeForPairs)
+                for (int i = 0; i < solutionLenght; i += _stepSizeForPairs)
                 {
                     var newSolutionPair = new int[2];
                     newSolutionPair[0] = solution[i];
@@ -120,7 +115,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                             if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
                                 newSolutions.Add(newSolution);
 
-                            if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
+                            if (_maxNumbersOfPairs != 0 && _maxNumbersOfPairs == newSolutions.Count)
                                 return newSolutions;
                             break;
                         }
@@ -143,7 +138,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                         if (!IsSolutionInTheStartSolutionList(newSolution, solutions))
                             newSolutions.Add(newSolution);
 
-                        if (maxNumbersOfPairs != 0 && maxNumbersOfPairs == newSolutions.Count)
+                        if (_maxNumbersOfPairs != 0 && _maxNumbersOfPairs == newSolutions.Count)
                             return newSolutions;
                         break;
                     }

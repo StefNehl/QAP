@@ -1,11 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
 {
@@ -14,10 +9,10 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
     /// </summary>
     public class ImprovedLocalSearchFirstImprovement : IImprovementMethod
     {
-        private readonly QAPInstance instance;
+        private readonly QAPInstance _instance;
         public ImprovedLocalSearchFirstImprovement(QAPInstance qAPInstance)
         {
-            instance = qAPInstance;
+            _instance = qAPInstance;
         }
         public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
         {
@@ -25,7 +20,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
             var solutionValue = instanceSolution.SolutionValue;
             for (int i = 0; i < permutation.Length - 1; i++)
             {
-                var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(instance, permutation, i, i + 1);
+                var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(_instance, permutation, i, i + 1);
                 var newSolutionValue = solutionValue + solutionDifference;
                 if (!InstanceHelpers.IsBetterSolution(solutionValue, newSolutionValue))
                     break;

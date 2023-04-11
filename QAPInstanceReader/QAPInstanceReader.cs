@@ -1,13 +1,11 @@
 ﻿using Domain.Models;
-using System.Configuration;
-using System.Numerics;
 
 namespace QAPInstanceReader
 {
     public class QAPInstanceReader
     {
-        private static QAPInstanceReader fileReader;
-        private const string path = "TestInstances";
+        private static QAPInstanceReader _fileReader;
+        private const string _path = "TestInstances";
 
         private QAPInstanceReader()
         {
@@ -19,10 +17,10 @@ namespace QAPInstanceReader
 
     public static QAPInstanceReader GetInstance()
         {
-            if(fileReader== null)
-                fileReader = new QAPInstanceReader();
+            if(_fileReader== null)
+                _fileReader = new QAPInstanceReader();
 
-            return fileReader;
+            return _fileReader;
         }
 
         public List<string> Folders 
@@ -45,7 +43,7 @@ namespace QAPInstanceReader
 
         private string GetFolderPath(string folder)
         {
-            string folderPath = path + "\\" + folder;
+            string folderPath = _path + "\\" + folder;
             string fullFolderPath = AppDomain.CurrentDomain.BaseDirectory + folderPath + "\\";
             return fullFolderPath;
         }

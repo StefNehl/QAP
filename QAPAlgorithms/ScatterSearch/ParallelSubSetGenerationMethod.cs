@@ -1,30 +1,23 @@
-﻿using Domain;
-using Domain.Models;
+﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch
 {
     public class ParallelSubSetGenerationMethod
     {
-        private readonly ICombinationMethod combinationMethod;
-        private readonly IImprovementMethod improvementMethod;
-        private readonly QAPInstance qapInstance;
+        private readonly ICombinationMethod _combinationMethod;
+        private readonly IImprovementMethod _improvementMethod;
+        private readonly QAPInstance _qapInstance;
 
 
         public ParallelSubSetGenerationMethod(QAPInstance qapInstance,
             ICombinationMethod combinationMethod, 
             IImprovementMethod improvementMethod)
         {
-            this.qapInstance = qapInstance;
-            this.combinationMethod = combinationMethod;
-            this.improvementMethod = improvementMethod;
+            _qapInstance = qapInstance;
+            _combinationMethod = combinationMethod;
+            _improvementMethod = improvementMethod;
         }
 
         /// <summary>
@@ -32,9 +25,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// Hot Path https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#prefer-asyncawait-over-directly-returning-task
         /// Directly return the task for performance
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public Task<List<InstanceSolution>> GenerateType1SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -45,9 +36,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.27
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public  Task<List<InstanceSolution>> GenerateType2SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -62,9 +51,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.28
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public Task<List<InstanceSolution>> GenerateType3SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -80,9 +67,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.28
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct)
         {
@@ -94,9 +79,9 @@ namespace QAPAlgorithms.ScatterSearch
                 listForSubSets.Add(referenceSolutions.ElementAt(i));
                 if(i >= 4)
                 {
-                    var newTrialPermutations = combinationMethod.CombineSolutions(listForSubSets);
+                    var newTrialPermutations = _combinationMethod.CombineSolutions(listForSubSets);
                     var newTrialSolutions = CreateSolutions(newTrialPermutations);
-                    await improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
+                    await _improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
                     result.AddRange(newTrialSolutions);
                 }
             }
@@ -121,16 +106,13 @@ namespace QAPAlgorithms.ScatterSearch
                     listForSubSets.Add(referenceSolutions.ElementAt(j));
 
                     var copyOfList = listForSubSets.ToList();
-                    var newTask = new Task(async () =>
+                    var newTask = Task.Factory.StartNew(async () =>
                     {
                         var newTrialSolutions = await CreateNewSolutionsFromSolutionsAsync(copyOfList, ct);
-                        foreach(var solution in newTrialSolutions)
-                        {
+                        foreach (var solution in newTrialSolutions)
                             result.Add(solution);
-                        }
-                    });
+                    }, ct);
                     tasksToFinish.Add(newTask);
-                    newTask.Start();
 
                     listForSubSets.Remove(referenceSolutions.ElementAt(j));
                 }
@@ -143,9 +125,9 @@ namespace QAPAlgorithms.ScatterSearch
 
         private async Task<List<InstanceSolution>> CreateNewSolutionsFromSolutionsAsync(List<InstanceSolution> solutions, CancellationToken ct)
         {
-            var newTrialPermutations = combinationMethod.CombineSolutionsThreadSafe(solutions);
+            var newTrialPermutations = _combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
-            await improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
+            await _improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
             return newTrialSolutions;
         }
 
@@ -155,7 +137,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             foreach (var permutation in newPermutations)
             {
-                var newSolution = new InstanceSolution(qapInstance, permutation);
+                var newSolution = new InstanceSolution(_qapInstance, permutation);
                 result.Add(newSolution);
             }
 

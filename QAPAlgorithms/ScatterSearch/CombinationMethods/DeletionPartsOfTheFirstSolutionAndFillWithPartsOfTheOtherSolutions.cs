@@ -1,28 +1,24 @@
 ﻿using Domain;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 {
     public class DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions : CombinationBase, ICombinationMethod
     {
-        private readonly Random randomGenerator;
-        private readonly double percentageOfSolutionToDelete;
-        private readonly bool deleteWorstPart;
-        private readonly int? maxNrOfSolutions;
-        private readonly QAPInstance qAPInstance;
+        private readonly Random _randomGenerator;
+        private readonly double _percentageOfSolutionToDelete;
+        private readonly bool _deleteWorstPart;
+        private readonly int? _maxNrOfSolutions;
+        private readonly QAPInstance _qAPInstance;
 
         /// <summary>
         /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and filles the deleted with parts of the other solutions
         /// </summary>
         /// <param name="deleteWorstPart">True to delete the worst part of the solution. If false the method deletes the parts random</param>
         /// <param name="percentageOfSolutionToDelete">percentage of the solution to delete</param>
+        /// <param name="qAPInstance">QAP Instance</param>
+        /// <param name="maxNrOfSolutions">Maximum number of solutions</param>
         /// <param name="seed">seed for the random generator</param>
         /// <param name="checkIfSolutionsWereAlreadyCombined"></param>
         public DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(
@@ -34,19 +30,19 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined) 
         {
             if(seed.HasValue)
-                this.randomGenerator= new Random(seed.Value);
+                _randomGenerator= new Random(seed.Value);
             else
-                this.randomGenerator= new Random();
+                this._randomGenerator= new Random();
 
-            this.deleteWorstPart = deleteWorstPart;
-            this.percentageOfSolutionToDelete = percentageOfSolutionToDelete;
-            this.maxNrOfSolutions = maxNrOfSolutions;
-            this.qAPInstance = qAPInstance;
+            this._deleteWorstPart = deleteWorstPart;
+            this._percentageOfSolutionToDelete = percentageOfSolutionToDelete;
+            this._maxNrOfSolutions = maxNrOfSolutions;
+            this._qAPInstance = qAPInstance;
         }
 
         public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
         {
-            if (base.WereSolutionsAlreadyCombined(solutions))
+            if (WereSolutionsAlreadyCombined(solutions))
                 return new List<int[]>();
 
             return Combine(solutions);
@@ -54,7 +50,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions)
         {
-            if (base.WereSolutionsAlreadyCombinedThreadSafe(solutions))
+            if (WereSolutionsAlreadyCombinedThreadSafe(solutions))
                 return new List<int[]>();
 
             return Combine(solutions);
@@ -67,12 +63,12 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             int startIndexToDelete;
             var bestSolution = solutions[0];
 
-            var nrOfIndizesToDelete = (int)(qAPInstance.N * (percentageOfSolutionToDelete / 100));
+            var nrOfIndizesToDelete = (int)(_qAPInstance.N * (_percentageOfSolutionToDelete / 100));
 
-            if (deleteWorstPart)
-                startIndexToDelete = InstanceHelpers.GetIndexOfWorstPart(bestSolution.SolutionPermutation, nrOfIndizesToDelete, qAPInstance);
+            if (_deleteWorstPart)
+                startIndexToDelete = InstanceHelpers.GetIndexOfWorstPart(bestSolution.SolutionPermutation, nrOfIndizesToDelete, _qAPInstance);
             else
-                startIndexToDelete = randomGenerator.Next(0, qAPInstance.N - 1);
+                startIndexToDelete = _randomGenerator.Next(0, _qAPInstance.N - 1);
 
             var lastIndexToDelete = startIndexToDelete + nrOfIndizesToDelete - 1;
 
@@ -122,8 +118,8 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
                 newSolutions.Add(newPermutation);
 
-                if (maxNrOfSolutions.HasValue &&
-                    newSolutions.Count == maxNrOfSolutions.Value)
+                if (_maxNrOfSolutions.HasValue &&
+                    newSolutions.Count == _maxNrOfSolutions.Value)
                     return newSolutions;
             }
 

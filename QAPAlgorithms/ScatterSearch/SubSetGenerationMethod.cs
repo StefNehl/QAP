@@ -5,18 +5,18 @@ namespace QAPAlgorithms.ScatterSearch
 {
     public class SubSetGenerationMethod
     {
-        private readonly ICombinationMethod combinationMethod;
-        private readonly IImprovementMethod improvementMethod;
-        private readonly QAPInstance qapInstance;
+        private readonly ICombinationMethod _combinationMethod;
+        private readonly IImprovementMethod _improvementMethod;
+        private readonly QAPInstance _qapInstance;
 
 
         public SubSetGenerationMethod(QAPInstance qapInstance,
             ICombinationMethod combinationMethod,
             IImprovementMethod improvementMethod)
         {
-            this.qapInstance = qapInstance;
-            this.combinationMethod = combinationMethod;
-            this.improvementMethod = improvementMethod;
+            this._qapInstance = qapInstance;
+            this._combinationMethod = combinationMethod;
+            this._improvementMethod = improvementMethod;
         }
 
         /// <summary>
@@ -24,9 +24,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// Hot Path https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#prefer-asyncawait-over-directly-returning-task
         /// Directly return the task for performance
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public List<InstanceSolution> GenerateType1SubSet(List<InstanceSolution> referenceSolutions)
         {
@@ -37,9 +35,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.27
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public List<InstanceSolution> GenerateType2SubSet(List<InstanceSolution> referenceSolutions)
         {
@@ -54,9 +50,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.28
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public List<InstanceSolution> GenerateType3SubSet(List<InstanceSolution> referenceSolutions)
         {
@@ -72,9 +66,7 @@ namespace QAPAlgorithms.ScatterSearch
         /// <summary>
         /// 18_P.28
         /// </summary>
-        /// <param name="instanceSolution"></param>
-        /// <param name="sizeOfSubSet">size of the array</param>
-        /// <param name="storedCombinations"></param>
+        /// <param name="referenceSolutions"></param>
         /// <returns></returns>
         public List<InstanceSolution> GenerateType4SubSet(List<InstanceSolution> referenceSolutions)
         {
@@ -86,9 +78,9 @@ namespace QAPAlgorithms.ScatterSearch
                 listForSubSets.Add(referenceSolutions.ElementAt(i));
                 if (i >= 4)
                 {
-                    var newTrialPermutations = combinationMethod.CombineSolutions(listForSubSets);
+                    var newTrialPermutations = _combinationMethod.CombineSolutions(listForSubSets);
                     var newTrialSolutions = CreateSolutions(newTrialPermutations);
-                    improvementMethod.ImproveSolutions(newTrialSolutions);
+                    _improvementMethod.ImproveSolutions(newTrialSolutions);
                     result.AddRange(newTrialSolutions);
                 }
             }
@@ -115,10 +107,6 @@ namespace QAPAlgorithms.ScatterSearch
                     var newTrialSolutions = CreateNewSolutionsFromSolutions(copyOfList);
                     result.AddRange(newTrialSolutions);
 
-                    foreach (var solution in newTrialSolutions)
-                    {
-                    }
-
                     listForSubSets.Remove(referenceSolutions.ElementAt(j));
                 }
                 listForSubSets.Remove(referenceSolutions.ElementAt(i));
@@ -129,9 +117,9 @@ namespace QAPAlgorithms.ScatterSearch
 
         private List<InstanceSolution> CreateNewSolutionsFromSolutions(List<InstanceSolution> solutions)
         {
-            var newTrialPermutations = combinationMethod.CombineSolutionsThreadSafe(solutions);
+            var newTrialPermutations = _combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
-            improvementMethod.ImproveSolutions(newTrialSolutions);
+            _improvementMethod.ImproveSolutions(newTrialSolutions);
             return newTrialSolutions;
         }
 
@@ -141,7 +129,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             foreach (var permutation in newPermutations)
             {
-                var newSolution = new InstanceSolution(qapInstance, permutation);
+                var newSolution = new InstanceSolution(_qapInstance, permutation);
                 result.Add(newSolution);
             }
 
