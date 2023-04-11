@@ -1,8 +1,8 @@
-﻿using Domain.Models;
+﻿using System.Collections.Concurrent;
+using Domain.Models;
 using QAPAlgorithms.Contracts;
-using System.Collections.Concurrent;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 {
     public class ParallelSubSetGenerationMethod : ISolutionGenerationMethod
     {

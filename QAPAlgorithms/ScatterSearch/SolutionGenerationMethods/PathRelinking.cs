@@ -1,8 +1,7 @@
-﻿using Domain;
-using Domain.Models;
+﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
 
-namespace QAPAlgorithms.ScatterSearch;
+namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 public class PathRelinking : ISolutionGenerationMethod
 {

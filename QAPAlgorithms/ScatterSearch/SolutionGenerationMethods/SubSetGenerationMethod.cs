@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
 
-namespace QAPAlgorithms.ScatterSearch
+namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 {
     public class SubSetGenerationMethod : ISolutionGenerationMethod
     {

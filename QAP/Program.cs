@@ -5,6 +5,7 @@ using QAPAlgorithms.ScatterSearch.CombinationMethods;
 using QAPAlgorithms.ScatterSearch.DiversificationMethods;
 using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
+using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 

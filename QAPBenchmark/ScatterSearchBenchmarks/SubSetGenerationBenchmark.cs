@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 /*
 |                   Method | NrOfCalls |       Mean |    Error |   StdDev |    Gen0 |    Gen1 |  Allocated |

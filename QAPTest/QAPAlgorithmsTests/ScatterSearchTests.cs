@@ -5,6 +5,7 @@ using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
 using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
+using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 namespace QAPTest.QAPAlgorithmsTests
 {
