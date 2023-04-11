@@ -7,7 +7,9 @@ using QAPBenchmark.ScatterSearchBenchmarks;
 // BenchmarkRunner.Run<InstanceHelpersBenchmarks>();
 
 //BenchmarkRunner.Run<ImprovementFirstImprovementParallelBenchmarks>();
-BenchmarkRunner.Run<SubSetGenerationBenchmark>();
+// BenchmarkRunner.Run<SubSetGenerationBenchmark>();
+
+BenchmarkRunner.Run<PathRelinkingBenchmarks>();
 
 // var test = new SubSetGenerationBenchmark();
 // test.Setup();
