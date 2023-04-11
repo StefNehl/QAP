@@ -40,19 +40,18 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             }
 
             var averageRefSetHashCode = hashCodeOfReferenceSet / countForAverage;
-            //Console.WriteLine(averageRefSetHashCode);
 
             while (referenceSet.Count != halfRefSetSize)
                 referenceSet.RemoveAt(referenceSet.Count - 1);
 
-            var orderdPopulationAfterHashCode = new List<InstanceSolution>();
+            List<InstanceSolution> orderedPopulationAfterHashCode;
 
             if (averageRefSetHashCode > _averageHashCode)
-                orderdPopulationAfterHashCode = population.OrderBy(s => s.HashCode).ToList();
+                orderedPopulationAfterHashCode = population.OrderBy(s => s.HashCode).ToList();
             else
-                orderdPopulationAfterHashCode = population.OrderByDescending(s => s.HashCode).ToList();
+                orderedPopulationAfterHashCode = population.OrderByDescending(s => s.HashCode).ToList();
 
-            foreach (var newSolution in orderdPopulationAfterHashCode)
+            foreach (var newSolution in orderedPopulationAfterHashCode)
             {
                 scatterSearchStart.ReferenceSetUpdate(newSolution);
             }

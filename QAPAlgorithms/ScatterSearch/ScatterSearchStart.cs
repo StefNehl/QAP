@@ -109,6 +109,8 @@ namespace QAPAlgorithms.ScatterSearch
                         break;
                 }
 
+                //newSubSets.AddRange(PathRelinking.GeneratePathAndGetSolutions());
+
                 foreach (var subSet in newSubSets) 
                 {
                     if (ReferenceSetUpdate(subSet))
@@ -172,6 +174,8 @@ namespace QAPAlgorithms.ScatterSearch
 
                 _foundNewSolutions = false;
                 newSubSets.Clear();
+                
+                
 
                 switch (_typeCount)
                 {
@@ -189,7 +193,7 @@ namespace QAPAlgorithms.ScatterSearch
                         _typeCount = 0;
                         break;
                 }
-
+                
                 foreach (var subSet in newSubSets)
                 {
                     if (ReferenceSetUpdate(subSet))
