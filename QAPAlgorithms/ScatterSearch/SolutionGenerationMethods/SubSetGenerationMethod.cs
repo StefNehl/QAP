@@ -10,7 +10,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         private readonly SubSetGenerationMethodType _subSetGenerationMethodType;
 
         private QAPInstance? _qapInstance;
-        private int _typeCount = 0;
+        private int _typeCount;
 
         public SubSetGenerationMethod(
             int typeCount,

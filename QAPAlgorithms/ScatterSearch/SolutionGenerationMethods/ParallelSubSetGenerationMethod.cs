@@ -37,6 +37,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         /// Directly return the task for performance
         /// </summary>
         /// <param name="referenceSolutions"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         public Task<List<InstanceSolution>> GenerateType1SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -48,6 +49,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         /// 18_P.27
         /// </summary>
         /// <param name="referenceSolutions"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         public  Task<List<InstanceSolution>> GenerateType2SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -63,6 +65,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         /// 18_P.28
         /// </summary>
         /// <param name="referenceSolutions"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         public Task<List<InstanceSolution>> GenerateType3SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {
@@ -79,6 +82,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         /// 18_P.28
         /// </summary>
         /// <param name="referenceSolutions"></param>
+        /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
         {

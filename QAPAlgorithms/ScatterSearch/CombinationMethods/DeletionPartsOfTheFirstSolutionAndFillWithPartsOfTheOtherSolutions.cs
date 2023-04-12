@@ -11,14 +11,13 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         private readonly bool _deleteWorstPart;
         private readonly int? _maxNrOfSolutions;
         
-        private QAPInstance _qAPInstance;
+        private QAPInstance? _qapInstance;
 
         /// <summary>
-        /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and filles the deleted with parts of the other solutions
+        /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and fills the deleted with parts of the other solutions
         /// </summary>
         /// <param name="deleteWorstPart">True to delete the worst part of the solution. If false the method deletes the parts random</param>
         /// <param name="percentageOfSolutionToDelete">percentage of the solution to delete</param>
-        /// <param name="qAPInstance">QAP Instance</param>
         /// <param name="maxNrOfSolutions">Maximum number of solutions</param>
         /// <param name="seed">seed for the random generator</param>
         /// <param name="checkIfSolutionsWereAlreadyCombined"></param>
@@ -41,7 +40,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public void InitMethod(QAPInstance instance)
         {
-            _qAPInstance = instance;
+            _qapInstance = instance;
         }
 
         public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
@@ -67,14 +66,14 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             int startIndexToDelete;
             var bestSolution = solutions[0];
 
-            var nrOfIndizesToDelete = (int)(_qAPInstance.N * (_percentageOfSolutionToDelete / 100));
+            var nrOfIndicesToDelete = (int)(_qapInstance.N * (_percentageOfSolutionToDelete / 100));
 
             if (_deleteWorstPart)
-                startIndexToDelete = InstanceHelpers.GetIndexOfWorstPart(bestSolution.SolutionPermutation, nrOfIndizesToDelete, _qAPInstance);
+                startIndexToDelete = InstanceHelpers.GetIndexOfWorstPart(bestSolution.SolutionPermutation, nrOfIndicesToDelete, _qapInstance);
             else
-                startIndexToDelete = _randomGenerator.Next(0, _qAPInstance.N - 1);
+                startIndexToDelete = _randomGenerator.Next(0, _qapInstance.N - 1);
 
-            var lastIndexToDelete = startIndexToDelete + nrOfIndizesToDelete - 1;
+            var lastIndexToDelete = startIndexToDelete + nrOfIndicesToDelete - 1;
 
             var newBasePermutation = new int[bestSolution.SolutionPermutation.Length];
             for (int i = 0; i < newBasePermutation.Length; i++)

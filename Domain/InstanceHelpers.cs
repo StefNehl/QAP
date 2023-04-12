@@ -1,9 +1,4 @@
 ﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain
 {
@@ -135,7 +130,7 @@ namespace Domain
             return false;
         }
 
-        public static int GetIndexOfWorstPart(int[] permutation, int sizeOfPart, QAPInstance qAPInstance)
+        public static int GetIndexOfWorstPart(int[] permutation, int sizeOfPart, QAPInstance qapInstance)
         {
             if (sizeOfPart < 2)
                 throw new Exception("Size of Part can't be smaller than 2");
@@ -145,7 +140,7 @@ namespace Domain
             for (int i = 0; i <= permutation.Length - sizeOfPart; i++)
             {
                 var endIndex = (i + sizeOfPart) - 1;
-                var solutionValue = GetSolutionValue(qAPInstance, permutation, i, endIndex);
+                var solutionValue = GetSolutionValue(qapInstance, permutation, i, endIndex);
                 if (!IsBetterSolution(worstSolutionValue, solutionValue))
                 {
                     worstSolutionValue = solutionValue;
@@ -155,7 +150,7 @@ namespace Domain
             return worstIndex;
         }
 
-        public static int GetIndexOfBestPart(int[] permutation, int sizeOfPart, QAPInstance qAPInstance)
+        public static int GetIndexOfBestPart(int[] permutation, int sizeOfPart, QAPInstance qapInstance)
         {
             if (sizeOfPart < 2)
                 throw new Exception("Size of Part can't be smaller than 2");
@@ -165,7 +160,7 @@ namespace Domain
             for (int i = 0; i <= permutation.Length - sizeOfPart; i++)
             {
                 var endIndex = (i + sizeOfPart) - 1;
-                var solutionValue = GetSolutionValue(qAPInstance, permutation, i, endIndex);
+                var solutionValue = GetSolutionValue(qapInstance, permutation, i, endIndex);
                 if (IsBetterSolution(worstSolutionValue, solutionValue))
                 {
                     worstSolutionValue = solutionValue;
