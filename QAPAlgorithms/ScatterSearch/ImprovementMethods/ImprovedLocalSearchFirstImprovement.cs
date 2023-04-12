@@ -9,11 +9,13 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
     /// </summary>
     public class ImprovedLocalSearchFirstImprovement : IImprovementMethod
     {
-        private readonly QAPInstance _instance;
-        public ImprovedLocalSearchFirstImprovement(QAPInstance qAPInstance)
+        private QAPInstance? _instance;
+        
+        public void InitMethod(QAPInstance instance)
         {
-            _instance = qAPInstance;
+            _instance = instance;
         }
+        
         public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
         {
             var permutation = instanceSolution.SolutionPermutation;
@@ -33,6 +35,8 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
             return instanceSolution;
         }
 
+
+        
         public void ImproveSolutions(List<InstanceSolution> instanceSolutions)
         {
             for (int i = 0; i < instanceSolutions.Count; i++)

@@ -3,8 +3,8 @@ using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
-using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
+using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 namespace QAPTest.QAPAlgorithmsTests
@@ -24,10 +24,14 @@ namespace QAPTest.QAPAlgorithmsTests
         public async Task SetUp()
         {
             _testInstance = await QAPInstanceProvider.GetTestN3();
-            _improvementMethod = new LocalSearchFirstImprovement(_testInstance);
+            _improvementMethod = new LocalSearchFirstImprovement();
+            _improvementMethod.InitMethod(_testInstance);
             _combinationMethod = new ExhaustingPairwiseCombination();
-            _generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, _testInstance);
-            _solutionGenerationMethod = new SubSetGenerationMethod(_testInstance, 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
+            _combinationMethod.InitMethod(_testInstance);
+            _generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            _generateInitPopulationMethod.InitMethod(_testInstance);
+            _solutionGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
+            _solutionGenerationMethod.InitMethod(_testInstance);
             _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
         }
 

@@ -1,22 +1,27 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
 
-namespace QAPAlgorithms.ScatterSearch.GenerationMethods
+namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
     public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
     {
-        private readonly QAPInstance _qAPInstance;
+        private QAPInstance? _qApInstance;
+        private int[]? _permutation;
+        
         private readonly Random _randomGenerator;
-        private readonly int[] _permutation;
         private readonly List<int> _listWithPossibilities;
 
-        public RandomGeneratedPopulationMethod(QAPInstance qAPInstance,
+        public RandomGeneratedPopulationMethod(
             int? seed = null)
         {
-            _qAPInstance = qAPInstance;
             _listWithPossibilities = new List<int>();
             _randomGenerator = seed.HasValue ? new Random(Seed: seed.Value) : new Random();
-            _permutation = new int[_qAPInstance.N];
+        }
+
+        public void InitMethod(QAPInstance instance)
+        {
+            _qApInstance = instance;
+            _permutation = new int[_qApInstance.N];
         }
 
         public List<InstanceSolution> GeneratePopulation(int populationSize)
@@ -36,7 +41,7 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
                     _listWithPossibilities.RemoveAt(newRandomIndex);
                 }
 
-                var newSolution = new InstanceSolution(_qAPInstance, _permutation);
+                var newSolution = new InstanceSolution(_qApInstance, _permutation);
                 population.Add(newSolution);
             }
 

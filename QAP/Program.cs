@@ -3,8 +3,8 @@ using QAP;
 using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
 using QAPAlgorithms.ScatterSearch.DiversificationMethods;
-using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
+using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
@@ -57,11 +57,11 @@ await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToSt
 
 TestSettings GetTestSettings(QAPInstance instance, int referenceSetSize, int populationSize)
 {
-    var improvementMethod = new ImprovedLocalSearchFirstImprovement(instance);
+    var improvementMethod = new ImprovedLocalSearchFirstImprovement();
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(instance, 42);
-    var diversificationMethod = new HashCodeDiversificationMethod(instance);
-    var solutionGenerationMethod = new SubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle,
+    var generationInitPopMethod = new RandomGeneratedPopulationMethod(42);
+    var diversificationMethod = new HashCodeDiversificationMethod();
+    var solutionGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle,
         combinationMethod, improvementMethod);
     
     var testSettings = new TestSettings(

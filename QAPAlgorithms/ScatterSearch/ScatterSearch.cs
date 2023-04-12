@@ -63,7 +63,7 @@ namespace QAPAlgorithms.ScatterSearch
             int runTimeInSeconds,
             bool displayProgressInConsole = false)
         {
-            InitScatterSearch(runTimeInSeconds);
+            InitScatterSearch(runTimeInSeconds, instance);
             var newSubSets = new List<InstanceSolution>();
 
             while (true)
@@ -145,8 +145,14 @@ namespace QAPAlgorithms.ScatterSearch
             return true;
         }
 
-        private void InitScatterSearch(int runTimeInSeconds)
+        private void InitScatterSearch(int runTimeInSeconds, QAPInstance instance)
         {
+            _generateInitPopulationMethod.InitMethod(instance);
+            _diversificationMethod.InitMethod(instance);
+            _combinationMethod.InitMethod(instance);
+            _improvementMethod.InitMethod(instance);
+            _solutionGenerationMethod.InitMethod(instance);
+            
             _startTime = DateTime.Now;
             _currentTime = DateTime.Now;
             _endTime = _startTime.AddSeconds(runTimeInSeconds);

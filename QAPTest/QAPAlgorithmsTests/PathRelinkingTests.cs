@@ -16,8 +16,10 @@ public class PathRelinkingTests
     public async Task SetUp()
     {
         _qapInstance = await QAPInstanceProvider.GetTestN3();
-        _pathRelinking = new PathRelinking(_qapInstance);
-        _parallelPathRelinking = new ParallelPathRelinking(_qapInstance);
+        _pathRelinking = new PathRelinking();
+        _pathRelinking.InitMethod(_qapInstance);
+        _parallelPathRelinking = new ParallelPathRelinking();
+        _parallelPathRelinking.InitMethod(_qapInstance);
     }
 
     [Test]

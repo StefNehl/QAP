@@ -17,10 +17,13 @@ public class PathRelinkingSubSetGenerationCombinedTests
     public async Task SetUp()
     {
         _qapInstance = await QAPInstanceProvider.GetTestN3();
-        var improvementMethod = new LocalSearchFirstImprovement(_qapInstance); 
+        var improvementMethod = new LocalSearchFirstImprovement(); 
+        improvementMethod.InitMethod(_qapInstance);
         var combinationMethod = new ExhaustingPairwiseCombination();
-        _pathRelinkingSubSetGenerationCombined = new PathRelinkingSubSetGenerationCombined(_qapInstance, 1, SubSetGenerationMethodType.Cycle, improvementMethod, combinationMethod);
-        _parallelPathRelinkingSubSetGenerationCombined = new ParallelPathRelinkingSubSetGenerationCombined(_qapInstance, 1, SubSetGenerationMethodType.Cycle, improvementMethod, combinationMethod);
+        _pathRelinkingSubSetGenerationCombined = new PathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle, improvementMethod, combinationMethod);
+        _pathRelinkingSubSetGenerationCombined.InitMethod(_qapInstance);
+        _parallelPathRelinkingSubSetGenerationCombined = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle, improvementMethod, combinationMethod);
+        _parallelPathRelinkingSubSetGenerationCombined.InitMethod(_qapInstance);
     }
 
     [Test]

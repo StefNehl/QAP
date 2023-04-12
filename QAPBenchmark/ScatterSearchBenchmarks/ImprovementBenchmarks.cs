@@ -48,9 +48,12 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
 
-            bestImprovementMethod = new LocalSearchBestImprovement(instance);
-            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement(instance);
-            firstImprovementMethod = new LocalSearchFirstImprovement(instance);
+            bestImprovementMethod = new LocalSearchBestImprovement();
+            bestImprovementMethod.InitMethod(instance);
+            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
+            improvedImprovementMethod.InitMethod(instance);
+            firstImprovementMethod = new LocalSearchFirstImprovement();
+            firstImprovementMethod.InitMethod(instance);
 
             var permutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             _solution = new InstanceSolution(instance, permutation);

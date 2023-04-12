@@ -3,13 +3,13 @@ using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
-using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 /*
@@ -59,14 +59,20 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
 
-            improvementMethod = new ImprovedLocalSearchFirstImprovement(instance);
+            improvementMethod = new ImprovedLocalSearchFirstImprovement();
+            improvementMethod.InitMethod(instance);
             combinationMethod = new ExhaustingPairwiseCombination();
-
-            var generationMethod = new StepWisePopulationGenerationMethod(2, instance);
+            combinationMethod.InitMethod(instance);
+            
+            var generationMethod = new StepWisePopulationGenerationMethod(2);
+            generationMethod.InitMethod(instance);
             referenceList = generationMethod.GeneratePopulation(10);
 
-            parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
-            subSetGenerationMethod = new SubSetGenerationMethod(instance, 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            parallelSubSetGenerationMethod.InitMethod(instance);
+            
+            subSetGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            subSetGenerationMethod.InitMethod(instance);
         }
 
         [Benchmark]

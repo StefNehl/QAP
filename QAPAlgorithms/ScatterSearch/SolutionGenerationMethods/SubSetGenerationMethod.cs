@@ -7,18 +7,17 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
-        private readonly QAPInstance _qapInstance;
         private readonly SubSetGenerationMethodType _subSetGenerationMethodType;
-        
+
+        private QAPInstance? _qapInstance;
         private int _typeCount = 0;
 
-        public SubSetGenerationMethod(QAPInstance qapInstance,
+        public SubSetGenerationMethod(
             int typeCount,
             SubSetGenerationMethodType subSetGenerationMethodType,
             ICombinationMethod combinationMethod,
             IImprovementMethod improvementMethod)
         {
-            _qapInstance = qapInstance;
             _combinationMethod = combinationMethod;
             _improvementMethod = improvementMethod;
             
@@ -26,6 +25,11 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             _subSetGenerationMethodType = subSetGenerationMethodType;
         }
 
+        public void InitMethod(QAPInstance instance)
+        {
+            _qapInstance = instance;
+        }
+        
         /// <summary>
         /// 18_P.27
         /// Hot Path https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#prefer-asyncawait-over-directly-returning-task

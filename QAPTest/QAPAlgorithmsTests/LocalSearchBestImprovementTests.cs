@@ -23,8 +23,10 @@ namespace QAPTest.QAPAlgorithmsTests
         public async Task SetUp()
         {
             instance = await QAPInstanceProvider.GetChr12a();
-            improvementMethod = new LocalSearchBestImprovement(instance);
-            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement(instance);
+            improvementMethod = new LocalSearchBestImprovement();
+            improvementMethod.InitMethod(instance);
+            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
+            improvedImprovementMethod.InitMethod(instance);
             
             worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             betterPermutation = new int[] { 1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11 };

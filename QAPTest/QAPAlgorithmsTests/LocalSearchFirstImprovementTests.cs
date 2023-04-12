@@ -22,8 +22,10 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             instance = await qapReader.ReadFileAsync(folderName, fileName);
-            improvementMethod = new LocalSearchFirstImprovement(instance);
-            improvedImprovementMethod = new ImprovedLocalSearchFirstImprovement(instance);
+            improvementMethod = new LocalSearchFirstImprovement();
+            improvementMethod.InitMethod(instance);
+            improvedImprovementMethod = new ImprovedLocalSearchFirstImprovement();
+            improvedImprovementMethod.InitMethod(instance);
 
             worsePermutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             betterPermutation = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };

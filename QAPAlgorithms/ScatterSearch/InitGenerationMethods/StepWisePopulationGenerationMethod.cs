@@ -1,21 +1,25 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.Contracts;
 
-namespace QAPAlgorithms.ScatterSearch.GenerationMethods
+namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
     public class StepWisePopulationGenerationMethod : IGenerateInitPopulationMethod
     {
-        private readonly QAPInstance _qAPInstance;
-        private readonly int[] _permutation;
+        private QAPInstance? _qApInstance;
+        private int[]? _permutation;
 
         private readonly int _nrOfIndexesToMovePerIteration;
-        public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration, 
-            QAPInstance qApInstance)
+        public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration)
         {
             _nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
-            _qAPInstance = qApInstance;
-            _permutation = new int[qApInstance.N];
         }
+        
+        public void InitMethod(QAPInstance instance)
+        {
+            _qApInstance = instance;
+            _permutation = new int[_qApInstance.N];
+        }
+        
         public List<InstanceSolution> GeneratePopulation(int populationSize)
         {
             var population = new List<InstanceSolution>(populationSize);
@@ -33,10 +37,9 @@ namespace QAPAlgorithms.ScatterSearch.GenerationMethods
                             newIndex = _permutation.Length + newIndex;
                         _permutation[i] = population[s - 1].SolutionPermutation[newIndex];
                     }
-
                 }
 
-                var newSolution = new InstanceSolution(_qAPInstance, _permutation.ToArray());
+                var newSolution = new InstanceSolution(_qApInstance, _permutation.ToArray());
                 population.Add(newSolution);
             }
 

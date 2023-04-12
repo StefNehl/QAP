@@ -23,8 +23,10 @@ public class PathRelinkingBenchmarks
         var instanceReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
         var testInstance = await instanceReader.ReadFileAsync("QAPLIB", "chr12a.dat");
 
-        _pathRelinking = new PathRelinking(testInstance);
-        _parallelPathRelinking = new ParallelPathRelinking(testInstance);
+        _pathRelinking = new PathRelinking();
+        _pathRelinking.InitMethod(testInstance);
+        _parallelPathRelinking = new ParallelPathRelinking();
+        _parallelPathRelinking.InitMethod(testInstance);
         
         var firstPermutation = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
         var firstSolution = new InstanceSolution(testInstance, firstPermutation);

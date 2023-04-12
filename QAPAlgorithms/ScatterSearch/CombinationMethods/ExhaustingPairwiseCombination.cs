@@ -22,9 +22,15 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         /// <param name="checkIfSolutionsWereAlreadyCombined"></param>
         public ExhaustingPairwiseCombination(int stepSizeForPairs = 1, int maxNumbersOfPairs = 0, bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined)
         {
-            this._stepSizeForPairs = stepSizeForPairs;
-            this._maxNumbersOfPairs = maxNumbersOfPairs;
+            _stepSizeForPairs = stepSizeForPairs;
+            _maxNumbersOfPairs = maxNumbersOfPairs;
         }
+        
+        public void InitMethod(QAPInstance instance)
+        {
+        }
+
+        
         /// <summary>
         /// Combines the given solutions pair wise with each other. This happens by filling a
         /// new created solution with pairs until the size of a solution is reached. If not enough 

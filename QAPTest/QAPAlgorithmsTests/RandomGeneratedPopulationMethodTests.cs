@@ -1,12 +1,12 @@
 ﻿using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
-using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 
 namespace QAPTest.QAPAlgorithmsTests
 {
@@ -22,7 +22,8 @@ namespace QAPTest.QAPAlgorithmsTests
             var testInstance = await QAPInstanceProvider.GetTestN3();
             populationSize = 10;
             var permutationSize = 3;
-            generateInitPopulationMethod = new RandomGeneratedPopulationMethod(testInstance); 
+            generateInitPopulationMethod = new RandomGeneratedPopulationMethod();
+            generateInitPopulationMethod.InitMethod(testInstance);
         }
 
         [Test]

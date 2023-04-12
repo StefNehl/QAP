@@ -6,10 +6,11 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
 public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
 {
-    private readonly QAPInstance _instance;
-    public ImprovedLocalSearchBestImprovement(QAPInstance qAPInstance)
+    private QAPInstance? _instance;
+
+    public void InitMethod(QAPInstance instance)
     {
-        _instance = qAPInstance;
+        _instance = instance;
     }
     
     public InstanceSolution ImproveSolution(InstanceSolution instanceSolution)
@@ -47,7 +48,9 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
         }
 
         return instanceSolution;
-    } 
+    }
+
+
     
     public void ImproveSolutions(List<InstanceSolution> instanceSolutions)
     {

@@ -49,7 +49,8 @@ public class ImprovementBestSolutionParallelBenchmarks
         var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
         var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
 
-        bestImprovementMethod = new LocalSearchBestImprovement(instance);
+        bestImprovementMethod = new LocalSearchBestImprovement();
+        bestImprovementMethod.InitMethod(instance);
 
         var permutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public record struct QAPInstance(string InstanceName, int N, int[,] A, int[,] B)
+    public record QAPInstance(string InstanceName, int N, int[,] A, int[,] B)
     {
         //public QAPInstance
         //{

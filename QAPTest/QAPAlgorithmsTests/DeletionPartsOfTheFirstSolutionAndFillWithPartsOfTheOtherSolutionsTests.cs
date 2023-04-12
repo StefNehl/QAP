@@ -29,7 +29,8 @@ namespace QAPTest.QAPAlgorithmsTests
         
             var listOfSolutions = new List<InstanceSolution>() { firstSolution, secondSolution };
 
-            var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 50, qAPInstance);
+            var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 50);
+            combinationMethod.InitMethod(qAPInstance);
 
             var newSolutions = combinationMethod.CombineSolutions(listOfSolutions);
 
@@ -47,7 +48,8 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var listOfSolutions = new List<InstanceSolution>() { firstSolution, secondSolution };
 
-            var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 50, qAPInstance);
+            var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 50);
+            combinationMethod.InitMethod(qAPInstance);
 
             var newSolutions = combinationMethod.CombineSolutions(listOfSolutions);
 

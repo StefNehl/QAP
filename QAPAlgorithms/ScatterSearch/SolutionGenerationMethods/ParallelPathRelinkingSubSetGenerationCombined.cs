@@ -3,21 +3,28 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
-public class ParallelPathRelinkingSubSetGenerationCombined
+public class ParallelPathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
 {
-    private ParallelPathRelinking _pathRelinking;
-    private ParallelSubSetGenerationMethod _subSetGeneration;
+    private readonly ParallelPathRelinking _pathRelinking;
+    private readonly ParallelSubSetGenerationMethod _subSetGeneration;
     
-    public ParallelPathRelinkingSubSetGenerationCombined(QAPInstance qapInstance, 
+    public ParallelPathRelinkingSubSetGenerationCombined(
         int typeCount, 
         SubSetGenerationMethodType subSetGenerationMethodType, 
         IImprovementMethod improvementMethod, 
         ICombinationMethod combinationMethod)
     {
-        _pathRelinking = new ParallelPathRelinking(qapInstance);
-        _subSetGeneration = new ParallelSubSetGenerationMethod(qapInstance, typeCount, subSetGenerationMethodType,
+        _pathRelinking = new ParallelPathRelinking();
+        _subSetGeneration = new ParallelSubSetGenerationMethod(typeCount, subSetGenerationMethodType,
             combinationMethod, improvementMethod);
     }
+
+    public void InitMethod(QAPInstance instance)
+    {
+        _pathRelinking.InitMethod(instance);
+        _subSetGeneration.InitMethod(instance);
+    }
+    
     public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
         var solutions = new List<InstanceSolution>();

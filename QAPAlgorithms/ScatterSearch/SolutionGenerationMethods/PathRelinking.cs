@@ -7,9 +7,9 @@ public class PathRelinking : ISolutionGenerationMethod
 {
     private QAPInstance _qapInstance;
 
-    public PathRelinking(QAPInstance qapInstance)
+    public void InitMethod(QAPInstance instance)
     {
-        _qapInstance = qapInstance;
+        _qapInstance = instance;
     }
     
     public List<InstanceSolution> GeneratePathAndGetSolutions(InstanceSolution startingSolution, InstanceSolution guidingSolution)

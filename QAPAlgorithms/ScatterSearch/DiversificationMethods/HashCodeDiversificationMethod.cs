@@ -6,15 +6,15 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 {
     public class HashCodeDiversificationMethod : IDiversificationMethod
     {
-        private readonly long _averageHashCode;
+        private long _averageHashCode;
 
-        public HashCodeDiversificationMethod(QAPInstance qAPInstance)
+        public void InitMethod(QAPInstance instance)
         {
-            var n = qAPInstance.N;
+            var n = instance.N;
             var permutationWithMaxHashCode = new int[n];
             var permutationWithMinHashCode = new int[n];
 
-            for (int i = 0; i < qAPInstance.N; i++)
+            for (int i = 0; i < instance.N; i++)
             {
                 permutationWithMaxHashCode[i] = i;
                 permutationWithMinHashCode[i] = n - i;
@@ -22,8 +22,8 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             var minHashCode = InstanceHelpers.GenerateHashCode(permutationWithMinHashCode);
             var maxHashCode = InstanceHelpers.GenerateHashCode(permutationWithMaxHashCode);
             _averageHashCode = (minHashCode + maxHashCode) / 2;
-
         }
+        
         public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearch scatterSearch)
         {
 

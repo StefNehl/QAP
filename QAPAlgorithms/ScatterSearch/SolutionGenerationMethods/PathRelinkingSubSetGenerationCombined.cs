@@ -5,19 +5,26 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 public class PathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
 {
-    private PathRelinking _pathRelinking;
-    private SubSetGenerationMethod _subSetGeneration;
+    private readonly PathRelinking _pathRelinking;
+    private readonly SubSetGenerationMethod _subSetGeneration;
     
-    public PathRelinkingSubSetGenerationCombined(QAPInstance qapInstance, 
+    public PathRelinkingSubSetGenerationCombined( 
         int typeCount, 
         SubSetGenerationMethodType subSetGenerationMethodType, 
         IImprovementMethod improvementMethod, 
         ICombinationMethod combinationMethod)
     {
-        _pathRelinking = new PathRelinking(qapInstance);
-        _subSetGeneration = new SubSetGenerationMethod(qapInstance, typeCount, subSetGenerationMethodType,
+        _pathRelinking = new PathRelinking();
+        _subSetGeneration = new SubSetGenerationMethod(typeCount, subSetGenerationMethodType,
             combinationMethod, improvementMethod);
     }
+
+    public void InitMethod(QAPInstance instance)
+    {
+        _pathRelinking.InitMethod(instance);
+        _subSetGeneration.InitMethod(instance);
+    }
+    
     public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
         var solutions = new List<InstanceSolution>();

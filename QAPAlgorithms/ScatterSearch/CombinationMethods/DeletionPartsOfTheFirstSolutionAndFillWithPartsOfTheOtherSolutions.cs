@@ -10,7 +10,8 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         private readonly double _percentageOfSolutionToDelete;
         private readonly bool _deleteWorstPart;
         private readonly int? _maxNrOfSolutions;
-        private readonly QAPInstance _qAPInstance;
+        
+        private QAPInstance _qAPInstance;
 
         /// <summary>
         /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and filles the deleted with parts of the other solutions
@@ -24,20 +25,23 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         public DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(
             bool deleteWorstPart,
             double percentageOfSolutionToDelete,
-            QAPInstance qAPInstance,
             int? maxNrOfSolutions = null,
-            int? seed = null, 
-            bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined) 
+            int? seed = null,
+            bool checkIfSolutionsWereAlreadyCombined = true) : base(checkIfSolutionsWereAlreadyCombined)
         {
             if(seed.HasValue)
                 _randomGenerator= new Random(seed.Value);
             else
-                this._randomGenerator= new Random();
+                _randomGenerator= new Random();
+            
+            _deleteWorstPart = deleteWorstPart;
+            _percentageOfSolutionToDelete = percentageOfSolutionToDelete;
+            _maxNrOfSolutions = maxNrOfSolutions;
+        }
 
-            this._deleteWorstPart = deleteWorstPart;
-            this._percentageOfSolutionToDelete = percentageOfSolutionToDelete;
-            this._maxNrOfSolutions = maxNrOfSolutions;
-            this._qAPInstance = qAPInstance;
+        public void InitMethod(QAPInstance instance)
+        {
+            _qAPInstance = instance;
         }
 
         public List<int[]> CombineSolutions(List<InstanceSolution> solutions)

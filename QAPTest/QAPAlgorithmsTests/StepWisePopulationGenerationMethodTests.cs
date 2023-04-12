@@ -2,12 +2,12 @@
 using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
-using QAPAlgorithms.ScatterSearch.GenerationMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 
 namespace QAPTest.QAPAlgorithmsTests
 {
@@ -29,7 +29,8 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithOneStep()
         {
-            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, instance);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            generateInitPopulationMethod.InitMethod(instance);
             var p = generateInitPopulationMethod.GeneratePopulation(populationSize);
 
             var resultArray = new List<int[]>
@@ -49,7 +50,8 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckGenerateInitialPopulation_WithTwoSteps()
         {
-            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2, instance);
+            var generateInitPopulationMethod = new StepWisePopulationGenerationMethod(2);
+            generateInitPopulationMethod.InitMethod(instance);
             var p = generateInitPopulationMethod.GeneratePopulation(populationSize);
 
             var resultArray = new List<int[]>
