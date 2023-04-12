@@ -4,7 +4,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch
 {
-    public class ScatterSearchStart
+    public class ScatterSearch
     {
         //16_Design of Heuristic Algorithms for Hard Optimization.pdf 215
         //14_Principles of Scatter Search P.3
@@ -28,7 +28,7 @@ namespace QAPAlgorithms.ScatterSearch
         
         
         
-        public ScatterSearchStart(IGenerateInitPopulationMethod generateInitPopulationMethod,
+        public ScatterSearch(IGenerateInitPopulationMethod generateInitPopulationMethod,
             IDiversificationMethod diversificationMethod,
             ICombinationMethod combinationMethod,
             IImprovementMethod improvementMethod,

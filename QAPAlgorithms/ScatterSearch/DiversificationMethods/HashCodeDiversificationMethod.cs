@@ -24,7 +24,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             _averageHashCode = (minHashCode + maxHashCode) / 2;
 
         }
-        public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearchStart scatterSearchStart)
+        public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearch scatterSearch)
         {
 
             int refSetSize = referenceSet.Count;
@@ -53,7 +53,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 
             foreach (var newSolution in orderedPopulationAfterHashCode)
             {
-                scatterSearchStart.ReferenceSetUpdate(newSolution);
+                scatterSearch.ReferenceSetUpdate(newSolution);
             }
         }
     }

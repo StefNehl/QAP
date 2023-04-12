@@ -13,7 +13,7 @@ namespace QAPTest.QAPAlgorithmsTests
     public class ScatterSearchTests
     {
         private QAPInstance _testInstance;
-        private ScatterSearchStart _scatterSearch;
+        private ScatterSearch _scatterSearch;
         private IImprovementMethod _improvementMethod;
         private ICombinationMethod _combinationMethod;
         private IGenerateInitPopulationMethod _generateInitPopulationMethod;
@@ -28,7 +28,7 @@ namespace QAPTest.QAPAlgorithmsTests
             _combinationMethod = new ExhaustingPairwiseCombination();
             _generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1, _testInstance);
             _solutionGenerationMethod = new SubSetGenerationMethod(_testInstance, 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
-            _scatterSearch = new ScatterSearchStart(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
+            _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
         }
 
 
@@ -87,7 +87,7 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             _testInstance = qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
-            _scatterSearch = new ScatterSearchStart(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
+            _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
             
             var newSolution = new InstanceSolution(_testInstance, new [] { 1, 0, 2 });
             _scatterSearch.ReferenceSetUpdate(newSolution);
@@ -140,7 +140,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddBetterToList_ReferenceSetFull()
         {
-            _scatterSearch = new ScatterSearchStart(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
+            _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
 
             var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
             _scatterSearch.ReferenceSetUpdate(newSolution);
@@ -159,7 +159,7 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddRandomSolutionValues_CheckCount()
         {
-            _scatterSearch = new ScatterSearchStart(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
+            _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
             var rg = new Random();
             
             for (int i = 1; i <= 100; i++)

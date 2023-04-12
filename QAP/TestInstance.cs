@@ -6,7 +6,7 @@ namespace QAP
     {
         public static TestResult StartTest(TestSettings testSettings)
         {
-            var scatterSearch = new ScatterSearchStart(
+            var scatterSearch = new ScatterSearch(
                 testSettings.GenerateInitPopulationMethod, 
                 testSettings.DiversificationMethod,
                 testSettings.CombinationMethod,
