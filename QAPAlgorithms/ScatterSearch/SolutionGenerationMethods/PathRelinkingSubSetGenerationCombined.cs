@@ -6,7 +6,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 public class PathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
 {
     private readonly PathRelinking _pathRelinking;
-    private readonly SubSetGenerationMethod _subSetGeneration;
+    private readonly SubSetGeneration _subSetGeneration;
     
     public PathRelinkingSubSetGenerationCombined( 
         int typeCount, 
@@ -15,7 +15,7 @@ public class PathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
         ICombinationMethod combinationMethod)
     {
         _pathRelinking = new PathRelinking();
-        _subSetGeneration = new SubSetGenerationMethod(typeCount, subSetGenerationMethodType,
+        _subSetGeneration = new SubSetGeneration(typeCount, subSetGenerationMethodType,
             combinationMethod, improvementMethod);
     }
 

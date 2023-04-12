@@ -4,7 +4,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 {
-    public class HashCodeDiversificationMethod : IDiversificationMethod
+    public class HashCodeDiversification : IDiversificationMethod
     {
         private long _averageHashCode;
 

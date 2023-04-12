@@ -4,23 +4,24 @@ namespace QAP
 {
     public static class TestInstance
     {
-        public static TestResult StartTest(TestSettings testSettings)
+        public static TestResult StartTest(TestSetting testSetting)
         {
             var scatterSearch = new ScatterSearch(
-                testSettings.GenerateInitPopulationMethod, 
-                testSettings.DiversificationMethod,
-                testSettings.CombinationMethod,
-                testSettings.ImprovementMethod,
-                testSettings.SolutionGenerationMethod,
-                testSettings.PopulationSize,
-                testSettings.ReferenceSetSize);
+                testSetting.GenerateInitPopulationMethod, 
+                testSetting.DiversificationMethod,
+                testSetting.CombinationMethod,
+                testSetting.ImprovementMethod,
+                testSetting.SolutionGenerationMethod,
+                testSetting.PopulationSize,
+                testSetting.ReferenceSetSize);
+            
             var result = scatterSearch.Solve(
-                testSettings.Instance,
-                testSettings.RunTimeInSeconds, 
-                testSettings.DisplayProgressInConsole);
+                testSetting.Instance,
+                testSetting.RunTimeInSeconds, 
+                testSetting.DisplayProgressInConsole);
 
             var newTestResult = new TestResult(
-                testSettings,
+                testSetting,
                 result.Item1.SolutionValue, 
                 result.Item3, 
                 result.Item2,

@@ -28,9 +28,9 @@ namespace QAPTest.QAPAlgorithmsTests
             _improvementMethod.InitMethod(_testInstance);
             _combinationMethod = new ExhaustingPairwiseCombination();
             _combinationMethod.InitMethod(_testInstance);
-            _generateInitPopulationMethod = new StepWisePopulationGenerationMethod(1);
+            _generateInitPopulationMethod = new StepWisePopulationGeneration(1);
             _generateInitPopulationMethod.InitMethod(_testInstance);
-            _solutionGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
+            _solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
             _solutionGenerationMethod.InitMethod(_testInstance);
             _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
         }

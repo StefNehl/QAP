@@ -3,7 +3,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
-    public class RandomGeneratedPopulationMethod : IGenerateInitPopulationMethod
+    public class RandomGeneratedPopulation : IGenerateInitPopulationMethod
     {
         private QAPInstance? _qApInstance;
         private int[]? _permutation;
@@ -11,7 +11,7 @@ namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
         private readonly Random _randomGenerator;
         private readonly List<int> _listWithPossibilities;
 
-        public RandomGeneratedPopulationMethod(
+        public RandomGeneratedPopulation(
             int? seed = null)
         {
             _listWithPossibilities = new List<int>();

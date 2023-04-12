@@ -64,6 +64,13 @@ namespace QAPAlgorithms.ScatterSearch
             bool displayProgressInConsole = false)
         {
             InitScatterSearch(runTimeInSeconds, instance);
+            GenerateNewPopulation();
+
+            foreach (var instanceSolution in _population)
+            {
+                ReferenceSetUpdate(instanceSolution);
+            }
+            
             var newSubSets = new List<InstanceSolution>();
 
             while (true)
@@ -72,7 +79,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(_displayCount == 10)
+                if(_displayCount == 1000)
                 {
                     if (displayProgressInConsole)
                     {
@@ -104,7 +111,6 @@ namespace QAPAlgorithms.ScatterSearch
                     GenerateNewPopulation();
                     _foundNewSolutions = true;
                 }
-
             }
 
             return new Tuple<InstanceSolution, long, long>(_referenceSet.First(), _iterationCount, (long)(_currentTime - _startTime).TotalSeconds);
@@ -159,18 +165,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             _referenceSet.Clear();
             _population.Clear();
-            _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
 
-            EliminateIdenticalSolutionsFromSet(_population);
-
-            _improvementMethod.ImproveSolutions(_population);
-
-            foreach (var solution in _population)
-            {
-                ReferenceSetUpdate(solution);
-            }
-
-            _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
             _iterationCount = 0;
             _displayCount = 0;
         }
@@ -179,6 +174,8 @@ namespace QAPAlgorithms.ScatterSearch
         {
             _population.Clear();
             _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
+            EliminateIdenticalSolutionsFromSet(_population);
+            _improvementMethod.ImproveSolutions(_population);
             _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
         }
 

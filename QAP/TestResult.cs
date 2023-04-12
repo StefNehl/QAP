@@ -3,7 +3,7 @@
 namespace QAP
 {
     public record TestResult(
-        TestSettings TestSettings, 
+        TestSetting TestSetting, 
         long SolutionValue, 
         long Time, 
         long Iterations,
@@ -12,9 +12,9 @@ namespace QAP
         public string ToCSVString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(TestSettings.Instance.InstanceName);
+            sb.Append(TestSetting.Instance.InstanceName);
             sb.Append(";");
-            sb.Append(TestSettings.Instance.N);
+            sb.Append(TestSetting.Instance.N);
             sb.Append(";");
             sb.Append(SolutionValue);
             sb.Append(";");
@@ -39,9 +39,9 @@ namespace QAP
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(TestSettings.Instance.InstanceName);
+            sb.Append(TestSetting.Instance.InstanceName);
             sb.Append(";");
-            sb.Append(TestSettings.Instance.N);
+            sb.Append(TestSetting.Instance.N);
             sb.Append(";");
             sb.Append(SolutionValue);
             sb.Append(";");
@@ -63,11 +63,11 @@ namespace QAP
 
             sb.Append(arrayString.ToString());
             sb.Append(";");
-            sb.Append(TestSettings.CombinationMethod.GetType().Name);
+            sb.Append(TestSetting.CombinationMethod.GetType().Name);
             sb.Append(";");
-            sb.Append(TestSettings.GenerateInitPopulationMethod.GetType().Name);
+            sb.Append(TestSetting.GenerateInitPopulationMethod.GetType().Name);
             sb.Append(";");
-            sb.Append(TestSettings.ImprovementMethod.GetType().Name);
+            sb.Append(TestSetting.ImprovementMethod.GetType().Name);
             return sb.ToString();
         }
 
@@ -97,8 +97,8 @@ namespace QAP
         public string ToStringForConsole()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Instance Name: {TestSettings.Instance.InstanceName}");
-            sb.AppendLine($"N: {TestSettings.Instance.N}");
+            sb.AppendLine($"Instance Name: {TestSetting.Instance.InstanceName}");
+            sb.AppendLine($"N: {TestSetting.Instance.N}");
             sb.AppendLine($"Solution Value: {SolutionValue}");
             sb.AppendLine($"Time[s]: {Time}");
             sb.AppendLine($"Iterations: {Iterations}");
@@ -115,9 +115,9 @@ namespace QAP
             arrayString.Append("]");
 
             sb.AppendLine($"Permutation: {arrayString.ToString()}");
-            sb.AppendLine($"Combination Method: {TestSettings.CombinationMethod.GetType().Name}");
-            sb.AppendLine($"Init Pop Generation: {TestSettings.GenerateInitPopulationMethod.GetType().Name}");
-            sb.AppendLine($"Improvement Method: {TestSettings.ImprovementMethod.GetType().Name}");
+            sb.AppendLine($"Combination Method: {TestSetting.CombinationMethod.GetType().Name}");
+            sb.AppendLine($"Init Pop Generation: {TestSetting.GenerateInitPopulationMethod.GetType().Name}");
+            sb.AppendLine($"Improvement Method: {TestSetting.ImprovementMethod.GetType().Name}");
 
 
 

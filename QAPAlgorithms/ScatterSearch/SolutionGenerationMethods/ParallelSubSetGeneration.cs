@@ -4,7 +4,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 {
-    public class ParallelSubSetGenerationMethod : ISolutionGenerationMethod
+    public class ParallelSubSetGeneration : ISolutionGenerationMethod
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
@@ -13,7 +13,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
         private QAPInstance? _qapInstance;
         private int _typeCount;
 
-        public ParallelSubSetGenerationMethod(
+        public ParallelSubSetGeneration(
             int typeCount,
             SubSetGenerationMethodType subSetGenerationMethodType,
             ICombinationMethod combinationMethod, 

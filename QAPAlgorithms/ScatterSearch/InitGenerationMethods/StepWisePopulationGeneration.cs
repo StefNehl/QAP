@@ -3,13 +3,13 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
-    public class StepWisePopulationGenerationMethod : IGenerateInitPopulationMethod
+    public class StepWisePopulationGeneration : IGenerateInitPopulationMethod
     {
         private QAPInstance? _qApInstance;
         private int[]? _permutation;
 
         private readonly int _nrOfIndexesToMovePerIteration;
-        public StepWisePopulationGenerationMethod(int nrOfIndexesToMovePerIteration)
+        public StepWisePopulationGeneration(int nrOfIndexesToMovePerIteration)
         {
             _nrOfIndexesToMovePerIteration = nrOfIndexesToMovePerIteration;
         }

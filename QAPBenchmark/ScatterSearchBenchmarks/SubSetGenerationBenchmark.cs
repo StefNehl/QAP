@@ -39,8 +39,8 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     [MemoryDiagnoser]
     public class SubSetGenerationBenchmark
     {
-        private ParallelSubSetGenerationMethod parallelSubSetGenerationMethod;
-        private SubSetGenerationMethod subSetGenerationMethod;
+        private ParallelSubSetGeneration _parallelSubSetGeneration;
+        private SubSetGeneration _subSetGeneration;
 
         private IImprovementMethod improvementMethod;
         private ICombinationMethod combinationMethod;
@@ -64,15 +64,15 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             combinationMethod = new ExhaustingPairwiseCombination();
             combinationMethod.InitMethod(instance);
             
-            var generationMethod = new StepWisePopulationGenerationMethod(2);
+            var generationMethod = new StepWisePopulationGeneration(2);
             generationMethod.InitMethod(instance);
             referenceList = generationMethod.GeneratePopulation(10);
 
-            parallelSubSetGenerationMethod = new ParallelSubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
-            parallelSubSetGenerationMethod.InitMethod(instance);
+            _parallelSubSetGeneration = new ParallelSubSetGeneration( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            _parallelSubSetGeneration.InitMethod(instance);
             
-            subSetGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
-            subSetGenerationMethod.InitMethod(instance);
+            _subSetGeneration = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle, combinationMethod, improvementMethod);
+            _subSetGeneration.InitMethod(instance);
         }
 
         [Benchmark]
@@ -80,7 +80,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for(int i = 0; i < NrOfCalls; i++)
             {
-                await parallelSubSetGenerationMethod.GenerateType1SubSetAsync(referenceList, default);
+                await _parallelSubSetGeneration.GenerateType1SubSetAsync(referenceList, default);
             }
         }
 
@@ -89,7 +89,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for (int i = 0; i < NrOfCalls; i++)
             {
-                subSetGenerationMethod.GenerateType1SubSet(referenceList);
+                _subSetGeneration.GenerateType1SubSet(referenceList);
             }
         }
 
@@ -98,7 +98,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for(int i = 0; i < NrOfCalls; i++)
             {
-                await parallelSubSetGenerationMethod.GenerateType2SubSetAsync(referenceList, default);
+                await _parallelSubSetGeneration.GenerateType2SubSetAsync(referenceList, default);
             }
         }
         
@@ -107,7 +107,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for (int i = 0; i < NrOfCalls; i++)
             {
-                subSetGenerationMethod.GenerateType2SubSet(referenceList);
+                _subSetGeneration.GenerateType2SubSet(referenceList);
             }
         }
         
@@ -116,7 +116,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for(int i = 0; i < NrOfCalls; i++)
             {
-                await parallelSubSetGenerationMethod.GenerateType3SubSetAsync(referenceList, default);
+                await _parallelSubSetGeneration.GenerateType3SubSetAsync(referenceList, default);
             }
         }
         
@@ -125,7 +125,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for (int i = 0; i < NrOfCalls; i++)
             {
-                subSetGenerationMethod.GenerateType3SubSet(referenceList);
+                _subSetGeneration.GenerateType3SubSet(referenceList);
             }
         }
         
@@ -134,7 +134,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for(int i = 0; i < NrOfCalls; i++)
             {
-                await parallelSubSetGenerationMethod.GenerateType4SubSetAsync(referenceList, default);
+                await _parallelSubSetGeneration.GenerateType4SubSetAsync(referenceList, default);
             }
         }
         
@@ -143,7 +143,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         {
             for (int i = 0; i < NrOfCalls; i++)
             {
-                subSetGenerationMethod.GenerateType4SubSet(referenceList);
+                _subSetGeneration.GenerateType4SubSet(referenceList);
             }
         }
     }

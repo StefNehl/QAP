@@ -22,7 +22,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var testInstance = await QAPInstanceProvider.GetTestN3();
             populationSize = 10;
             var permutationSize = 3;
-            generateInitPopulationMethod = new RandomGeneratedPopulationMethod();
+            generateInitPopulationMethod = new RandomGeneratedPopulation();
             generateInitPopulationMethod.InitMethod(testInstance);
         }
 

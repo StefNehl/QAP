@@ -4,7 +4,7 @@ using QAPAlgorithms.ScatterSearch;
 
 namespace QAP;
 
-public record TestSettings(
+public record TestSetting(
     QAPInstance Instance, 
     int PopulationSize,
     int ReferenceSetSize,

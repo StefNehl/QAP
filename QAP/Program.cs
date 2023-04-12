@@ -46,7 +46,6 @@ for(int i = 0; i < filesWithKnownOptimum.Count; i++)
     Console.WriteLine();
     Console.WriteLine($"{i + 1} of {filesWithKnownOptimum.Count} calculated");
     Console.WriteLine();
-
 }
 
 Console.WriteLine(testResults.First().ToStringColumnNames());
@@ -55,16 +54,16 @@ foreach (var t in testResults)
 
 await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-mm-yyyy"));
 
-TestSettings GetTestSettings(QAPInstance instance, int referenceSetSize, int populationSize)
+TestSetting GetTestSettings(QAPInstance instance, int referenceSetSize, int populationSize)
 {
     var improvementMethod = new ImprovedLocalSearchFirstImprovement();
     var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulationMethod(42);
-    var diversificationMethod = new HashCodeDiversificationMethod();
-    var solutionGenerationMethod = new SubSetGenerationMethod( 1, SubSetGenerationMethodType.Cycle,
+    var generationInitPopMethod = new RandomGeneratedPopulation(42);
+    var diversificationMethod = new HashCodeDiversification();
+    var solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle,
         combinationMethod, improvementMethod);
     
-    var testSettings = new TestSettings(
+    var testSetting = new TestSetting(
         instance, 
         populationSize, 
         referenceSetSize, 
@@ -75,5 +74,5 @@ TestSettings GetTestSettings(QAPInstance instance, int referenceSetSize, int pop
         diversificationMethod,
         solutionGenerationMethod);
 
-    return testSettings;
+    return testSetting;
 }
