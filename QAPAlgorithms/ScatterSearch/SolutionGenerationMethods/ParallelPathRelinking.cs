@@ -15,6 +15,7 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
     public new List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
         var taskList = new List<Task>();
+        _newSolutions.Clear();
 
         for(int i = 0; i < referenceSolutions.Count; i++)
         {
