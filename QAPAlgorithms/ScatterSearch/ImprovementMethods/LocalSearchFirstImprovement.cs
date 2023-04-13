@@ -46,23 +46,5 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
             for (int i = 0; i < instanceSolutions.Count; i++)
                 instanceSolutions[i] = ImproveSolution(instanceSolutions[i]);
         }
-
-        public async Task ImproveSolutionsInParallelAsync(List<InstanceSolution> instanceSolutions, CancellationToken ct)
-        {
-            if (instanceSolutions.Count <= 5)
-            {
-                ImproveSolutions(instanceSolutions);
-                return;
-            }
-
-            var taskList = new List<Task>();
-            for (int i = 0; i < instanceSolutions.Count; i++)
-            {
-                var i1 = i;
-                var newTask = Task.Factory.StartNew(() => instanceSolutions[i1] = ImproveSolution(instanceSolutions[i1]), ct);
-                taskList.Add(newTask);
-            }
-            await Task.WhenAll(taskList);
-        }
     }
 }

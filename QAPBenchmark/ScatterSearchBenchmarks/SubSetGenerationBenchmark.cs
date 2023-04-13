@@ -76,75 +76,22 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         }
 
         [Benchmark]
-        public async Task SubSetGen_Typ1_Parallel()
+        public void SubSetGen_Parallel()
         {
             for(int i = 0; i < NrOfCalls; i++)
             {
-                await _parallelSubSetGeneration.GenerateType1SubSetAsync(referenceList, default);
+                _parallelSubSetGeneration.GetSolutions(referenceList);
             }
         }
 
         [Benchmark]
-        public void SubSetGen_Typ1()
+        public void SubSetGen()
         {
             for (int i = 0; i < NrOfCalls; i++)
             {
                 _subSetGeneration.GenerateType1SubSet(referenceList);
             }
         }
-
-        [Benchmark]
-        public async Task SubSetGen_Type2_Parallel()
-        {
-            for(int i = 0; i < NrOfCalls; i++)
-            {
-                await _parallelSubSetGeneration.GenerateType2SubSetAsync(referenceList, default);
-            }
-        }
         
-        [Benchmark]
-        public void SubSetGen_Typ2()
-        {
-            for (int i = 0; i < NrOfCalls; i++)
-            {
-                _subSetGeneration.GenerateType2SubSet(referenceList);
-            }
-        }
-        
-        [Benchmark]
-        public async Task SubSetGen_Type3_Parallel()
-        {
-            for(int i = 0; i < NrOfCalls; i++)
-            {
-                await _parallelSubSetGeneration.GenerateType3SubSetAsync(referenceList, default);
-            }
-        }
-        
-        [Benchmark]
-        public void SubSetGen_Typ3()
-        {
-            for (int i = 0; i < NrOfCalls; i++)
-            {
-                _subSetGeneration.GenerateType3SubSet(referenceList);
-            }
-        }
-        
-        [Benchmark]
-        public async Task SubSetGen_Type4_Parallel()
-        {
-            for(int i = 0; i < NrOfCalls; i++)
-            {
-                await _parallelSubSetGeneration.GenerateType4SubSetAsync(referenceList, default);
-            }
-        }
-        
-        [Benchmark]
-        public void SubSetGen_Typ4()
-        {
-            for (int i = 0; i < NrOfCalls; i++)
-            {
-                _subSetGeneration.GenerateType4SubSet(referenceList);
-            }
-        }
     }
 }

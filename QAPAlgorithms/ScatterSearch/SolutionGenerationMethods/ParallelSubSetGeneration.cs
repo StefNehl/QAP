@@ -4,7 +4,7 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 {
-    public class ParallelSubSetGeneration : ISolutionGenerationMethod
+    public class ParallelSubSetGeneration : SubSetGeneration, ISolutionGenerationMethod
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
@@ -17,7 +17,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             int typeCount,
             SubSetGenerationMethodType subSetGenerationMethodType,
             ICombinationMethod combinationMethod, 
-            IImprovementMethod improvementMethod)
+            IImprovementMethod improvementMethod) : base(typeCount, subSetGenerationMethodType, combinationMethod, improvementMethod)
         {
             _combinationMethod = combinationMethod;
             _improvementMethod = improvementMethod;
@@ -31,84 +31,10 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             _qapInstance = instance;
         }
 
-        /// <summary>
-        /// 18_P.27
-        /// Hot Path https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#prefer-asyncawait-over-directly-returning-task
-        /// Directly return the task for performance
-        /// </summary>
-        /// <param name="referenceSolutions"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        public Task<List<InstanceSolution>> GenerateType1SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
-        {
-            var listForSubSets = new List<InstanceSolution>();
-            return GetSolutionForSubSetsAsync(referenceSolutions, listForSubSets, 0, ct);
-        }
-
-        /// <summary>
-        /// 18_P.27
-        /// </summary>
-        /// <param name="referenceSolutions"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        public  Task<List<InstanceSolution>> GenerateType2SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
-        {
-            var listForSubSets = new List<InstanceSolution>
-            {
-                referenceSolutions.First()
-            };
-
-            return GetSolutionForSubSetsAsync(referenceSolutions, listForSubSets, 1, ct);
-        }
-
-        /// <summary>
-        /// 18_P.28
-        /// </summary>
-        /// <param name="referenceSolutions"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        public Task<List<InstanceSolution>> GenerateType3SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
-        {
-            var listForSubSets = new List<InstanceSolution>
-            {
-                referenceSolutions.First(),
-                referenceSolutions.ElementAt(1)
-            };
-
-            return GetSolutionForSubSetsAsync(referenceSolutions, listForSubSets, 2, ct);
-        }
-
-        /// <summary>
-        /// 18_P.28
-        /// </summary>
-        /// <param name="referenceSolutions"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        public async Task<List<InstanceSolution>> GenerateType4SubSetAsync(List<InstanceSolution> referenceSolutions, CancellationToken ct = default)
-        {
-            var result = new List<InstanceSolution>();
-            var listForSubSets = new List<InstanceSolution>();
-
-            for(int i = 0; i < referenceSolutions.Count; i++)
-            {
-                listForSubSets.Add(referenceSolutions.ElementAt(i));
-                if(i >= 4)
-                {
-                    var newTrialPermutations = _combinationMethod.CombineSolutions(listForSubSets);
-                    var newTrialSolutions = CreateSolutions(newTrialPermutations);
-                    await _improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
-                    result.AddRange(newTrialSolutions);
-                }
-            }
-
-            return result;
-        }
-
-        private async Task<List<InstanceSolution>> GetSolutionForSubSetsAsync(
+        protected override List<InstanceSolution> GetSolutionForSubSets(
             List<InstanceSolution> referenceSolutions,
             List<InstanceSolution> listForSubSets,
-            int startIndex, 
-            CancellationToken ct = default)
+            int startIndex)
         {
             var result = new ConcurrentBag<InstanceSolution>();
             var tasksToFinish = new List<Task>();
@@ -121,12 +47,12 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
                     listForSubSets.Add(referenceSolutions.ElementAt(j));
 
                     var copyOfList = listForSubSets.ToList();
-                    var newTask = Task.Factory.StartNew(async () =>
+                    var newTask = Task.Factory.StartNew(() =>
                     {
-                        var newTrialSolutions = await CreateNewSolutionsFromSolutionsAsync(copyOfList, ct);
+                        var newTrialSolutions = CreateNewSolutionsFromSolutionsAsync(copyOfList);
                         foreach (var solution in newTrialSolutions)
                             result.Add(solution);
-                    }, ct);
+                    });
                     tasksToFinish.Add(newTask);
 
                     listForSubSets.Remove(referenceSolutions.ElementAt(j));
@@ -134,15 +60,15 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
                 listForSubSets.Remove(referenceSolutions.ElementAt(i));
             }
 
-            await Task.WhenAll(tasksToFinish);
+            Task.WhenAll(tasksToFinish).Wait();
             return result.ToList();
         }
 
-        private async Task<List<InstanceSolution>> CreateNewSolutionsFromSolutionsAsync(List<InstanceSolution> solutions, CancellationToken ct)
+        private List<InstanceSolution> CreateNewSolutionsFromSolutionsAsync(List<InstanceSolution> solutions)
         {
             var newTrialPermutations = _combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
-            await _improvementMethod.ImproveSolutionsInParallelAsync(newTrialSolutions, ct);
+            _improvementMethod.ImproveSolutions(newTrialSolutions);
             return newTrialSolutions;
         }
 
@@ -159,27 +85,27 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             return result;
         }
 
-        public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+        public new List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
         {
-            return GetSolutionsAsync(referenceSolutions).Result;
+            return GetSolutionsAsync(referenceSolutions);
         }
 
-        private async Task<List<InstanceSolution>> GetSolutionsAsync(List<InstanceSolution> referenceSolutions)
+        private List<InstanceSolution> GetSolutionsAsync(List<InstanceSolution> referenceSolutions)
         {
             var newSubSets = new List<InstanceSolution>();
             switch (_typeCount)
             {
                 case 1:
-                    newSubSets.AddRange(await GenerateType1SubSetAsync(referenceSolutions));
+                    newSubSets.AddRange(GenerateType1SubSet(referenceSolutions));
                     break;
                 case 2:
-                    newSubSets.AddRange(await GenerateType2SubSetAsync(referenceSolutions));
+                    newSubSets.AddRange( GenerateType2SubSet(referenceSolutions));
                     break;
                 case 3:
-                    newSubSets.AddRange(await GenerateType3SubSetAsync(referenceSolutions));
+                    newSubSets.AddRange( GenerateType3SubSet(referenceSolutions));
                     break;
                 case 4:
-                    newSubSets.AddRange(await GenerateType4SubSetAsync(referenceSolutions));
+                    newSubSets.AddRange( GenerateType4SubSet(referenceSolutions));
                     _typeCount = 0;
                     break;
             }

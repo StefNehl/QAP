@@ -99,7 +99,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             return result;
         }
 
-        private List<InstanceSolution> GetSolutionForSubSets(
+        protected virtual List<InstanceSolution> GetSolutionForSubSets(
             List<InstanceSolution> referenceSolutions,
             List<InstanceSolution> listForSubSets,
             int startIndex)

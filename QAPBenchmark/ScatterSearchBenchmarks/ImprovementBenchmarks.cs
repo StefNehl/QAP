@@ -1,13 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
-using QAPAlgorithms.ScatterSearch;
-using QAPInstanceReader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
 namespace QAPBenchmark.ScatterSearchBenchmarks
@@ -27,17 +20,20 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     //| LocalSearchFirstImprovement_ImproveSolutionsParallel_With50Solutions |   9.490 us | 0.8193 us | 2.2839 us | 0.1068 | 0.0458 |     736 B |
 
     [MemoryDiagnoser]
-    [RPlotExporter]
     public class ImprovementBenchmarks
     {
-        private IImprovementMethod bestImprovementMethod;
-        private IImprovementMethod improvedImprovementMethod;
-        private IImprovementMethod firstImprovementMethod;
+        private IImprovementMethod _bestImprovementMethod;
+        private IImprovementMethod _improvedBestImprovementMethod;
+        private IImprovementMethod _improvedBestImprovementParallelMethod;
+        
+        private IImprovementMethod _firstImprovementMethod;
+        private IImprovementMethod _improvedFirstImprovementMethod;
+        private IImprovementMethod _improvedFirstImprovementParallelMethod;
 
-        private InstanceSolution _solution;
-        private List<InstanceSolution> _10solutions;
-        private List<InstanceSolution> _50solutions;
+        private List<InstanceSolution> _solutions;
 
+        [Params(10, 50, 100)]
+        public int NrOfSolutions { get; set; }
 
         [GlobalSetup]
         public void Setup()
@@ -48,119 +44,60 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
 
-            bestImprovementMethod = new LocalSearchBestImprovement();
-            bestImprovementMethod.InitMethod(instance);
-            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
-            improvedImprovementMethod.InitMethod(instance);
-            firstImprovementMethod = new LocalSearchFirstImprovement();
-            firstImprovementMethod.InitMethod(instance);
+            _bestImprovementMethod = new LocalSearchBestImprovement();
+            _improvedBestImprovementMethod = new ImprovedLocalSearchBestImprovement();
+            _improvedBestImprovementParallelMethod = new ImprovedLocalSearchBestImprovement();
 
-            var permutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            _solution = new InstanceSolution(instance, permutation);
+            _firstImprovementMethod = new LocalSearchFirstImprovement();
+            _improvedFirstImprovementMethod = new ImprovedLocalSearchFirstImprovement();
+            _improvedFirstImprovementParallelMethod = new ImprovedLocalSearchBestImprovementParallel();
+            
+            var permutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-            _10solutions = new List<InstanceSolution>();
-            for (int i = 0; i < 10; i++)
+            _solutions = new List<InstanceSolution>();
+            for (int i = 0; i < NrOfSolutions; i++)
             {
                 var qapSolution = new InstanceSolution(instance, permutation);
-                _10solutions.Add(qapSolution);
+                _solutions.Add(qapSolution);
             }
 
-            _50solutions = new List<InstanceSolution>();
-            for (int i = 0; i < 50; i++)
-            {
-                var qapSolution = new InstanceSolution(instance, permutation);
-                _50solutions.Add(qapSolution);
-            }
         }
 
         [Benchmark]
         public void LocalSearchBestImprovement_ImproveSolution()
         {
-            bestImprovementMethod.ImproveSolution(_solution);
-        }
-
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutions_With10Solutions()
-        {
-            bestImprovementMethod.ImproveSolutions(_10solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutions_With50Solutions()
-        {
-            bestImprovementMethod.ImproveSolutions(_50solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutionsParallel_With10Solutions()
-        {
-            bestImprovementMethod.ImproveSolutionsInParallelAsync(_10solutions, default);
-        }
-
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutionsParallel_With50Solutions()
-        {
-            bestImprovementMethod.ImproveSolutionsInParallelAsync(_50solutions, default);
+            _bestImprovementMethod.ImproveSolutions(_solutions);
         }
         
         [Benchmark]
         public void ImprovedLocalSearchBestImprovement_ImproveSolution()
         {
-            bestImprovementMethod.ImproveSolution(_solution);
+            _improvedBestImprovementMethod.ImproveSolutions(_solutions);
         }
 
         [Benchmark]
-        public void ImprovedLocalSearchBestImprovement_ImproveSolutions_With10Solutions()
+        public void LocalSearchBestImprovement_ImproveSolutions_Parallel()
         {
-            bestImprovementMethod.ImproveSolutions(_10solutions);
+            _improvedBestImprovementParallelMethod.ImproveSolutions(_solutions);
         }
 
         [Benchmark]
-        public void ImprovedLocalSearchBestImprovement_ImproveSolutions_With50Solutions()
+        public void LocalSearchFirstImprovement_ImproveSolutions()
         {
-            bestImprovementMethod.ImproveSolutions(_50solutions);
+            _firstImprovementMethod.ImproveSolutions(_solutions);
+        }
+        
+        [Benchmark]
+        public void ImprovedLocalSearchFirstImprovement_ImproveSolution()
+        {
+            _improvedFirstImprovementMethod.ImproveSolutions(_solutions);
         }
 
         [Benchmark]
-        public void ImprovedLocalSearchBestImprovement_ImproveSolutionsParallel_With10Solutions()
+        public void LocalSearchFirstImprovement_ImproveSolutions_Parallel()
         {
-            bestImprovementMethod.ImproveSolutionsInParallelAsync(_10solutions, default);
+            _improvedFirstImprovementParallelMethod.ImproveSolutions(_solutions);
         }
-
-        [Benchmark]
-        public void ImprovedLocalSearchBestImprovement_ImproveSolutionsParallel_With50Solutions()
-        {
-            bestImprovementMethod.ImproveSolutionsInParallelAsync(_50solutions, default);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolution()
-        {
-            firstImprovementMethod.ImproveSolution(_solution);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolutions_With10Solutions()
-        {
-            firstImprovementMethod.ImproveSolutions(_10solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolutions_With50Solutions()
-        {
-            firstImprovementMethod.ImproveSolutions(_50solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolutionsParallel_With10Solutions()
-        {
-            firstImprovementMethod.ImproveSolutionsInParallelAsync(_10solutions, default);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolutionsParallel_With50Solutions()
-        {
-            firstImprovementMethod.ImproveSolutionsInParallelAsync(_50solutions, default);
-        }
+        
     }
 }

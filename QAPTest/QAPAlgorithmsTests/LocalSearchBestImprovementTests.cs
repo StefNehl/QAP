@@ -13,90 +13,115 @@ namespace QAPTest.QAPAlgorithmsTests
     [TestFixture]
     public class LocalSearchBestImprovementTests
     {
-        private QAPInstance instance;
-        private IImprovementMethod improvementMethod;
-        private IImprovementMethod improvedImprovementMethod;
-        private int[] worsePermutation;
-        private int[] betterPermutation;
+        private QAPInstance _instance;
+        private IImprovementMethod _improvementMethod;
+        private IImprovementMethod _improvedImprovementMethod;
+        private IImprovementMethod _improvemenImprovementParallelMethod;
+        private int[] _worsePermutation;
+        private int[] _betterPermutation;
 
         [SetUp]
         public async Task SetUp()
         {
-            instance = await QAPInstanceProvider.GetChr12a();
-            improvementMethod = new LocalSearchBestImprovement();
-            improvementMethod.InitMethod(instance);
-            improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
-            improvedImprovementMethod.InitMethod(instance);
+            _instance = await QAPInstanceProvider.GetChr12a();
+            _improvementMethod = new LocalSearchBestImprovement();
+            _improvementMethod.InitMethod(_instance);
+            _improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
+            _improvedImprovementMethod.InitMethod(_instance);
+            _improvemenImprovementParallelMethod = new ImprovedLocalSearchBestImprovementParallel();
+            _improvemenImprovementParallelMethod.InitMethod(_instance);
             
-            worsePermutation = new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-            betterPermutation = new int[] { 1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11 };
+            _worsePermutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            _betterPermutation = new [] { 1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11 };
         }
 
         [Test]
         public void ImproveSolution()
         {
-            var qapSolution = new InstanceSolution(instance, worsePermutation);
+            var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-            var betterSolutionValue = improvementMethod.ImproveSolution(qapSolution).SolutionValue;
+            var betterSolutionValue = _improvementMethod.ImproveSolution(qapSolution).SolutionValue;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
-                for (int i = 0; i < betterPermutation.Length; i++)
-                    Assert.That(betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
+                for (int i = 0; i < _betterPermutation.Length; i++)
+                    Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
         }
 
         [Test]
-        public async Task ImproveSolutions()
+        public void ImproveSolutions()
         {
 
-            var qapSolution = new InstanceSolution(instance, worsePermutation);
+            var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
             var solutions = new List<InstanceSolution>() { qapSolution };
-            await improvementMethod.ImproveSolutionsInParallelAsync(solutions);
+            _improvementMethod.ImproveSolutions(solutions);
             var betterSolutionValue = solutions[0].SolutionValue;
             
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
-                for (int i = 0; i < betterPermutation.Length; i++)
-                    Assert.That(betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
+                for (int i = 0; i < _betterPermutation.Length; i++)
+                    Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
         }
         
         [Test]
         public void ImproveSolution_ImprovedAlgo()
         {
-            var qapSolution = new InstanceSolution(instance, worsePermutation);
+            var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-            var betterSolutionValue = improvedImprovementMethod.ImproveSolution(qapSolution).SolutionValue;;
+            var betterSolutionValue = _improvedImprovementMethod.ImproveSolution(qapSolution).SolutionValue;;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
-                for (int i = 0; i < betterPermutation.Length; i++)
-                    Assert.That(betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
+                for (int i = 0; i < _betterPermutation.Length; i++)
+                    Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
         }
 
         [Test]
-        public async Task ImproveSolutions_ImprovedAlgo()
+        public void ImproveSolutions_ImprovedAlgo()
         {
 
-            var qapSolution = new InstanceSolution(instance, worsePermutation);
+            var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
 
             var solutions = new List<InstanceSolution>() { qapSolution };
-            await improvedImprovementMethod.ImproveSolutionsInParallelAsync(solutions);
+            _improvedImprovementMethod.ImproveSolutions(solutions);
             var betterSolutionValue = solutions[0].SolutionValue;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
-                for (int i = 0; i < betterPermutation.Length; i++)
-                    Assert.That(betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
+                for (int i = 0; i < _betterPermutation.Length; i++)
+                    Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
+            });
+        }
+
+        [Test]
+        public void ImproveSolutions_ImprovedAlgo_Parallel()
+        {
+
+            var solutions = new List<InstanceSolution>();
+            
+            for(int i = 0; i < 50; i++)
+                solutions.Add(new InstanceSolution(_instance, _worsePermutation));
+
+            var worseSolutionValue = solutions[0].SolutionValue;
+
+            _improvemenImprovementParallelMethod.ImproveSolutions(solutions);
+            var betterSolutionValue = solutions[0].SolutionValue;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                for (int i = 0; i < _betterPermutation.Length; i++)
+                    Assert.That(_betterPermutation[i], Is.EqualTo(solutions[0].SolutionPermutation[i]));
             });
         }
     }
