@@ -10,11 +10,11 @@ namespace QAPBenchmark.ScatterSearchBenchmarks;
 /*
 |                 Method | NrOfCalls |       Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |    Gen1 |  Allocated | Alloc Ratio |
 |----------------------- |---------- |-----------:|---------:|---------:|------:|--------:|--------:|--------:|-----------:|------------:|
-|          PathRelinking |       100 |   670.5 us | 13.14 us | 17.09 us |  1.00 |    0.00 |  9.7656 |       - |   487.5 KB |        1.00 |
-| PathRelinking_Parallel |       100 | 1,001.8 us | 17.04 us | 16.73 us |  1.48 |    0.06 | 13.6719 | 11.7188 |  673.92 KB |        1.38 |
+|          PathRelinking |       100 |   679.5 us | 13.49 us | 13.25 us |  1.00 |    0.00 |  9.7656 |       - |   487.5 KB |        1.00 |
+| PathRelinking_Parallel |       100 | 1,027.6 us |  9.80 us |  8.18 us |  1.52 |    0.03 | 11.7188 |  9.7656 |  653.54 KB |        1.34 |
 |                        |           |            |          |          |       |         |         |         |            |             |
-|          PathRelinking |       200 | 1,311.2 us | 14.86 us | 13.90 us |  1.00 |    0.00 | 19.5313 |       - |     975 KB |        1.00 |
-| PathRelinking_Parallel |       200 | 1,960.3 us | 18.11 us | 16.94 us |  1.50 |    0.02 | 27.3438 | 23.4375 | 1347.64 KB |        1.38 |
+|          PathRelinking |       200 | 1,366.5 us | 27.14 us | 42.26 us |  1.00 |    0.00 | 19.5313 |       - |     975 KB |        1.00 |
+| PathRelinking_Parallel |       200 | 2,428.4 us | 26.30 us | 24.60 us |  1.74 |    0.05 | 23.4375 | 19.5313 | 1314.13 KB |        1.35 |
  */
 
 [MemoryDiagnoser]

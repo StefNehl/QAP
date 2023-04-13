@@ -28,6 +28,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 
         public void InitMethod(QAPInstance instance)
         {
+            base.InitMethod(instance);
             _qapInstance = instance;
         }
 

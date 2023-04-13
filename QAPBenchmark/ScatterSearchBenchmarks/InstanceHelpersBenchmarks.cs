@@ -2,6 +2,14 @@
 using Domain;
 using Domain.Models;
 
+/*
+|                 Method |     Mean |    Error |  StdDev | Ratio | Allocated | Alloc Ratio |
+|----------------------- |---------:|---------:|--------:|------:|----------:|------------:|
+|       GetSolutionValue | 217.3 ns |  9.68 ns | 0.53 ns |  1.00 |         - |          NA |
+| GetSolutionValueAsSpan | 214.6 ns | 16.60 ns | 0.91 ns |  0.99 |         - |          NA |
+
+ */
+
 namespace QAPBenchmark.ScatterSearchBenchmarks
 {
     [MemoryDiagnoser]
@@ -9,28 +17,27 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     [ShortRunJob]
     public class InstanceHelpersBenchmarks
     {
-
-        private QAPInstance testInstance;
-        private int[] permutation;
+        private QAPInstance _testInstance;
+        private int[] _permutation;
         
         [GlobalSetup] 
         public async Task Setup()
         {
             var instanceReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-            testInstance = await instanceReader.ReadFileAsync("QAPLIB", "chr12a.dat");
-            permutation = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            _testInstance = await instanceReader.ReadFileAsync("QAPLIB", "chr12a.dat");
+            _permutation = new [] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
         }
 
         [Benchmark (Baseline = true)]
         public void GetSolutionValue()
         {
-            InstanceHelpers.GetSolutionValue(testInstance, permutation);
+            InstanceHelpers.GetSolutionValue(_testInstance, _permutation);
         }
         
         [Benchmark]
-        public void GetSolutionValueOp()
+        public void GetSolutionValueAsSpan()
         {
-            InstanceHelpers.GetSolutionValueOp(testInstance, permutation);
+            InstanceHelpers.GetSolutionValueAsSpan(_testInstance, _permutation);
         }
     }
 }

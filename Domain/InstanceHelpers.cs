@@ -57,7 +57,7 @@ namespace Domain
             return delta * 2 ;
         }
 
-        public static long GetSolutionValueOp(QAPInstance instance, int[] permutation)
+        public static long GetSolutionValueAsSpan(QAPInstance instance, int[] permutation)
         {
             var permutationSpan = permutation.AsSpan();
             var n = instance.N;
