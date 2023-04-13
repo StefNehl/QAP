@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using QAPAlgorithms.ScatterSearch;
+using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 namespace QAPTest.QAPAlgorithmsTests;
@@ -16,9 +17,12 @@ public class PathRelinkingTests
     public async Task SetUp()
     {
         _qapInstance = await QAPInstanceProvider.GetTestN3();
-        _pathRelinking = new PathRelinking();
+
+        var improvementMethod = new LocalSearchBestImprovement();
+        
+        _pathRelinking = new PathRelinking(improvementMethod, 100);
         _pathRelinking.InitMethod(_qapInstance);
-        _parallelPathRelinking = new ParallelPathRelinking();
+        _parallelPathRelinking = new ParallelPathRelinking(improvementMethod, 100);
         _parallelPathRelinking.InitMethod(_qapInstance);
     }
 

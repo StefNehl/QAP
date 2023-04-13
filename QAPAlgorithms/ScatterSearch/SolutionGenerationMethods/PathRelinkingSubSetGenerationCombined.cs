@@ -12,9 +12,10 @@ public class PathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
         int typeCount, 
         SubSetGenerationMethodType subSetGenerationMethodType, 
         IImprovementMethod improvementMethod, 
-        ICombinationMethod combinationMethod)
+        ICombinationMethod combinationMethod,
+        int pathRelinkingImproveEveryNSolutions = 100)
     {
-        _pathRelinking = new PathRelinking();
+        _pathRelinking = new PathRelinking(improvementMethod, pathRelinkingImproveEveryNSolutions);
         _subSetGeneration = new SubSetGeneration(typeCount, subSetGenerationMethodType,
             combinationMethod, improvementMethod);
     }

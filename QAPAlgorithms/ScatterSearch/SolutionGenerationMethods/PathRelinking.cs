@@ -5,10 +5,22 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 public class PathRelinking : ISolutionGenerationMethod
 {
-    private QAPInstance _qapInstance;
+    private QAPInstance? _qapInstance;
+    private readonly IImprovementMethod _improvementMethod;
+    private readonly int _improveEveryNSolutions;
+
+    private int _improvementCount;
+
+    
+    public PathRelinking(IImprovementMethod improvementMethod, int improveEveryNSolutions = 100)
+    {
+        _improvementMethod = improvementMethod;
+        _improveEveryNSolutions = improveEveryNSolutions;
+    }
 
     public void InitMethod(QAPInstance instance)
     {
+        _improvementCount = 0;
         _qapInstance = instance;
     }
     
@@ -25,6 +37,10 @@ public class PathRelinking : ISolutionGenerationMethod
             newHashCode = newSolution.HashCode;
             newSolutions.Add(newSolution);
         }
+        
+        if (_improvementCount == _improveEveryNSolutions)
+            _improvementMethod.ImproveSolutions(newSolutions);
+        _improvementCount++;
         
         return newSolutions;
     }

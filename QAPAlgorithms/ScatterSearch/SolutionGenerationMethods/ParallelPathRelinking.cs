@@ -7,7 +7,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
 {
     private readonly ConcurrentBag<InstanceSolution> _newSolutions;
-    public ParallelPathRelinking()
+    public ParallelPathRelinking(IImprovementMethod improvementMethod, int improveEveryNSolutions = 100) : base(improvementMethod, improveEveryNSolutions)
     {
         _newSolutions = new ConcurrentBag<InstanceSolution>();
     }
