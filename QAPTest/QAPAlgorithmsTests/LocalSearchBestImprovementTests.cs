@@ -110,7 +110,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var solutions = new List<InstanceSolution>();
             
             for(int i = 0; i < 50; i++)
-                solutions.Add(new InstanceSolution(_instance, _worsePermutation));
+                solutions.Add(new InstanceSolution(_instance, _worsePermutation.ToArray()));
 
             var worseSolutionValue = solutions[0].SolutionValue;
 
