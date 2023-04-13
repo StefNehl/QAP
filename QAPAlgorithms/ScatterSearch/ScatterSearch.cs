@@ -71,6 +71,8 @@ namespace QAPAlgorithms.ScatterSearch
                 ReferenceSetUpdate(instanceSolution);
             }
             
+            _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
+
             var newSubSets = new List<InstanceSolution>();
 
             while (true)
@@ -176,7 +178,6 @@ namespace QAPAlgorithms.ScatterSearch
             _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
             EliminateIdenticalSolutionsFromSet(_population);
             _improvementMethod.ImproveSolutions(_population);
-            _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
         }
 
         private bool IsSolutionAlreadyInReferenceSet(InstanceSolution instanceSolution)

@@ -23,7 +23,6 @@ var filesWithKnownOptimum = new List<Tuple<string, string>>
     new ("QAPLIB","tai256c.dat"),
 };
 
-
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
 const int runtimeInSeconds = 60;
@@ -37,15 +36,18 @@ var testResults = new List<TestResult>();
 for(int i = 0; i < filesWithKnownOptimum.Count; i++)
 {
     var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].Item1, filesWithKnownOptimum[i].Item2);
-    var testSettings = GetTestSettings(instance, refSetSize, populationSetSize);
-    
-    Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
-    var testResult = TestInstance.StartTest(testSettings);
-    Console.WriteLine(testResult.ToStringForConsole());
-    testResults.Add(testResult);
-    Console.WriteLine();
-    Console.WriteLine($"{i + 1} of {filesWithKnownOptimum.Count} calculated");
-    Console.WriteLine();
+    var testSettingsProvider = new TestSettingsProvider(instance, refSetSize, populationSetSize, runtimeInSeconds);
+
+    foreach (var testSetting in testSettingsProvider.GetTestSettings())
+    {
+        Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
+        var testResult = TestInstance.StartTest(testSetting);
+        Console.WriteLine(testResult.ToStringForConsole());
+        testResults.Add(testResult);
+        Console.WriteLine();
+        Console.WriteLine($"{i + 1} of {filesWithKnownOptimum.Count} calculated");
+        Console.WriteLine();
+    }
 }
 
 Console.WriteLine(testResults.First().ToStringColumnNames());
@@ -54,25 +56,3 @@ foreach (var t in testResults)
 
 await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-mm-yyyy"));
 
-TestSetting GetTestSettings(QAPInstance instance, int referenceSetSize, int populationSize)
-{
-    var improvementMethod = new ImprovedLocalSearchFirstImprovement();
-    var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
-    var generationInitPopMethod = new RandomGeneratedPopulation(42);
-    var diversificationMethod = new HashCodeDiversification();
-    var solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle,
-        combinationMethod, improvementMethod);
-    
-    var testSetting = new TestSetting(
-        instance, 
-        populationSize, 
-        referenceSetSize, 
-        runtimeInSeconds,
-        combinationMethod,
-        generationInitPopMethod,
-        improvementMethod,
-        diversificationMethod,
-        solutionGenerationMethod);
-
-    return testSetting;
-}

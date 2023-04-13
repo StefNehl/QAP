@@ -26,7 +26,6 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
         
         public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearch scatterSearch)
         {
-
             int refSetSize = referenceSet.Count;
             int halfRefSetSize = (int)(refSetSize / (double)2);
             int countForAverage = halfRefSetSize;

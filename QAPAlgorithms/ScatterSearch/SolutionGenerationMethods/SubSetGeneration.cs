@@ -25,7 +25,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             _subSetGenerationMethodType = subSetGenerationMethodType;
         }
 
-        public void InitMethod(QAPInstance instance)
+        public new void InitMethod(QAPInstance instance)
         {
             _qapInstance = instance;
         }
