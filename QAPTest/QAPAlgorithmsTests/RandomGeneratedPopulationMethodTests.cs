@@ -13,27 +13,45 @@ namespace QAPTest.QAPAlgorithmsTests
     [TestFixture]
     public class RandomGeneratedPopulationMethodTests
     {
-        private IGenerateInitPopulationMethod generateInitPopulationMethod;
-        private int populationSize;
+        private RandomGeneratedPopulation _generateInitPopulationMethod;
+        private ParallelRandomGeneratedPopulation _parallelRandomGeneratedPopulation;
+        private int _populationSize;
 
         [SetUp]
         public async Task SetUp()
         {
             var testInstance = await QAPInstanceProvider.GetTestN3();
-            populationSize = 10;
-            var permutationSize = 3;
-            generateInitPopulationMethod = new RandomGeneratedPopulation();
-            generateInitPopulationMethod.InitMethod(testInstance);
+            _populationSize = 10;
+            _generateInitPopulationMethod = new RandomGeneratedPopulation();
+            _generateInitPopulationMethod.InitMethod(testInstance);
+
+            _parallelRandomGeneratedPopulation = new ParallelRandomGeneratedPopulation(42);
+            _parallelRandomGeneratedPopulation.InitMethod(testInstance);
         }
 
         [Test]
         public void CheckGeneratePopulation_CheckPermutationSizeAndPopulationSize()
         {
-            var population = generateInitPopulationMethod.GeneratePopulation(populationSize);
+            var population = _generateInitPopulationMethod.GeneratePopulation(_populationSize);
 
             Assert.Multiple(() =>
             {
-                Assert.That(population, Has.Count.EqualTo(populationSize));
+                Assert.That(population, Has.Count.EqualTo(_populationSize));
+                foreach (var solution in population)
+                {
+                    CheckPermutation(solution.SolutionPermutation);
+                }
+            });
+        }
+        
+        [Test]
+        public void CheckGeneratePopulation_CheckPermutationSizeAndPopulationSize_Parallel()
+        {
+            var population = _parallelRandomGeneratedPopulation.GeneratePopulation(_populationSize);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(population, Has.Count.EqualTo(_populationSize));
                 foreach (var solution in population)
                 {
                     CheckPermutation(solution.SolutionPermutation);
