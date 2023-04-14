@@ -9,7 +9,7 @@ public class ImprovedLocalSearchBestImprovementParallel : ImprovedLocalSearchBes
     {
         if (instanceSolutions.Count <= 5)
         {
-            ImproveSolutions(instanceSolutions);
+            base.ImproveSolutions(instanceSolutions);
             return;
         }
 
