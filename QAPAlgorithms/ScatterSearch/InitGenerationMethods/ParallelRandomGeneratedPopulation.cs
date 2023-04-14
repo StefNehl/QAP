@@ -25,7 +25,7 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
         _permutation = new int[_qApInstance.N];
     }
 
-    public new List<InstanceSolution> GeneratePopulation(int populationSize)
+    public List<InstanceSolution> GeneratePopulation(int populationSize)
     {
         var taskList = new List<Task>();
         _newSolutions.Clear();

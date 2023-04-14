@@ -3,13 +3,13 @@ using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.ImprovementMethods;
 
-public class ImprovedLocalSearchBestImprovementParallel : ImprovedLocalSearchBestImprovement, IImprovementMethod
+public class ParallelImprovedLocalSearchFirstImprovement : ImprovedLocalSearchFirstImprovement, IImprovementMethod
 {
     public new void ImproveSolutions(List<InstanceSolution> instanceSolutions)
     {
         if (instanceSolutions.Count <= 5)
         {
-            base.ImproveSolutions(instanceSolutions);
+            ImproveSolutions(instanceSolutions);
             return;
         }
 

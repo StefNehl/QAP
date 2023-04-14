@@ -28,7 +28,7 @@ namespace QAPTest.QAPAlgorithmsTests
             _improvementMethod.InitMethod(_instance);
             _improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
             _improvedImprovementMethod.InitMethod(_instance);
-            _improvemenImprovementParallelMethod = new ImprovedLocalSearchBestImprovementParallel();
+            _improvemenImprovementParallelMethod = new ParallelImprovedLocalSearchBestImprovement();
             _improvemenImprovementParallelMethod.InitMethod(_instance);
             
             _worsePermutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };

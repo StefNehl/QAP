@@ -65,8 +65,6 @@ using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 
 namespace QAPBenchmark.ScatterSearchBenchmarks
 {
-
-
     [MemoryDiagnoser]
     public class ImprovementBenchmarks
     {
@@ -105,7 +103,7 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             _firstImprovementMethod.InitMethod(instance);
             _improvedFirstImprovementMethod = new ImprovedLocalSearchFirstImprovement();
             _improvedFirstImprovementMethod.InitMethod(instance);
-            _improvedFirstImprovementParallelMethod = new ImprovedLocalSearchBestImprovementParallel();
+            _improvedFirstImprovementParallelMethod = new ParallelImprovedLocalSearchFirstImprovement();
             _improvedFirstImprovementParallelMethod.InitMethod(instance);
             
             var generationMethod = new RandomGeneratedPopulation();
@@ -120,35 +118,35 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
             }
         }
 
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutions()
-        {
-            _bestImprovementMethod.ImproveSolutions(_solutions);
-        }
-        
-        [Benchmark]
-        public void ImprovedLocalSearchBestImprovement_ImproveSolutions()
-        {
-            _improvedBestImprovementMethod.ImproveSolutions(_solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchBestImprovement_ImproveSolutions_Parallel()
-        {
-            _improvedBestImprovementParallelMethod.ImproveSolutions(_solutions);
-        }
-
-        [Benchmark]
-        public void LocalSearchFirstImprovement_ImproveSolutions()
-        {
-            _firstImprovementMethod.ImproveSolutions(_solutions);
-        }
-        
-        [Benchmark]
-        public void ImprovedLocalSearchFirstImprovement_ImproveSolutions()
-        {
-            _improvedFirstImprovementMethod.ImproveSolutions(_solutions);
-        }
+        // [Benchmark]
+        // public void LocalSearchBestImprovement_ImproveSolutions()
+        // {
+        //     _bestImprovementMethod.ImproveSolutions(_solutions);
+        // }
+        //
+        // [Benchmark]
+        // public void ImprovedLocalSearchBestImprovement_ImproveSolutions()
+        // {
+        //     _improvedBestImprovementMethod.ImproveSolutions(_solutions);
+        // }
+        //
+        // [Benchmark]
+        // public void LocalSearchBestImprovement_ImproveSolutions_Parallel()
+        // {
+        //     _improvedBestImprovementParallelMethod.ImproveSolutions(_solutions);
+        // }
+        //
+        // [Benchmark]
+        // public void LocalSearchFirstImprovement_ImproveSolutions()
+        // {
+        //     _firstImprovementMethod.ImproveSolutions(_solutions);
+        // }
+        //
+        // [Benchmark]
+        // public void ImprovedLocalSearchFirstImprovement_ImproveSolutions()
+        // {
+        //     _improvedFirstImprovementMethod.ImproveSolutions(_solutions);
+        // }
 
         [Benchmark]
         public void LocalSearchFirstImprovement_ImproveSolutions_Parallel()
