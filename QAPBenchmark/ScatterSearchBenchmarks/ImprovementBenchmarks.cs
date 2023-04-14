@@ -58,15 +58,17 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
 
         [Params(10, 50, 100)]
         public int NrOfSolutions { get; set; }
+        
+        [Params("chr12a.dat", "chr25a.dat", "tai256c.dat")]
+        public string SolutionName = "tai256c.dat";
 
         [GlobalSetup]
         public void Setup()
         {
             var folderName = "QAPLIB";
-            var fileName = "chr12a.dat";
 
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
-            var instance = qapReader.ReadFileAsync(folderName, fileName).Result;
+            var instance = qapReader.ReadFileAsync(folderName, SolutionName).Result;
 
             _bestImprovementMethod = new LocalSearchBestImprovement();
             _bestImprovementMethod.InitMethod(instance);
