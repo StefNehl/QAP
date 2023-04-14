@@ -53,17 +53,5 @@ public class PathRelinkingSubSetGenerationCombinedBenchmarks
         _referenceSet = new List<InstanceSolution>() { firstSolution, secondSolution };
     }
 
-    [Benchmark (Baseline = true)]
-    public void PathRelinking()
-    {
-        for(int i = 0; i < NrOfCalls; i++)
-            _pathRelinkingSubSetGenerationCombined.GetSolutions(_referenceSet);
-    }
-        
-    [Benchmark]
-    public void PathRelinking_Parallel()
-    {
-        for(int i = 0; i < NrOfCalls; i++)
-            _parallelPathRelinkingSubSetGenerationCombined.GetSolutions(_referenceSet);
-    }
+
 }

@@ -41,7 +41,7 @@ namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
                     _listWithPossibilities.RemoveAt(newRandomIndex);
                 }
 
-                var newSolution = new InstanceSolution(_qApInstance, _permutation);
+                var newSolution = new InstanceSolution(_qApInstance, _permutation.ToArray());
                 population.Add(newSolution);
             }
 

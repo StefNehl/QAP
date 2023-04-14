@@ -85,36 +85,5 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
 
             return result;
         }
-
-        public new List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
-        {
-            return GetSolutionsAsync(referenceSolutions);
-        }
-
-        private List<InstanceSolution> GetSolutionsAsync(List<InstanceSolution> referenceSolutions)
-        {
-            var newSubSets = new List<InstanceSolution>();
-            switch (_typeCount)
-            {
-                case 1:
-                    newSubSets.AddRange(GenerateType1SubSet(referenceSolutions));
-                    break;
-                case 2:
-                    newSubSets.AddRange( GenerateType2SubSet(referenceSolutions));
-                    break;
-                case 3:
-                    newSubSets.AddRange( GenerateType3SubSet(referenceSolutions));
-                    break;
-                case 4:
-                    newSubSets.AddRange( GenerateType4SubSet(referenceSolutions));
-                    _typeCount = 0;
-                    break;
-            }
-            
-            if (_subSetGenerationMethodType == SubSetGenerationMethodType.Cycle)
-                _typeCount++;
-            
-            return newSubSets;
-        }
     }
 }
