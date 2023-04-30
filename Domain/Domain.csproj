@@ -403,8 +403,4 @@
     <Compile Remove="Models\IInstanceSolution.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Results\" />
-  </ItemGroup>
-
 </Project>

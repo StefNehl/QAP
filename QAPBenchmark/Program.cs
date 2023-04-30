@@ -3,10 +3,8 @@ using QAPBenchmark.ScatterSearchBenchmarks;
 
 // BenchmarkRunner.Run<GenerateInitialPopulationBenchmarks>();
 // BenchmarkRunner.Run<InstanceHelpersBenchmarks>();
-// BenchmarkRunner.Run<ImprovementBenchmarks>();
+BenchmarkRunner.Run<ImprovementBenchmarks>();
 // BenchmarkRunner.Run<SolutionGenerationBenchmarks>();
-
-BenchmarkRunner.Run<TestBenchmark>();
 
 // var test = new GenerateInitialPopulationBenchmarks();
 // test.Setup(); 
