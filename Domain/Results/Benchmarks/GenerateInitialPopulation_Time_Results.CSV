@@ -1,4 +1,4 @@
-Method,SolutionName,NrOfSolutions,Mean[us]
+Method,SolutionName,NrOfSolutions,MeanUs
 StepWisePopulationGeneration,chr12a.dat,10,4.843
 RandomGeneratedPopulation,chr12a.dat,10,7.514
 ParallelRandomGeneratedPopulation,chr12a.dat,10,8.794

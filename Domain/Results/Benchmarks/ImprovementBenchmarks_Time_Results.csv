@@ -1,4 +1,4 @@
-Method,SolutionName,NrOfSolutions,Mean[ns]
+Method,SolutionName,NrOfSolutions,MeanNs
 LocalSearchBestImprovement_ImproveSolutions,chr12a.dat,10,23851.8
 ImprovedLocalSearchBestImprovement_ImproveSolutions,chr12a.dat,10,6192.5
 LocalSearchBestImprovement_ImproveSolutions_Parallel,chr12a.dat,10,6237.2

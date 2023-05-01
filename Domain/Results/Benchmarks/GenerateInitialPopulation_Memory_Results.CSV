@@ -1,4 +1,4 @@
-Method,SolutionName,NrOfSolutions,Gen0,Gen1,Allocated[B]
+Method,SolutionName,NrOfSolutions,Gen0,Gen1,AllocatedB
 StepWisePopulationGeneration,chr12a.dat,10.00,0.0153,0.00,1016
 RandomGeneratedPopulation,chr12a.dat,10.00,0.0153,0.00,1016
 ParallelRandomGeneratedPopulation,chr12a.dat,10.00,0.1068,0.00,5809

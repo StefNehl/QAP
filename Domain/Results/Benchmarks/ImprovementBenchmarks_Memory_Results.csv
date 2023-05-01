@@ -1,4 +1,4 @@
-Method,SolutionName,NrOfSolutions,Gen0,Allocated[B]
+Method,SolutionName,NrOfSolutions,Gen0,AllocatedB
 LocalSearchBestImprovement_ImproveSolutions,chr12a.dat,10,-,320
 ImprovedLocalSearchBestImprovement_ImproveSolutions,chr12a.dat,10,0.0153,1040
 LocalSearchBestImprovement_ImproveSolutions_Parallel,chr12a.dat,10,0.0153,1040
