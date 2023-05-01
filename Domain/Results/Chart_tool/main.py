@@ -1,29 +1,36 @@
 from generate_time_plots_for_benchmark import *
 
+memory_label = "Allocated Memory[B]"
+
 generate_plot('..\\Benchmarks\\GenerateInitialPopulation_Time_Results.CSV',
-              "Initial Generation Methods",
+              "Initial Generation Methods Time Consumption",
               "Mean[us]",
               "Time[us]",
               "NrOfSolutions",
-              "Nr of Solutions")
+              "Nr of Solutions",
+              bbox_to_anchor=(0.55, 0.31))
 
 generate_plot("..\\Benchmarks\\GenerateInitialPopulation_Memory_Results.CSV",
-              "Initial Generation Methods",
+              "Initial Generation Methods Memory Consumption",
               "Allocated[B]",
-              "Allocated[B]",
+              memory_label,
               "NrOfSolutions",
-              "Nr of Solutions")
+              "Nr of Solutions",
+              use_different_alpha=True,
+              bbox_to_anchor=(0.55, 0.31))
 
 generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Time_Results.csv",
-              "Improvement Methods",
+              "Improvement Methods Time Consumption",
               "Mean[ns]",
               "Time[ns]",
               "NrOfSolutions",
-              "Nr of Solutions")
+              "Nr of Solutions",
+              bbox_to_anchor=(0.55, 0.045))
 
 generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Memory_Results.csv",
-              "Improvement Methods",
+              "Improvement Methods Memory Consumption",
               "Allocated[B]",
-              "Allocated[B]",
+              memory_label,
               "NrOfSolutions",
-              "Nr of Solutions")
+              "Nr of Solutions",
+              bbox_to_anchor=(0.55, 0.045))
