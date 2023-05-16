@@ -50,7 +50,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
                     var copyOfList = listForSubSets.ToList();
                     var newTask = Task.Factory.StartNew(() =>
                     {
-                        var newTrialSolutions = CreateNewSolutionsFromSolutionsAsync(copyOfList);
+                        var newTrialSolutions = CreateNewSolutionsFromSolutions(copyOfList);
                         foreach (var solution in newTrialSolutions)
                             result.Add(solution);
                     });
@@ -65,7 +65,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             return result.ToList();
         }
 
-        private List<InstanceSolution> CreateNewSolutionsFromSolutionsAsync(List<InstanceSolution> solutions)
+        private List<InstanceSolution> CreateNewSolutionsFromSolutions(List<InstanceSolution> solutions)
         {
             var newTrialPermutations = _combinationMethod.CombineSolutionsThreadSafe(solutions);
             var newTrialSolutions = CreateSolutions(newTrialPermutations);
