@@ -34,3 +34,27 @@ generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Memory_Results.csv",
               "NrOfSolutions",
               "Nr of Solutions",
               bbox_to_anchor=(0.55, 0.045))
+
+generate_plot("..\\Benchmarks\\SolutionGeneration_Results_Time.csv",
+              "Solutions Generation Method Time Consumption",
+              "Mean",
+              "Time[us]",
+              "NrOfCalls",
+              "Nr of Calls",
+              bbox_to_anchor=(0.55, 0.045))
+
+generate_plot("..\\Benchmarks\\SolutionGeneration_Results_Memory.csv",
+              "Solutions Generation Method Memory Consumption",
+              "Allocated",
+              "Allocated Memory[KB]",
+              "NrOfCalls",
+              "Nr of Calls",
+              bbox_to_anchor=(0.55, 0.045))
+
+# generate_plot("..\\Benchmarks\\SolutionGeneration_Results_NrOfSolutions.csv",
+#               "Solutions Generation Method Memory Consumption",
+#               "Solutions generated",
+#               "Solutions generated",
+#               "Method",
+#               "Method",
+#               bbox_to_anchor=(0.55, 0.045))

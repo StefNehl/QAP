@@ -1,0 +1,19 @@
+Method,SolutionName,Solutions generated
+Subset generation,chr12a.dat,593
+Parallel Subset generation,chr12a.dat,589
+Path relinking,chr12a.dat,728
+Parallel Path relinking,chr12a.dat,715
+Combined,chr12a.dat,1291
+Parallel Combined,chr12a.dat,1328
+Subset generation,chr25a.dat,1947
+Parallel Subset generation,chr25a.dat,1946
+Path relinking,chr25a.dat,1821
+Parallel Path relinking,chr25a.dat,1770
+Combined,chr25a.dat,3795
+Parallel Combined,chr25a.dat,3774
+Subset generation,tai256c.dat,8833
+Parallel Subset generation,tai256c.dat,8822
+Path relinking,tai256c.dat,22378
+Parallel Path relinking,tai256c.dat,22494
+Combined,tai256c.dat,31234
+Parallel Combined,tai256c.dat,31247
