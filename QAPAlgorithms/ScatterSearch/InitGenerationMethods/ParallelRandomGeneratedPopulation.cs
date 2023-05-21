@@ -48,15 +48,28 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
         var listWithPossibilities = new List<int>();
         for (int i = 0; i < _permutation.Length; i++)
             listWithPossibilities.Add(i);
-                
+        
+        CheckIfValueIsDoubledInArray(listWithPossibilities);
         for (int i = 0; i < _permutation.Length; i++)
         {
             var newRandomIndex = _randomGenerator.Next(listWithPossibilities.Count - 1);
             _permutation[i] = listWithPossibilities[newRandomIndex];
             listWithPossibilities.RemoveAt(newRandomIndex);
         }
-
+        CheckIfValueIsDoubledInArray(_permutation.ToList());
         return new InstanceSolution(_qApInstance, _permutation.ToArray());
+    }
+
+    private void CheckIfValueIsDoubledInArray(List<int> array)
+    {
+        for (int i = 0; i < array.Count()-1; i++)
+        {
+            for (int j = i + 1; j < array.Count(); j++)
+            {
+                if (array[i] == array[j])
+                    throw new Exception("Double entry");
+            }
+        }
     }
     
 }
