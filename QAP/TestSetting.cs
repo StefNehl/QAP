@@ -28,7 +28,7 @@ public class TestSettingsProvider
     private readonly int _populationSize;
     private readonly int _runtimeInSeconds;
 
-    private const int _randomSeed = 42;
+    private const int RandomSeed = 42;
     
     public TestSettingsProvider(QAPInstance instance, int referenceSetSize, int populationSize, int runtimeInSeconds)
     {
@@ -80,7 +80,7 @@ public class TestSettingsProvider
             50, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
-        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(_randomSeed);
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
         var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
             improvementMethod, combinationMethod, 100);
     
@@ -103,7 +103,7 @@ public class TestSettingsProvider
             0, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
-        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(_randomSeed);
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
         var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
             improvementMethod, combinationMethod, 100);
     
@@ -126,7 +126,7 @@ public class TestSettingsProvider
             50, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchFirstImprovement();
-        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(_randomSeed);
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
         var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
             improvementMethod, combinationMethod, 100);
         
@@ -149,7 +149,7 @@ public class TestSettingsProvider
             0, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchFirstImprovement();
-        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(_randomSeed);
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
         var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
             improvementMethod, combinationMethod, 100);
         
