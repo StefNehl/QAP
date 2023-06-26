@@ -23,16 +23,16 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
             {
                 var i1 = i;
                 var j1 = j;
-                GenerateTwoPaths(i1, j1, referenceSolutions);
 
-                // var task = Task.Factory.StartNew(() =>
-                // {
-                // });
-                // taskList.Add(task);
+                var task = Task.Factory.StartNew(() =>
+                {
+                    GenerateTwoPaths(i1, j1, referenceSolutions);
+                });
+                taskList.Add(task);
             }
         }
 
-        // Task.WhenAll(taskList).Wait();
+        Task.WhenAll(taskList).Wait();
         return _newSolutions.ToList();
     }
 
