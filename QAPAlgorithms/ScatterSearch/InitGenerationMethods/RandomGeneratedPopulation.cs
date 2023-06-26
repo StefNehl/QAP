@@ -5,8 +5,8 @@ namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
     public class RandomGeneratedPopulation : IGenerateInitPopulationMethod
     {
-        private QAPInstance? _qApInstance;
-        private int[]? _permutation;
+        private QAPInstance _qApInstance;
+        private int[] _permutation;
         
         private readonly Random _randomGenerator;
         private readonly List<int> _listWithPossibilities;

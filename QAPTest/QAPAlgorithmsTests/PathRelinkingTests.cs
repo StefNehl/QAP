@@ -14,9 +14,9 @@ public class PathRelinkingTests
 
     
     [SetUp]
-    public async Task SetUp()
+    public void SetUp()
     {
-        _qapInstance = await QAPInstanceProvider.GetTestN3();
+        _qapInstance = QAPInstanceProvider.GetTestN3();
 
         var improvementMethod = new LocalSearchBestImprovement();
         

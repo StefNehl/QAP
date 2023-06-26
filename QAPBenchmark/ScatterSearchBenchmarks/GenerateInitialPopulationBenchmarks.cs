@@ -47,7 +47,6 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
     [MemoryDiagnoser]
     public class GenerateInitialPopulationBenchmarks
     {
-        private int solutionSize;
         private IGenerateInitPopulationMethod _stepWiseGenerationPopulation;
         private IGenerateInitPopulationMethod _randomGenerationPopulation;
         private ParallelRandomGeneratedPopulation _parallelRandomGeneratedPopulation;
@@ -61,7 +60,6 @@ namespace QAPBenchmark.ScatterSearchBenchmarks
         [GlobalSetup] 
         public void Setup() 
         {
-            solutionSize = 10;
             var folderName = "QAPLIB";
 
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();

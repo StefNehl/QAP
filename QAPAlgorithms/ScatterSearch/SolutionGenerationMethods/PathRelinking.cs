@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain;
+using Domain.Models;
 using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
@@ -64,7 +65,7 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 public class PathRelinking : ISolutionGenerationMethod
 {
-    private QAPInstance? _qapInstance;
+    private QAPInstance _qapInstance;
     private readonly IImprovementMethod _improvementMethod;
     private readonly int _improveEveryNSolutions;
 
@@ -89,13 +90,11 @@ public class PathRelinking : ISolutionGenerationMethod
 
         var newHashCode = startingSolution.HashCode;
         var newPermutation = startingSolution.SolutionPermutation.ToArray();
-        while (newHashCode != guidingSolution.HashCode)
+        var guidingPermutation = guidingSolution.SolutionPermutation.ToArray();
+        var guidingHashCode = guidingSolution.HashCode;
+        while (newHashCode != guidingHashCode)
         {
-            // DisplayArrayInConsole("New Permutation", newPermutation);
-            // DisplayArrayInConsole("Guided Solution", guidingSolution.SolutionPermutation);
-            AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingSolution.SolutionPermutation);
-            // DisplayArrayInConsole("New Permutation", newPermutation);
-            // DisplayArrayInConsole("Guided Solution", guidingSolution.SolutionPermutation);
+            AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingPermutation);
             var newSolution = new InstanceSolution(_qapInstance, newPermutation.ToArray());
             newHashCode = newSolution.HashCode;
             newSolutions.Add(newSolution);
@@ -129,6 +128,9 @@ public class PathRelinking : ISolutionGenerationMethod
             
             notCorrectIndices.Add(i);
         }
+        
+        if(notCorrectIndices.Count == 0)
+            Console.WriteLine("Test");
 
         var indexForSwap = notCorrectIndices[0];
         var correctValueForIndex = guidingPermutation[indexForSwap];

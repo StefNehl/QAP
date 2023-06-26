@@ -73,19 +73,19 @@ namespace QAPTest
         }
 
 
-        public static async Task<QAPInstance> GetTestN3()
+        public static QAPInstance GetTestN3()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             return qapReader.ReadFileAsync("Small", "TestN3.dat").Result;
         }
         
-        public static async Task<QAPInstance> GetTestN4()
+        public static QAPInstance GetTestN4()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             return qapReader.ReadFileAsync("Small", "TestN4.dat").Result;
         }
         
-        public static async Task<QAPInstance> GetTestN5()
+        public static QAPInstance GetTestN5()
         {
             var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
             return qapReader.ReadFileAsync("Small", "TestN5.dat").Result;

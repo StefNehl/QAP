@@ -5,8 +5,8 @@ namespace QAPAlgorithms.ScatterSearch.InitGenerationMethods
 {
     public class StepWisePopulationGeneration : IGenerateInitPopulationMethod
     {
-        private QAPInstance? _qApInstance;
-        private int[]? _permutation;
+        private QAPInstance _qApInstance;
+        private int[] _permutation;
 
         private readonly int _nrOfIndexesToMovePerIteration;
         public StepWisePopulationGeneration(int nrOfIndexesToMovePerIteration)

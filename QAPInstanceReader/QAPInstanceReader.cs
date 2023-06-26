@@ -60,7 +60,7 @@ namespace QAPInstanceReader
                 throw new FileNotFoundException(fullPath);
             }
 
-            string? line;
+            string line;
             using(StreamReader file = new StreamReader(fullPath))
             {
                 int count = 0;
@@ -114,7 +114,7 @@ namespace QAPInstanceReader
             return new QAPInstance(fileName, n, a, b);
         }
 
-        private void ParseStringValuesAndInsertInIntMatrix(string[]? stringValues, int[,] matrix, int rowIndex)
+        private void ParseStringValuesAndInsertInIntMatrix(string[] stringValues, int[,] matrix, int rowIndex)
         {
             if (stringValues == null)
                 return;

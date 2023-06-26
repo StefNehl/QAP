@@ -8,7 +8,7 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
 {
     private readonly ConcurrentBag<InstanceSolution> _newSolutions = new ();
     
-    private QAPInstance? _qApInstance;
+    private QAPInstance _qApInstance;
         
     private readonly Random _randomGenerator;
 

@@ -8,10 +8,8 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
     {
         private readonly ICombinationMethod _combinationMethod;
         private readonly IImprovementMethod _improvementMethod;
-        private readonly SubSetGenerationMethodType _subSetGenerationMethodType;
 
-        private QAPInstance? _qapInstance;
-        private int _typeCount;
+        private QAPInstance _qapInstance;
 
         public ParallelSubSetGeneration(
             int typeCount,
@@ -22,11 +20,9 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods
             _combinationMethod = combinationMethod;
             _improvementMethod = improvementMethod;
 
-            _typeCount = typeCount;
-            _subSetGenerationMethodType = subSetGenerationMethodType;
         }
 
-        public void InitMethod(QAPInstance instance)
+        public new void InitMethod(QAPInstance instance)
         {
             base.InitMethod(instance);
             _qapInstance = instance;

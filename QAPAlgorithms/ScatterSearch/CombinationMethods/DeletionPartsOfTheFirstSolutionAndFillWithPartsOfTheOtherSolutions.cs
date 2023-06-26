@@ -11,7 +11,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
         private readonly bool _deleteWorstPart;
         private readonly int? _maxNrOfSolutions;
         
-        private QAPInstance? _qapInstance;
+        private QAPInstance _qapInstance;
 
         /// <summary>
         /// This combination method generates a new permutation  a part (determined by the percentage value) of the best solution and fills the deleted with parts of the other solutions

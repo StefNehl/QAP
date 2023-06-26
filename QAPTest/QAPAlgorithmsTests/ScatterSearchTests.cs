@@ -3,6 +3,7 @@ using Domain.Models;
 using QAPAlgorithms.Contracts;
 using QAPAlgorithms.ScatterSearch;
 using QAPAlgorithms.ScatterSearch.CombinationMethods;
+using QAPAlgorithms.ScatterSearch.DiversificationMethods;
 using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
@@ -21,9 +22,9 @@ namespace QAPTest.QAPAlgorithmsTests
         private ISolutionGenerationMethod _solutionGenerationMethod;
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
-            _testInstance = await QAPInstanceProvider.GetTestN3();
+            _testInstance = QAPInstanceProvider.GetTestN3();
             _improvementMethod = new LocalSearchFirstImprovement();
             _improvementMethod.InitMethod(_testInstance);
             _combinationMethod = new ExhaustingPairwiseCombination();
@@ -32,6 +33,7 @@ namespace QAPTest.QAPAlgorithmsTests
             _generateInitPopulationMethod.InitMethod(_testInstance);
             _solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
             _solutionGenerationMethod.InitMethod(_testInstance);
+            _diversificationMethod = new HashCodeDiversification();
             _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
         }
 

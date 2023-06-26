@@ -11,11 +11,11 @@ namespace QAPTest.QAPAlgorithmsTests
         private QAPInstance _qapInstanceN5;
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             _combinationMethod = new ExhaustingPairwiseCombination();
-            _qapInstanceN4 = await QAPInstanceProvider.GetTestN4();
-            _qapInstanceN5 = await QAPInstanceProvider.GetTestN5();
+            _qapInstanceN4 = QAPInstanceProvider.GetTestN4();
+            _qapInstanceN5 = QAPInstanceProvider.GetTestN5();
         }
 
         [Test]

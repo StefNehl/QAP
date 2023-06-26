@@ -15,8 +15,8 @@ namespace Domain.Models
         public InstanceSolution(QAPInstance instance, int[] permutation)
         {
             SolutionPermutation = permutation;
-            SolutionValue = InstanceHelpers.GetSolutionValue(instance, permutation);
-            HashCode = InstanceHelpers.GenerateHashCode(permutation);
+            RefreshSolutionValue(instance);
+            RefreshHashCode();
         }
 
         public void RefreshSolutionValue(QAPInstance instance)
@@ -46,7 +46,7 @@ namespace Domain.Models
             return resultString;
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not InstanceSolution)
                 return false;

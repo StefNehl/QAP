@@ -18,9 +18,9 @@ namespace QAPTest.QAPAlgorithmsTests
         private int _populationSize;
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
-            var testInstance = await QAPInstanceProvider.GetTestN3();
+            var testInstance = QAPInstanceProvider.GetTestN3();
             _populationSize = 10;
             _generateInitPopulationMethod = new RandomGeneratedPopulation();
             _generateInitPopulationMethod.InitMethod(testInstance);

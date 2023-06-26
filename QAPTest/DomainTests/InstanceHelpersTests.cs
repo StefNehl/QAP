@@ -152,9 +152,9 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public async Task GetIndexOfWorstPart_SmallerInstance()
+        public void GetIndexOfWorstPart_SmallerInstance()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutation = new int[3] { 0, 1, 2 };
 
             var index = InstanceHelpers.GetIndexOfWorstPart(permutation, 2, instance);
@@ -162,9 +162,9 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public async Task GetIndexOfWorstPart_ThrowException()
+        public void GetIndexOfWorstPart_ThrowException()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutation = new int[3] { 0, 1, 2 };
 
             Assert.Throws<Exception>(() => InstanceHelpers.GetIndexOfWorstPart(permutation, 1, instance));
@@ -180,9 +180,9 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public async Task GetIndexOfBestPart_SmallerInstance()
+        public void GetIndexOfBestPart_SmallerInstance()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutation = new int[3] { 0, 1, 2 };
 
             var index = InstanceHelpers.GetIndexOfBestPart(permutation, 2, instance);
@@ -190,18 +190,18 @@ namespace QAPTest.DomainTests
         }
 
         [Test]
-        public async Task GetIndexOfBestPart_ThrowException()
+        public void GetIndexOfBestPart_ThrowException()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutation = new int[3] { 0, 1, 2 };
 
             Assert.Throws<Exception>(() => InstanceHelpers.GetIndexOfBestPart(permutation, 1, instance));
         }
 
         [Test]
-        public async Task GetSolutionDifferenceAfterSwap_fromZeroToOne()
+        public void GetSolutionDifferenceAfterSwap_fromZeroToOne()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutationBefore = new int[3] { 0, 1, 2 };
             var permutationAfter = new int[3] { 1, 0, 2 };
 
@@ -221,9 +221,9 @@ namespace QAPTest.DomainTests
         }
         
         [Test]
-        public async Task GetSolutionDifferenceAfterSwap_fromOneToZero()
+        public void GetSolutionDifferenceAfterSwap_fromOneToZero()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutationBefore = new int[3] { 0, 1, 2 };
             var permutationAfter = new int[3] { 1, 0, 2 };
 
@@ -243,9 +243,9 @@ namespace QAPTest.DomainTests
         }
         
         [Test]
-        public async Task GetSolutionDifferenceAfterSwap_fromZeroToLast()
+        public void GetSolutionDifferenceAfterSwap_fromZeroToLast()
         {
-            var instance = await QAPInstanceProvider.GetTestN3();
+            var instance = QAPInstanceProvider.GetTestN3();
             var permutationBefore = new int[3] { 0, 1, 2 };
             var permutationAfter = new int[3] { 2, 1, 0};
 

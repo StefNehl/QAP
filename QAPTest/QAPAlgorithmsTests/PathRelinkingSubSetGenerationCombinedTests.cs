@@ -14,9 +14,9 @@ public class PathRelinkingSubSetGenerationCombinedTests
     private ParallelPathRelinkingSubSetGenerationCombined _parallelPathRelinkingSubSetGenerationCombined;
     
     [SetUp]
-    public async Task SetUp()
+    public void SetUp()
     {
-        _qapInstance = await QAPInstanceProvider.GetTestN3();
+        _qapInstance = QAPInstanceProvider.GetTestN3();
         var improvementMethod = new LocalSearchFirstImprovement(); 
         improvementMethod.InitMethod(_qapInstance);
         var combinationMethod = new ExhaustingPairwiseCombination();
