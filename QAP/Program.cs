@@ -29,7 +29,7 @@ var filesWithKnownOptimum = new List<Tuple<string, string>>
 
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
-const int runtimeInSeconds = 60;
+const int runtimeInSeconds = 10;
 
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
 const int refSetSize = 10;

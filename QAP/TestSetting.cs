@@ -26,6 +26,8 @@ public class TestSettingsProvider
     private readonly int _referenceSetSize;
     private readonly int _populationSize;
     private readonly int _runtimeInSeconds;
+
+    private const int RandomSeed = 42;
     
     public TestSettingsProvider(QAPInstance instance, int referenceSetSize, int populationSize, int runtimeInSeconds)
     {
@@ -35,28 +37,51 @@ public class TestSettingsProvider
         _runtimeInSeconds = runtimeInSeconds;
     }
     
+    /// <summary>
+    /// Returns 4 different Test Cases
+    /// Generation Method: ParallelRandomGeneratedPopulation
+    /// Diversification Method: HashCodeDiversification
+    /// Solution Generation Method:
+    ///     ParallelPathRelinkingSubSetGenerationCombined
+    ///
+    /// Test Case 1:
+    ///     Combination: DeletionPartsOfTheFirstSolution
+    ///                  AndFillWithPartsOfTheOtherSolutions
+    ///     Improvement: BestImprovement
+    /// Test Case 2:
+    ///     Combination: ExhaustingPairwiseCombination
+    ///     Improvement: BestImprovement
+    /// Test Case 3:
+    ///     Combination: DeletionPartsOfTheFirstSolution
+    ///                  AndFillWithPartsOfTheOtherSolution
+    ///     Improvement: FirstImprovement
+    /// Test Case 4:
+    ///     Combination: ExhaustingPairwiseCombination
+    ///     Improvement: FirstImprovement
+    /// </summary>
+    /// <returns></returns>
     public List<TestSetting> GetTestSettings()
     {
         var tests = new List<TestSetting>
         {
-            // GetBaseLine(),
-            GetPathRelinking(),
-            // GetCombinedSolutionGeneration()
+            TestCase1(),
+            TestCase2(),
+            TestCase3(),
+            TestCase4()
         };
 
         return tests; 
     }
-
-    //Generate Baseline
-    private TestSetting GetBaseLine()
+    
+    private TestSetting TestCase1()
     {
-        //Generate Baseline
-        var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+        var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 
+            50, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
-        var improvementMethod = new ImprovedLocalSearchFirstImprovement();
-        var generationInitPopMethod = new RandomGeneratedPopulation(42);
-        var solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle,
-            combinationMethod, improvementMethod);
+        var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
+        var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
+            improvementMethod, combinationMethod, 100);
     
         var testSetting = new TestSetting(
             _instance, 
@@ -71,13 +96,15 @@ public class TestSettingsProvider
         return testSetting;
     }
 
-    private TestSetting GetPathRelinking()
+    private TestSetting TestCase2()
     {
-        var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+        var combinationMethod = new ExhaustingPairwiseCombination(1, 
+            0, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
-        var improvementMethod = new ImprovedLocalSearchFirstImprovement();
-        var generationInitPopMethod = new RandomGeneratedPopulation(42);
-        var solutionGenerationMethod = new PathRelinking(improvementMethod);
+        var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
+        var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
+            improvementMethod, combinationMethod, 100);
     
         var testSetting = new TestSetting(
             _instance, 
@@ -92,14 +119,39 @@ public class TestSettingsProvider
         return testSetting;
     }
 
-    private TestSetting GetCombinedSolutionGeneration()
+    private TestSetting TestCase3()
     {
-        var combinationMethod = new ExhaustingPairwiseCombination(1, 10, checkIfSolutionsWereAlreadyCombined: true);
+        var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 
+            50, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeDiversification();
-        var improvementMethod = new ImprovedLocalSearchFirstImprovement();
-        var generationInitPopMethod = new RandomGeneratedPopulation(42);
-        var solutionGenerationMethod = new PathRelinkingSubSetGenerationCombined(1, SubSetGenerationMethodType.Cycle, improvementMethod, combinationMethod);
-    
+        var improvementMethod = new ParallelImprovedLocalSearchFirstImprovement();
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
+        var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
+            improvementMethod, combinationMethod, 100);
+        
+        var testSetting = new TestSetting(
+            _instance, 
+            _populationSize, 
+            _referenceSetSize, 
+            _runtimeInSeconds,
+            combinationMethod,
+            generationInitPopMethod,
+            improvementMethod,
+            diversificationMethod,
+            solutionGenerationMethod);
+        return testSetting;
+    }
+
+    private TestSetting TestCase4()
+    {
+        var combinationMethod = new ExhaustingPairwiseCombination(1, 
+            0, checkIfSolutionsWereAlreadyCombined: true);
+        var diversificationMethod = new HashCodeDiversification();
+        var improvementMethod = new ParallelImprovedLocalSearchFirstImprovement();
+        var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
+        var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
+            improvementMethod, combinationMethod, 100);
+        
         var testSetting = new TestSetting(
             _instance, 
             _populationSize, 

@@ -25,7 +25,7 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
                 var j1 = j;
                 var task = Task.Factory.StartNew(() =>
                 {
-                    GenerateTwoPath(i1, j1, referenceSolutions);
+                    GenerateTwoPaths(i1, j1, referenceSolutions);
                 });
                 taskList.Add(task);
             }
@@ -35,7 +35,7 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
         return _newSolutions.ToList();
     }
 
-    private void GenerateTwoPath(int i, int j, IReadOnlyList<InstanceSolution> referenceSolutions)
+    private void GenerateTwoPaths(int i, int j, IReadOnlyList<InstanceSolution> referenceSolutions)
     {
         AddRangeConcurrent(GeneratePathAndGetSolutions(referenceSolutions[i], referenceSolutions[j]));
         AddRangeConcurrent(GeneratePathAndGetSolutions(referenceSolutions[j], referenceSolutions[i]));
