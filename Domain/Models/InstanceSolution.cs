@@ -10,7 +10,7 @@ namespace Domain.Models
     {
         public int[] SolutionPermutation { get; }
         public long SolutionValue { get; set; }
-        public long HashCode { get; }
+        public long HashCode { get; private set; }
 
         public InstanceSolution(QAPInstance instance, int[] permutation)
         {
@@ -22,6 +22,11 @@ namespace Domain.Models
         public void RefreshSolutionValue(QAPInstance instance)
         {
             SolutionValue = InstanceHelpers.GetSolutionValue(instance, this.SolutionPermutation);
+        }
+
+        public void RefreshHashCode()
+        {
+            HashCode = InstanceHelpers.GenerateHashCode(SolutionPermutation);
         }
 
         public string DisplayInConsole()

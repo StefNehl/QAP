@@ -45,6 +45,7 @@ public class ImprovedLocalSearchBestImprovement  : IImprovementMethod
             (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) =
                 (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
             instanceSolution.SolutionValue = minValue;
+            instanceSolution.RefreshHashCode();
         }
 
         return instanceSolution;

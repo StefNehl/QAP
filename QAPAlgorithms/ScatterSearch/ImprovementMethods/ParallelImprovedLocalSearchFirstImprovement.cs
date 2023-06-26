@@ -17,7 +17,7 @@ public class ParallelImprovedLocalSearchFirstImprovement : ImprovedLocalSearchFi
         for (int i = 0; i < instanceSolutions.Count; i++)
         {
             var i1 = i;
-            var newTask = Task.Factory.StartNew(() => instanceSolutions[i1] = ImproveSolution(instanceSolutions[i1]));
+            var newTask = Task.Factory.StartNew(() => ImproveSolution(instanceSolutions[i1]));
             taskList.Add(newTask);
         }
         Task.WhenAll(taskList).Wait();

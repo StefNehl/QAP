@@ -7,6 +7,10 @@ using QAPAlgorithms.ScatterSearch.ImprovementMethods;
 using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
 using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
+
+// await TestParallelPopulationGeneration.Test();
+// return;
+
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
 var filesWithKnownOptimum = new List<Tuple<string, string>>
@@ -41,7 +45,7 @@ for(int i = 0; i < filesWithKnownOptimum.Count; i++)
     foreach (var testSetting in testSettingsProvider.GetTestSettings())
     {
         Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
-        var testResult = TestInstance.StartTest(testSetting);
+        var testResult = TestInstance.StartTest(testSetting, true);
         Console.WriteLine(testResult.ToStringForConsole());
         testResults.Add(testResult);
         Console.WriteLine();

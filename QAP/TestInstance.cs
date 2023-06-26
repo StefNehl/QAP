@@ -4,7 +4,7 @@ namespace QAP
 {
     public static class TestInstance
     {
-        public static TestResult StartTest(TestSetting testSetting)
+        public static TestResult StartTest(TestSetting testSetting, bool displayProgressInConsole)
         {
             var scatterSearch = new ScatterSearch(
                 testSetting.GenerateInitPopulationMethod, 
@@ -18,7 +18,7 @@ namespace QAP
             var result = scatterSearch.Solve(
                 testSetting.Instance,
                 testSetting.RunTimeInSeconds, 
-                testSetting.DisplayProgressInConsole);
+                displayProgressInConsole);
 
             var newTestResult = new TestResult(
                 testSetting,

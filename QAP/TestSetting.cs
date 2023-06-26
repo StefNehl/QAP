@@ -18,8 +18,7 @@ public record TestSetting(
     IGenerateInitPopulationMethod GenerateInitPopulationMethod,
     IImprovementMethod ImprovementMethod,
     IDiversificationMethod DiversificationMethod,
-    ISolutionGenerationMethod SolutionGenerationMethod,
-    bool DisplayProgressInConsole = false);
+    ISolutionGenerationMethod SolutionGenerationMethod);
 
 public class TestSettingsProvider
 {
@@ -40,9 +39,9 @@ public class TestSettingsProvider
     {
         var tests = new List<TestSetting>
         {
-            GetBaseLine(),
+            // GetBaseLine(),
             GetPathRelinking(),
-            GetCombinedSolutionGeneration()
+            // GetCombinedSolutionGeneration()
         };
 
         return tests; 

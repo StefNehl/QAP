@@ -53,6 +53,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 (instanceSolution.SolutionPermutation[minValueIndex + 1], instanceSolution.SolutionPermutation[minValueIndex]) =
                     (instanceSolution.SolutionPermutation[minValueIndex], instanceSolution.SolutionPermutation[minValueIndex + 1]);
                 instanceSolution.RefreshSolutionValue(_instance);
+                instanceSolution.RefreshHashCode();
             }
 
             return instanceSolution;

@@ -30,6 +30,7 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 var newSolutionValue = instanceSolution.SolutionValue;
                 if (InstanceHelpers.IsBetterSolution(solutionValue, newSolutionValue))
                 {
+                    instanceSolution.RefreshHashCode();
                     break;
                 }
                 instanceSolution.SolutionPermutation[i] = backUpFirstItem;

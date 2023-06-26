@@ -40,11 +40,16 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-            var betterSolutionValue = _improvementMethod.ImproveSolution(qapSolution).SolutionValue;
+            var worseHashCode = qapSolution.HashCode;
+
+            var betterSolution = _improvementMethod.ImproveSolution(qapSolution);
+            var betterSolutionValue = betterSolution.SolutionValue;
+            var betterHashCode = betterSolution.HashCode;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                Assert.That(betterHashCode, Is.Not.EqualTo(worseHashCode));
                 for (int i = 0; i < _betterPermutation.Length; i++)
                     Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
@@ -56,14 +61,18 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
+            var worseHashCode = qapSolution.HashCode;
 
             var solutions = new List<InstanceSolution>() { qapSolution };
-            _improvementMethod.ImproveSolutions(solutions);
-            var betterSolutionValue = solutions[0].SolutionValue;
+            _improvedImprovementMethod.ImproveSolutions(solutions);
+            var betterSolution = solutions[0];
+            var betterSolutionValue = betterSolution.SolutionValue;
+            var betterHashCode = betterSolution.HashCode;
             
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                Assert.That(betterHashCode, Is.Not.EqualTo(worseHashCode));
                 for (int i = 0; i < _betterPermutation.Length; i++)
                     Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
@@ -74,11 +83,16 @@ namespace QAPTest.QAPAlgorithmsTests
         {
             var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
-            var betterSolutionValue = _improvedImprovementMethod.ImproveSolution(qapSolution).SolutionValue;;
+            var worseHashCode = qapSolution.HashCode;
+
+            var betterSolution = _improvedImprovementMethod.ImproveSolution(qapSolution);
+            var betterSolutionValue = betterSolution.SolutionValue;
+            var betterHashCode = betterSolution.HashCode;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                Assert.That(betterHashCode, Is.Not.EqualTo(worseHashCode));
                 for (int i = 0; i < _betterPermutation.Length; i++)
                     Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
@@ -90,14 +104,18 @@ namespace QAPTest.QAPAlgorithmsTests
 
             var qapSolution = new InstanceSolution(_instance, _worsePermutation);
             var worseSolutionValue = qapSolution.SolutionValue;
+            var worseHashCode = qapSolution.HashCode;
 
             var solutions = new List<InstanceSolution>() { qapSolution };
             _improvedImprovementMethod.ImproveSolutions(solutions);
-            var betterSolutionValue = solutions[0].SolutionValue;
+            var betterSolution = solutions[0];
+            var betterSolutionValue = betterSolution.SolutionValue;
+            var betterHashCode = betterSolution.HashCode;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                Assert.That(betterHashCode, Is.Not.EqualTo(worseHashCode));
                 for (int i = 0; i < _betterPermutation.Length; i++)
                     Assert.That(_betterPermutation[i], Is.EqualTo(qapSolution.SolutionPermutation[i]));
             });
@@ -113,13 +131,17 @@ namespace QAPTest.QAPAlgorithmsTests
                 solutions.Add(new InstanceSolution(_instance, _worsePermutation.ToArray()));
 
             var worseSolutionValue = solutions[0].SolutionValue;
+            var worseHashCode = solutions[0].HashCode;
 
             _improvemenImprovementParallelMethod.ImproveSolutions(solutions);
-            var betterSolutionValue = solutions[0].SolutionValue;
+            var betterSolution = solutions[0];
+            var betterSolutionValue = betterSolution.SolutionValue;
+            var betterHashCode = betterSolution.HashCode;
 
             Assert.Multiple(() =>
             {
                 Assert.That(betterSolutionValue, Is.LessThan(worseSolutionValue));
+                Assert.That(betterHashCode, Is.Not.EqualTo(worseHashCode));
                 for (int i = 0; i < _betterPermutation.Length; i++)
                     Assert.That(_betterPermutation[i], Is.EqualTo(solutions[0].SolutionPermutation[i]));
             });

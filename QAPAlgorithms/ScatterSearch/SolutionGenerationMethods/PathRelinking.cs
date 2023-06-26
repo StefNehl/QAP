@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain;
+using Domain.Models;
 using QAPAlgorithms.Contracts;
 
 namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
@@ -91,7 +92,11 @@ public class PathRelinking : ISolutionGenerationMethod
         var newPermutation = startingSolution.SolutionPermutation.ToArray();
         while (newHashCode != guidingSolution.HashCode)
         {
+            // DisplayArrayInConsole("New Permutation", newPermutation);
+            // DisplayArrayInConsole("Guided Solution", guidingSolution.SolutionPermutation);
             AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingSolution.SolutionPermutation);
+            // DisplayArrayInConsole("New Permutation", newPermutation);
+            // DisplayArrayInConsole("Guided Solution", guidingSolution.SolutionPermutation);
             var newSolution = new InstanceSolution(_qapInstance, newPermutation.ToArray());
             newHashCode = newSolution.HashCode;
             newSolutions.Add(newSolution);
@@ -102,6 +107,17 @@ public class PathRelinking : ISolutionGenerationMethod
         _improvementCount++;
         
         return newSolutions;
+    }
+
+    private void DisplayArrayInConsole(string name, int[] array)
+    {
+        Console.Write(name + ": ");
+        foreach (var i in array)
+        {
+            Console.Write(array[i] + ", ");
+        }
+        Console.Write(" Hashcode: " + InstanceHelpers.GenerateHashCode(array));
+        Console.WriteLine();
     }
 
     private static void AddAttributeToSolutionFromGuidingSolution(int[] permutation, int[] guidingPermutation)
@@ -138,7 +154,7 @@ public class PathRelinking : ISolutionGenerationMethod
         
         for(int i = 0; i < referenceSolutions.Count; i++)
         {
-            for (int j = i; j < referenceSolutions.Count; j++)
+            for (int j = (i +1); j < referenceSolutions.Count; j++)
             {
                 newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[i], referenceSolutions[j]));
                 newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[j], referenceSolutions[i]));

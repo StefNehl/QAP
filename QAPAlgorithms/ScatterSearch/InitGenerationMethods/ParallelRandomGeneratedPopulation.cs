@@ -9,7 +9,6 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
     private readonly ConcurrentBag<InstanceSolution> _newSolutions = new ();
     
     private QAPInstance? _qApInstance;
-    private int[]? _permutation;
         
     private readonly Random _randomGenerator;
 
@@ -22,7 +21,6 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
     public void InitMethod(QAPInstance instance)
     {
         _qApInstance = instance;
-        _permutation = new int[_qApInstance.N];
     }
 
     public List<InstanceSolution> GeneratePopulation(int populationSize)
@@ -46,17 +44,19 @@ public class ParallelRandomGeneratedPopulation : IGenerateInitPopulationMethod
     private InstanceSolution GenerateSolutionThreadSafe()
     {
         var listWithPossibilities = new List<int>();
-        for (int i = 0; i < _permutation.Length; i++)
+        var permutation = new int[_qApInstance.N];
+        
+        for (int i = 0; i < permutation.Length; i++)
             listWithPossibilities.Add(i);
                 
-        for (int i = 0; i < _permutation.Length; i++)
+        for (int i = 0; i < permutation.Length; i++)
         {
             var newRandomIndex = _randomGenerator.Next(listWithPossibilities.Count - 1);
-            _permutation[i] = listWithPossibilities[newRandomIndex];
+            permutation[i] = listWithPossibilities[newRandomIndex];
             listWithPossibilities.RemoveAt(newRandomIndex);
         }
 
-        return new InstanceSolution(_qApInstance, _permutation.ToArray());
+        return new InstanceSolution(_qApInstance, permutation.ToArray());
     }
     
 }
