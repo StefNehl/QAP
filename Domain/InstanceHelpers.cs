@@ -169,5 +169,20 @@ namespace Domain
             }
             return worstIndex;
         }
+        
+        public static void CheckIfValueIsDoubledInArray(List<int> array)
+        {
+            for (int i = 0; i < array.Count()-1; i++)
+            {
+                for (int j = i + 1; j < array.Count(); j++)
+                {
+                    if (array[i] == array[j])
+                    {
+                        Console.WriteLine("Double entry");
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

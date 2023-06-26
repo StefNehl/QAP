@@ -92,6 +92,7 @@ public class PathRelinking : ISolutionGenerationMethod
         var newPermutation = startingSolution.SolutionPermutation.ToArray();
         var guidingPermutation = guidingSolution.SolutionPermutation.ToArray();
         var guidingHashCode = guidingSolution.HashCode;
+
         while (newHashCode != guidingHashCode)
         {
             AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingPermutation);
@@ -128,9 +129,6 @@ public class PathRelinking : ISolutionGenerationMethod
             
             notCorrectIndices.Add(i);
         }
-        
-        if(notCorrectIndices.Count == 0)
-            Console.WriteLine("Test");
 
         var indexForSwap = notCorrectIndices[0];
         var correctValueForIndex = guidingPermutation[indexForSwap];
@@ -144,7 +142,7 @@ public class PathRelinking : ISolutionGenerationMethod
             indexOfCorrectValueInPermutation = notCorrectIndex;
             break;
         }
-        
+
         (permutation[indexForSwap], permutation[indexOfCorrectValueInPermutation]) = (permutation[indexOfCorrectValueInPermutation], permutation[indexForSwap]);
     }
 

@@ -104,6 +104,13 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                     listOfValuesWithoutCorrectIndex.Add(solutionForCombination.SolutionPermutation[j]);
                 }
 
+                var copyOfList = listOfValuesWithoutCorrectIndex.ToArray(); 
+                foreach (var valueWithoutCorrectIndex in copyOfList)
+                {
+                    if (InstanceHelpers.IsValueAlreadyInThePermutation(valueWithoutCorrectIndex, newPermutation))
+                        listOfValuesWithoutCorrectIndex.Remove(valueWithoutCorrectIndex);
+                }
+
                 for (int j = 0; j < newPermutation.Length; j++)
                 {
                     if (newPermutation[j] == -1)
@@ -120,6 +127,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                     continue;
 
                 newSolutions.Add(newPermutation);
+                InstanceHelpers.CheckIfValueIsDoubledInArray(newPermutation.ToList());
 
                 if (_maxNrOfSolutions.HasValue &&
                     newSolutions.Count == _maxNrOfSolutions.Value)

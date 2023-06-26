@@ -1,12 +1,4 @@
-﻿using Domain.Models;
-using QAP;
-using QAPAlgorithms.ScatterSearch;
-using QAPAlgorithms.ScatterSearch.CombinationMethods;
-using QAPAlgorithms.ScatterSearch.DiversificationMethods;
-using QAPAlgorithms.ScatterSearch.ImprovementMethods;
-using QAPAlgorithms.ScatterSearch.InitGenerationMethods;
-using QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
-
+﻿using QAP;
 
 // await TestParallelPopulationGeneration.Test();
 // return;
