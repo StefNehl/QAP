@@ -71,11 +71,7 @@ namespace QAPAlgorithms.ScatterSearch
                 ReferenceSetUpdate(instanceSolution);
             }
             
-
-            
             _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
-            
-
 
             var newSubSets = new List<InstanceSolution>();
 
@@ -85,7 +81,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(_displayCount == 1)
+                if(_displayCount == 1000)
                 {
                     if (displayProgressInConsole)
                     {

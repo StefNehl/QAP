@@ -64,8 +64,8 @@ public class TestSettingsProvider
     {
         var tests = new List<TestSetting>
         {
-            // TestCase1(),
-            // TestCase2(),
+            TestCase1(),
+            TestCase2(),
             TestCase3(),
             TestCase4()
         };
