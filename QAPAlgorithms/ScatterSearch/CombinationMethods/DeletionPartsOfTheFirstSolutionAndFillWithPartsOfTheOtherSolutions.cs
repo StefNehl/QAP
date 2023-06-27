@@ -61,7 +61,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         private List<int[]> Combine(List<InstanceSolution> solutions)
         {
-            var newSolutions = new List<int[]>();
+            var newPermutations = new List<int[]>();
 
             int startIndexToDelete;
             var bestSolution = solutions[0];
@@ -126,15 +126,14 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
                     newHashCode == solutionForCombination.HashCode)
                     continue;
 
-                newSolutions.Add(newPermutation);
-                InstanceHelpers.CheckIfValueIsDoubledInArray(newPermutation.ToList());
+                newPermutations.Add(newPermutation);
 
                 if (_maxNrOfSolutions.HasValue &&
-                    newSolutions.Count == _maxNrOfSolutions.Value)
-                    return newSolutions;
+                    newPermutations.Count == _maxNrOfSolutions.Value)
+                    return newPermutations;
             }
 
-            return newSolutions;
+            return newPermutations;
         }
 
     }

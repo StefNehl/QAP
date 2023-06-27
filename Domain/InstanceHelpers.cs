@@ -88,6 +88,12 @@ namespace Domain
             return hashCode;
         }
 
+        public static bool IsHashCodeCorrect(InstanceSolution instanceSolution)
+        {
+            var calculatedHashcode = GenerateHashCode(instanceSolution.SolutionPermutation);
+            return calculatedHashcode == instanceSolution.HashCode;
+        }
+
         public static bool IsEqual(int[] permutation1, int[] permutation2)
         {
             if (GenerateHashCode(permutation1) == GenerateHashCode(permutation2))

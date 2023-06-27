@@ -25,16 +25,14 @@ namespace QAPAlgorithms.ScatterSearch.ImprovementMethods
                 var solutionDifference = InstanceHelpers.GetSolutionDifferenceAfterSwap(_instance, permutation, i, i + 1);
                 var newSolutionValue = solutionValue + solutionDifference;
                 if (!InstanceHelpers.IsBetterSolution(solutionValue, newSolutionValue))
-                {
-                    instanceSolution.RefreshHashCode();
                     break;
-                }
                 
                 (instanceSolution.SolutionPermutation[i + 1], instanceSolution.SolutionPermutation[i]) =
                     (instanceSolution.SolutionPermutation[i], instanceSolution.SolutionPermutation[i + 1]);
                 instanceSolution.SolutionValue = newSolutionValue;
             }
 
+            instanceSolution.RefreshHashCode();
             return instanceSolution;
         }
 

@@ -16,7 +16,7 @@ namespace QAPTest.QAPAlgorithmsTests
         private QAPInstance _instance;
         private IImprovementMethod _improvementMethod;
         private IImprovementMethod _improvedImprovementMethod;
-        private IImprovementMethod _improvemenImprovementParallelMethod;
+        private IImprovementMethod _improvementImprovementParallelMethod;
         private int[] _worsePermutation;
         private int[] _betterPermutation;
 
@@ -28,8 +28,8 @@ namespace QAPTest.QAPAlgorithmsTests
             _improvementMethod.InitMethod(_instance);
             _improvedImprovementMethod = new ImprovedLocalSearchBestImprovement();
             _improvedImprovementMethod.InitMethod(_instance);
-            _improvemenImprovementParallelMethod = new ParallelImprovedLocalSearchBestImprovement();
-            _improvemenImprovementParallelMethod.InitMethod(_instance);
+            _improvementImprovementParallelMethod = new ParallelImprovedLocalSearchBestImprovement();
+            _improvementImprovementParallelMethod.InitMethod(_instance);
             
             _worsePermutation = new [] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             _betterPermutation = new [] { 1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11 };
@@ -133,7 +133,7 @@ namespace QAPTest.QAPAlgorithmsTests
             var worseSolutionValue = solutions[0].SolutionValue;
             var worseHashCode = solutions[0].HashCode;
 
-            _improvemenImprovementParallelMethod.ImproveSolutions(solutions);
+            _improvementImprovementParallelMethod.ImproveSolutions(solutions);
             var betterSolution = solutions[0];
             var betterSolutionValue = betterSolution.SolutionValue;
             var betterHashCode = betterSolution.HashCode;

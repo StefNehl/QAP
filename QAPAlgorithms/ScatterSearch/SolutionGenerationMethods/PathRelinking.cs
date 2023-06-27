@@ -90,12 +90,10 @@ public class PathRelinking : ISolutionGenerationMethod
 
         var newHashCode = startingSolution.HashCode;
         var newPermutation = startingSolution.SolutionPermutation.ToArray();
-        var guidingPermutation = guidingSolution.SolutionPermutation.ToArray();
-        var guidingHashCode = guidingSolution.HashCode;
 
-        while (newHashCode != guidingHashCode)
+        while (newHashCode != guidingSolution.HashCode)
         {
-            AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingPermutation);
+            AddAttributeToSolutionFromGuidingSolution(newPermutation, guidingSolution.SolutionPermutation);
             var newSolution = new InstanceSolution(_qapInstance, newPermutation.ToArray());
             newHashCode = newSolution.HashCode;
             newSolutions.Add(newSolution);

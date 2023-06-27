@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Domain;
 using Domain.Models;
 using QAPAlgorithms.Contracts;
 
