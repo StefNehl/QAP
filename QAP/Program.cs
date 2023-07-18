@@ -8,23 +8,23 @@ var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 var filesWithKnownOptimum = new List<Tuple<string, string>>
 {
     new ("QAPLIB","chr12a.dat"),
-    new ("QAPLIB","chr15b.dat"),
-    new ("QAPLIB","chr25a.dat"),
-    new ("QAPLIB","esc16b.dat"),
-    new ("QAPLIB","esc32c.dat"),
-    new ("QAPLIB","esc128.dat"),
-    new ("QAPLIB","nug24.dat"),
-    new ("QAPLIB","nug30.dat"),
-    new ("QAPLIB","sko64.dat"),
-    new ("QAPLIB","tai256c.dat"),
+    // new ("QAPLIB","chr15b.dat"),
+    // new ("QAPLIB","chr25a.dat"),
+    // new ("QAPLIB","esc16b.dat"),
+    // new ("QAPLIB","esc32c.dat"),
+    // new ("QAPLIB","esc128.dat"),
+    // new ("QAPLIB","nug24.dat"),
+    // new ("QAPLIB","nug30.dat"),
+    // new ("QAPLIB","sko64.dat"),
+    // new ("QAPLIB","tai256c.dat"),
 };
 
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
-const int runtimeInSeconds = 10;
+const int runtimeInSeconds = 60;
 
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
-const int refSetSize = 10;
+const int refSetSize = 20;
 const int populationSetSize = 5 * refSetSize;
 
 var testResults = new List<TestResult>();

@@ -81,7 +81,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(_displayCount == 1000)
+                if(_displayCount == 10)
                 {
                     if (displayProgressInConsole)
                     {
@@ -112,6 +112,7 @@ namespace QAPAlgorithms.ScatterSearch
                 if(!_foundNewSolutions)
                 {
                     GenerateNewPopulation();
+                    _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
                     _foundNewSolutions = true;
                 }
             }
