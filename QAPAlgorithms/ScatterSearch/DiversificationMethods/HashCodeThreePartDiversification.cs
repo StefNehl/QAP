@@ -48,17 +48,84 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             
             foreach (var instanceSolution in population)
             {
-                if (Math.Abs(instanceSolution.HashCode - bestSolutionHashcode) < minDiff)
+                var hashCodeDiff = Math.Abs(instanceSolution.HashCode - bestSolutionHashcode);
+                if (hashCodeDiff < minDiff)
+                {
                     indexOfMinDiff = population.IndexOf(instanceSolution);
+                    minDiff = hashCodeDiff;
+                }
             }
 
             var partSize = newRefSetSize / 3;
+            var diverseSolutions = new List<InstanceSolution>();
+
+            var startEndTuple = GetStartAndEndIndexForPart(indexOfMinDiff, partSize, population.Count);
+            var startIndex = startEndTuple.Item1;
+            var endIndex = startEndTuple.Item2;
             
+            
+            for (int i = 0; i < partSize; i++)
+            {
+                diverseSolutions.Add(population[i]);
+                diverseSolutions.Add(population[(refSetSize-1)-i]);
+            }
+            for (var i = startIndex; i <= endIndex; i++)
+            {
+                diverseSolutions.Add(population[i]);
+            }
+
+            foreach (var solution in diverseSolutions)
+            {
+                ScatterSearch.ReferenceSetUpdate(solution, referenceSet, refSetSize);
+            }
+            
+            if(referenceSet.Count == refSetSize)
+                return;
+            
+            // Fill reference set with solutions
+            long hashCodeOfReferenceSet = 0;
+            for (int i = 0; i < partSize; i++)
+            {
+                var solution = referenceSet[i];
+                hashCodeOfReferenceSet += solution.HashCode;
+            }
+
+            var averageRefSetHashCode = hashCodeOfReferenceSet / referenceSet.Count;
+            
+            if (averageRefSetHashCode < _averageHashCode)
+                orderedPopulationAfterHashCode = population.OrderByDescending(s => s.HashCode).ToList();
 
             foreach (var newSolution in orderedPopulationAfterHashCode)
             {
+                if (referenceSet.Count == refSetSize)
+                    return;
                 ScatterSearch.ReferenceSetUpdate(newSolution, referenceSet, refSetSize);
             }
+        }
+
+        public static Tuple<int, int> GetStartAndEndIndexForPart(int midIndex, int partSize, int maxIndex)
+        {
+            var midPart = partSize / 2;
+            
+            var startIndex = midIndex - midPart;
+            var endIndex = midIndex + midPart;
+
+            if (startIndex < 0)
+            {
+                endIndex += Math.Abs(startIndex);
+                startIndex = 0;
+            }
+
+            if (endIndex > maxIndex)
+            {
+                startIndex -= (maxIndex - startIndex);
+                endIndex = maxIndex;
+            }
+
+            if (partSize % 2 == 0)
+                startIndex++;
+
+            return new Tuple<int, int>(startIndex, endIndex);
         }
     }
 }

@@ -53,6 +53,8 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 
             foreach (var newSolution in orderedPopulationAfterHashCode)
             {
+                if (referenceSet.Count == refSetSize)
+                    return;
                 ScatterSearch.ReferenceSetUpdate(newSolution, referenceSet, refSetSize);
             }
         }

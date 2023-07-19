@@ -14,39 +14,117 @@ public class DiversificationTests
 {
     private HashCodeDiversification _hashCodeDiversificationMethod;
     private HashCodeThreePartDiversification _hashCodeThreePartDiversification;
+    private IGenerateInitPopulationMethod _generateInitPopulationMethod;
     
     private QAPInstance _testInstance;
-    private ScatterSearch _scatterSearch;
-    private IImprovementMethod _improvementMethod;
-    private ICombinationMethod _combinationMethod;
-    private IGenerateInitPopulationMethod _generateInitPopulationMethod;
-    private IDiversificationMethod _diversificationMethod;
-    private ISolutionGenerationMethod _solutionGenerationMethod;
+
+    private List<InstanceSolution> _population;
+    private List<InstanceSolution> _referenceSet;
+    private int _referenceSetSize;
 
     [SetUp]
-    public void SetUp()
+    public async Task SetUp()
     {
-        _testInstance = QAPInstanceProvider.GetTestN3();
-        _improvementMethod = new LocalSearchFirstImprovement();
-        _improvementMethod.InitMethod(_testInstance);
-        _combinationMethod = new ExhaustingPairwiseCombination();
-        _combinationMethod.InitMethod(_testInstance);
+        _testInstance = await QAPInstanceProvider.GetChr25a();
         _generateInitPopulationMethod = new StepWisePopulationGeneration(1);
         _generateInitPopulationMethod.InitMethod(_testInstance);
-        _solutionGenerationMethod = new SubSetGeneration( 1, SubSetGenerationMethodType.Cycle, _combinationMethod, _improvementMethod);
-        _solutionGenerationMethod.InitMethod(_testInstance);
-        _diversificationMethod = new HashCodeDiversification();
-        _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod);
+
+        _hashCodeDiversificationMethod = new HashCodeDiversification();
+        _hashCodeDiversificationMethod.InitMethod(_testInstance);
 
         _hashCodeThreePartDiversification = new HashCodeThreePartDiversification();
         _hashCodeThreePartDiversification.InitMethod(_testInstance);
+        
+        _population = _generateInitPopulationMethod.GeneratePopulation(100);
+        _referenceSet = new List<InstanceSolution>();
+        _referenceSetSize = 24;
+        
+        foreach(var solution in _population)
+        {
+            ScatterSearch.ReferenceSetUpdate(solution, _referenceSet, _referenceSetSize);
+        }
 
     }
 
     [Test]
-    public void TestHashCodeDiversificationMethod_Test_RefSetSize()
-    {
+    public void TestHashCodeDiversificationMethod_RefSetSize()
+    { 
+        _hashCodeDiversificationMethod.ApplyDiversificationMethod(_referenceSet, _population);
+        Assert.AreEqual(_referenceSetSize, _referenceSet.Count);
+    }
 
+    [Test]
+    public void TestHashCodeThreePartDiversification_RefSetSize()
+    {
+        _hashCodeThreePartDiversification.ApplyDiversificationMethod(_referenceSet, _population);
+        Assert.AreEqual(_referenceSetSize, _referenceSet.Count);
+    }
+
+    [Test]
+    public void TestHashCodeThreePartDiversification_GetStartAndEndIndexForPart_UnevenPartSize()
+    {
+        var partSize = 5;
+        var bestIndex = 3;
+        var maxSize = 5;
+
+        var startEndTuple = HashCodeThreePartDiversification
+            .GetStartAndEndIndexForPart(bestIndex, partSize, maxSize);
         
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual(1, startEndTuple.Item1);
+            Assert.AreEqual(5, startEndTuple.Item2);
+        });
+    }
+
+    [Test]
+    public void TestHashCodeThreePartDiversification_GetStartAndEndIndexForPart_EvenPartSize()
+    {
+        var partSize = 4;
+        var bestIndex = 3;
+        var maxSize = 5;
+
+        var startEndTuple = HashCodeThreePartDiversification
+            .GetStartAndEndIndexForPart(bestIndex, partSize, maxSize);
+        
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual(2, startEndTuple.Item1);
+            Assert.AreEqual(5, startEndTuple.Item2);
+        });
+    }
+    
+    [Test]
+    public void TestHashCodeThreePartDiversification_GetStartAndEndIndexForPart_FirstIndex()
+    {
+        var partSize = 5;
+        var bestIndex = 0;
+        var maxSize = 4;
+
+        var startEndTuple = HashCodeThreePartDiversification
+            .GetStartAndEndIndexForPart(bestIndex, partSize, maxSize);
+        
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual(0, startEndTuple.Item1);
+            Assert.AreEqual(4, startEndTuple.Item2);
+        });
+    }
+    
+    [Test]
+    public void TestHashCodeThreePartDiversification_GetStartAndEndIndexForPart_LastIndex()
+    {
+        var partSize = 5;
+        var bestIndex = 4;
+        var maxSize = 4;
+
+        var startEndTuple = HashCodeThreePartDiversification
+            .GetStartAndEndIndexForPart(bestIndex, partSize, maxSize);
+        
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual(0, startEndTuple.Item1);
+            Assert.AreEqual(4, startEndTuple.Item2);
+        });
     }
 }

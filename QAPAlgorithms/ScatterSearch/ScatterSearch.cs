@@ -98,6 +98,7 @@ namespace QAPAlgorithms.ScatterSearch
                 }
 
                 newSolutions.Clear();
+                _foundNewSolutions = false;
 
                 newSolutions.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
                 // Console.WriteLine(newSolutions.Count);
