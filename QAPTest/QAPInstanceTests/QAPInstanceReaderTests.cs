@@ -21,14 +21,21 @@ namespace QAPTest.QAPInstanceTests
             {
                 foreach(var file in reader.GetFilesInFolder(folder))
                 {
-                    var instance = await reader.ReadFileAsync(folder, file);
-                    Assert.IsNotNull(instance);
-                    int matrixlength = instance.N * instance.N;
-                    Assert.Multiple(() =>
+                    try
                     {
-                        Assert.That(instance.A.Length, Is.EqualTo(matrixlength));
-                        Assert.That(instance.B.Length, Is.EqualTo(matrixlength));
-                    });
+                        var instance = await reader.ReadFileAsync(folder, file);
+                        Assert.IsNotNull(instance);
+                        int matrixlength = instance.N * instance.N;
+                        Assert.Multiple(() =>
+                        {
+                            Assert.That(instance.A.Length, Is.EqualTo(matrixlength), file);
+                            Assert.That(instance.B.Length, Is.EqualTo(matrixlength), file);
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(file, innerException:e);
+                    }
                 }
             }
         }

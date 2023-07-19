@@ -26,8 +26,6 @@ namespace QAPAlgorithms.ScatterSearch
         private bool _foundNewSolutions;
         private long _iterationCount;
         
-        
-        
         public ScatterSearch(IGenerateInitPopulationMethod generateInitPopulationMethod,
             IDiversificationMethod diversificationMethod,
             ICombinationMethod combinationMethod,
@@ -136,6 +134,21 @@ namespace QAPAlgorithms.ScatterSearch
             return new Tuple<InstanceSolution, long, long>(_referenceSet.First(), _iterationCount, (long)(_currentTime - _startTime).TotalSeconds);
         }
 
+        public List<InstanceSolution> GetReferenceSet()
+        {
+            return _referenceSet;
+        }
+
+        public int GetReferenceSetSize()
+        {
+            return _referenceSetSize;
+        }
+
+        public List<InstanceSolution> GetPopulationSet()
+        {
+            return _population;
+        }
+        
         public static bool ReferenceSetUpdate(InstanceSolution newSolution, 
             List<InstanceSolution> referenceSet, 
             int maxReferenceSize)

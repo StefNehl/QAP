@@ -83,9 +83,12 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddEmptyList()
         {
+            var copyOfRefSet = _scatterSearch.GetReferenceSet();
+            
             var result = ScatterSearch.ReferenceSetUpdate(
                 new InstanceSolution( _testInstance, new[] { 0, 1, 2 }),
-                );
+                copyOfRefSet, 
+                _scatterSearch.GetReferenceSetSize());
 
             Assert.That(result, Is.EqualTo(true));
         }
@@ -98,10 +101,15 @@ namespace QAPTest.QAPAlgorithmsTests
             _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
             
             var newSolution = new InstanceSolution(_testInstance, new [] { 1, 0, 2 });
-            _scatterSearch.ReferenceSetUpdate(newSolution);
+            ScatterSearch.ReferenceSetUpdate(newSolution, 
+                _scatterSearch.GetReferenceSet(), 
+                _scatterSearch.GetReferenceSetCount());
 
             var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
-            var result = _scatterSearch.ReferenceSetUpdate(newInstanceSolution);
+            var result = ScatterSearch.ReferenceSetUpdate(
+                newInstanceSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetCount());
 
             Assert.Multiple(() =>
             {
@@ -115,10 +123,16 @@ namespace QAPTest.QAPAlgorithmsTests
         public void CheckReferenceSetUpdate_AddToWorseList()
         {
             var bestSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
-            _scatterSearch.ReferenceSetUpdate(bestSolution);
+            ScatterSearch.ReferenceSetUpdate(
+                bestSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 0, 1, 2 });
-            var result = _scatterSearch.ReferenceSetUpdate(newInstanceSolution);
+            var result = ScatterSearch.ReferenceSetUpdate(
+                newInstanceSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             Assert.Multiple(() =>
             {
@@ -132,10 +146,16 @@ namespace QAPTest.QAPAlgorithmsTests
         public void CheckReferenceSetUpdate_AddBetterToList()
         {
             var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
-            _scatterSearch.ReferenceSetUpdate(newSolution);
+            ScatterSearch.ReferenceSetUpdate(
+                newSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
-            var result = _scatterSearch.ReferenceSetUpdate(newInstanceSolution);
+            var result = ScatterSearch.ReferenceSetUpdate(
+                newInstanceSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             Assert.Multiple(() =>
             {
@@ -151,10 +171,16 @@ namespace QAPTest.QAPAlgorithmsTests
             _scatterSearch = new ScatterSearch(_generateInitPopulationMethod, _diversificationMethod, _combinationMethod, _improvementMethod, _solutionGenerationMethod, referenceSetSize:1);
 
             var newSolution = new InstanceSolution(_testInstance, new [] { 0, 1, 2 });
-            _scatterSearch.ReferenceSetUpdate(newSolution);
+            ScatterSearch.ReferenceSetUpdate(
+                newSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             var newInstanceSolution = new InstanceSolution(_testInstance, new[] { 1, 0, 2 });
-            var result = _scatterSearch.ReferenceSetUpdate(newInstanceSolution);
+            var result = ScatterSearch.ReferenceSetUpdate(
+                newInstanceSolution,
+                _scatterSearch.GetReferenceSet(),
+                _scatterSearch.GetReferenceSetSize());
 
             Assert.Multiple(() =>
             {
@@ -173,7 +199,10 @@ namespace QAPTest.QAPAlgorithmsTests
             for (int i = 1; i <= 100; i++)
             {
                 var newTestSolution = new InstanceSolution(_testInstance, new[] { rg.Next(0, _testInstance.N-1), rg.Next(0, _testInstance.N-1), rg.Next(0, _testInstance.N-1) });
-                _scatterSearch.ReferenceSetUpdate(newTestSolution);
+                ScatterSearch.ReferenceSetUpdate(
+                    newTestSolution,
+                    _scatterSearch.GetReferenceSet(),
+                    _scatterSearch.GetReferenceSetSize());
             }
 
             Assert.That(_scatterSearch.GetReferenceSetCount(), Is.EqualTo(5));
