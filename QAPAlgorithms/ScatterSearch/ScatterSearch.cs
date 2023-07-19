@@ -73,7 +73,7 @@ namespace QAPAlgorithms.ScatterSearch
             
             _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
 
-            var newSubSets = new List<InstanceSolution>();
+            var newSolutions = new List<InstanceSolution>();
 
             int notFoundSolutionCount = 0;
 
@@ -94,14 +94,19 @@ namespace QAPAlgorithms.ScatterSearch
                     _currentTime = DateTime.Now;
                     if (_currentTime > _endTime)
                         break;
+                    // if(_iterationCount == 10000)
+                    //     break;
                 }
 
                 _foundNewSolutions = false;
-                newSubSets.Clear();
+                newSolutions.Clear();
 
-                newSubSets.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
-
-                foreach (var subSet in newSubSets) 
+                newSolutions.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
+                // Console.WriteLine(newSolutions.Count);
+                // EliminateIdenticalSolutionsFromSet(newSolutions);
+                // Console.WriteLine(newSolutions.Count);
+                
+                foreach (var subSet in newSolutions) 
                 {
                     if (ReferenceSetUpdate(subSet))
                         _foundNewSolutions = true;

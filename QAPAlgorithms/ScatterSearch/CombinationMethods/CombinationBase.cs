@@ -1,19 +1,21 @@
 ﻿using Domain.Models;
 using System.Collections.Concurrent;
+using System.Numerics;
 
 namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 {
     public class CombinationBase
     {
-        private readonly HashSet<long> _alreadyCombinedSolutions;
-        private readonly ConcurrentDictionary<long, long> _alreadyCombinedSolutionsForAsync;
+        private readonly HashSet<BigInteger> _alreadyCombinedSolutions;
+        private readonly ConcurrentDictionary<BigInteger, long> _alreadyCombinedSolutionsForAsync;
+        private long nrOfCombinationsAlreadyDone = 0;
         private readonly bool _checkIfSolutionsWereAlreadyCombined;
 
         public CombinationBase(bool checkIfSolutionsWereAlreadyCombined)
         {
             _checkIfSolutionsWereAlreadyCombined = checkIfSolutionsWereAlreadyCombined; 
-            _alreadyCombinedSolutions= new HashSet<long>();
-            _alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<long, long>();
+            _alreadyCombinedSolutions= new HashSet<BigInteger>();
+            _alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<BigInteger, long>();
         }
 
         public bool WereSolutionsAlreadyCombined(List<InstanceSolution> solutions)
@@ -35,19 +37,24 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             {
                 var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
                 if (_alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
+                {
+                    // nrOfCombinationsAlreadyDone++;
+                    // Console.WriteLine("Solutions already combined: " + nrOfCombinationsAlreadyDone);
                     return true;
+                }
                 _alreadyCombinedSolutionsForAsync.GetOrAdd(hashCodeOfSolutions, 0);
             }
 
             return false;
         }
 
-        private long GenerateHashCodeFromCombinedSolutions(List<InstanceSolution> solutions)
+        private BigInteger GenerateHashCodeFromCombinedSolutions(List<InstanceSolution> solutions)
         {
-            long newHashCode = 0;
+            BigInteger newHashCode = 0;
             for (int i = 0; i < solutions.Count; i++)
             {
-                newHashCode += (long)Math.Pow(solutions[i].HashCode, i + 1);
+                newHashCode += (BigInteger)Math.Pow(solutions[i].HashCode, i + 1);
+                // newHashCode += solutions[i].HashCode;
             }
             return newHashCode;
         }
