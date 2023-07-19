@@ -21,8 +21,8 @@ var filesWithKnownOptimum = new List<TestFiles>
 
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
-const int runtimeInSeconds = 60;
-
+// const int runtimeInSeconds = 600;
+const int runtimeInSeconds = 600 * 3;
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
 const int refSetSize = 20;
 const int populationSetSize = 5 * refSetSize;

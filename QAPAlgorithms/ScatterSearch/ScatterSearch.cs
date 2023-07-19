@@ -83,7 +83,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(_displayCount == 1)
+                if (_displayCount == 1)
                 {
                     if (displayProgressInConsole)
                     {
@@ -96,14 +96,14 @@ namespace QAPAlgorithms.ScatterSearch
                         break;
                     // if(_iterationCount == 10000)
                     //     break;
+                    
                 }
 
-                _foundNewSolutions = false;
                 newSolutions.Clear();
 
                 newSolutions.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
                 // Console.WriteLine(newSolutions.Count);
-                // EliminateIdenticalSolutionsFromSet(newSolutions);
+                EliminateIdenticalSolutionsFromSet(newSolutions);
                 // Console.WriteLine(newSolutions.Count);
                 
                 foreach (var subSet in newSolutions) 
@@ -119,7 +119,7 @@ namespace QAPAlgorithms.ScatterSearch
                 if (!_foundNewSolutions)
                 {
                     GenerateNewPopulation();
-                    double percentageOfSolutionToRemove = 0.5;
+                    double percentageOfSolutionToRemove = 0.8;
                     if(notFoundSolutionCount > 50)
                         percentageOfSolutionToRemove = notFoundSolutionCount / 100;
                     
