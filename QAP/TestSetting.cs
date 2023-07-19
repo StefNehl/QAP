@@ -64,10 +64,10 @@ public class TestSettingsProvider
     {
         var tests = new List<TestSetting>
         {
-            TestCase1(),
+            // TestCase1(),
             TestCase2(),
-            TestCase3(),
-            TestCase4()
+            // TestCase3(),
+            // TestCase4()
         };
 
         return tests; 

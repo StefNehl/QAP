@@ -24,21 +24,23 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             _averageHashCode = (minHashCode + maxHashCode) / 2;
         }
         
-        public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, List<InstanceSolution> population, ScatterSearch scatterSearch)
+        public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, 
+            List<InstanceSolution> population, 
+            ScatterSearch scatterSearch,
+            double percentageOfSolutionToRemove = 0.5)
         {
             int refSetSize = referenceSet.Count;
-            int halfRefSetSize = (int)(refSetSize / (double)2);
-            int countForAverage = halfRefSetSize;
+            int halfRefSetSize = (int)(refSetSize * (1 - percentageOfSolutionToRemove));
 
             long hashCodeOfReferenceSet = 0;
 
-            for (int i = 0; i < countForAverage; i++)
+            for (int i = 0; i < halfRefSetSize; i++)
             {
                 var solution = referenceSet[i];
                 hashCodeOfReferenceSet += solution.HashCode;
             }
 
-            var averageRefSetHashCode = hashCodeOfReferenceSet / countForAverage;
+            var averageRefSetHashCode = hashCodeOfReferenceSet / halfRefSetSize;
 
             while (referenceSet.Count != halfRefSetSize)
                 referenceSet.RemoveAt(referenceSet.Count - 1);

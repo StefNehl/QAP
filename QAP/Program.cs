@@ -7,8 +7,8 @@ var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
 var filesWithKnownOptimum = new List<Tuple<string, string>>
 {
-    new ("QAPLIB","chr12a.dat"),
-    // new ("QAPLIB","chr15b.dat"),
+    // new ("QAPLIB","chr12a.dat"),
+    new ("QAPLIB","chr15b.dat"),
     // new ("QAPLIB","chr25a.dat"),
     // new ("QAPLIB","esc16b.dat"),
     // new ("QAPLIB","esc32c.dat"),
@@ -21,7 +21,7 @@ var filesWithKnownOptimum = new List<Tuple<string, string>>
 
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
-const int runtimeInSeconds = 60;
+const int runtimeInSeconds = 10;
 
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
 const int refSetSize = 20;
@@ -50,5 +50,5 @@ Console.WriteLine(testResults.First().ToStringColumnNames());
 foreach (var t in testResults)
     Console.WriteLine(t.ToString());
 
-await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-mm-yyyy"));
+await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-MM-yyyy"));
 

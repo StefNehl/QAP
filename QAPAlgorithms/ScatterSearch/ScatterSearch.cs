@@ -75,13 +75,15 @@ namespace QAPAlgorithms.ScatterSearch
 
             var newSubSets = new List<InstanceSolution>();
 
+            int notFoundSolutionCount = 0;
+
             while (true)
             {
                 _iterationCount++;
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if(_displayCount == 10)
+                if(_displayCount == 1)
                 {
                     if (displayProgressInConsole)
                     {
@@ -109,12 +111,22 @@ namespace QAPAlgorithms.ScatterSearch
                 }
 
 
-                if(!_foundNewSolutions)
+                if (!_foundNewSolutions)
                 {
                     GenerateNewPopulation();
-                    _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
+                    double percentageOfSolutionToRemove = 0.5;
+                    if(notFoundSolutionCount > 50)
+                        percentageOfSolutionToRemove = notFoundSolutionCount / 100;
+                    
+                    _diversificationMethod.ApplyDiversificationMethod(_referenceSet,
+                        _population,
+                        this,
+                        percentageOfSolutionToRemove);
                     _foundNewSolutions = true;
+                    notFoundSolutionCount++;
                 }
+                else
+                    notFoundSolutionCount = 0;
             }
 
             return new Tuple<InstanceSolution, long, long>(_referenceSet.First(), _iterationCount, (long)(_currentTime - _startTime).TotalSeconds);
@@ -174,11 +186,13 @@ namespace QAPAlgorithms.ScatterSearch
             _displayCount = 0;
         }
 
-        private void GenerateNewPopulation()
+        private void GenerateNewPopulation(bool improveSolutions = true)
         {
             _population.Clear();
             _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
-            EliminateIdenticalSolutionsFromSet(_population);
+            
+            if(improveSolutions)
+                EliminateIdenticalSolutionsFromSet(_population);
             _improvementMethod.ImproveSolutions(_population);
         }
 
