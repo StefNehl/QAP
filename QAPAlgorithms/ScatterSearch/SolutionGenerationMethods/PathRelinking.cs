@@ -145,16 +145,16 @@ public class PathRelinking : ISolutionGenerationMethod
     }
 
 
-    public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+    public HashSet<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
-        var newSolutions = new List<InstanceSolution>();
+        var newSolutions = new HashSet<InstanceSolution>();
         
         for(int i = 0; i < referenceSolutions.Count; i++)
         {
             for (int j = (i +1); j < referenceSolutions.Count; j++)
             {
-                newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[i], referenceSolutions[j]));
-                newSolutions.AddRange(GeneratePathAndGetSolutions(referenceSolutions[j], referenceSolutions[i]));
+                newSolutions.UnionWith(GeneratePathAndGetSolutions(referenceSolutions[i], referenceSolutions[j]));
+                newSolutions.UnionWith(GeneratePathAndGetSolutions(referenceSolutions[j], referenceSolutions[i]));
             }
         }
 

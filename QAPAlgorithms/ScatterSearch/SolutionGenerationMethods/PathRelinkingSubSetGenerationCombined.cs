@@ -26,12 +26,12 @@ public class PathRelinkingSubSetGenerationCombined : ISolutionGenerationMethod
         _subSetGeneration.InitMethod(instance);
     }
     
-    public List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+    public HashSet<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
-        var solutions = new List<InstanceSolution>();
+        var solutions = new HashSet<InstanceSolution>();
         
-        solutions.AddRange(_subSetGeneration.GetSolutions(referenceSolutions));
-        solutions.AddRange(_pathRelinking.GetSolutions(referenceSolutions));
+        solutions.UnionWith(_subSetGeneration.GetSolutions(referenceSolutions));
+        solutions.UnionWith(_pathRelinking.GetSolutions(referenceSolutions));
 
         return solutions;
     }

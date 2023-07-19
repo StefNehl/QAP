@@ -55,5 +55,15 @@ namespace Domain.Models
 
             return false;
         }
+
+        public bool Equals(InstanceSolution other)
+        {
+            return HashCode == other.HashCode;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.GetHashCode();
+        }
     }
 }

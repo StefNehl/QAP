@@ -71,9 +71,10 @@ namespace QAPAlgorithms.ScatterSearch
             
             _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population);
 
-            var newSolutions = new List<InstanceSolution>();
+            var newSolutions = new HashSet<InstanceSolution>();
 
             int notFoundSolutionCount = 0;
+            long nrOfSolutionsGenerated = 0;
 
             while (true)
             {
@@ -81,11 +82,12 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if (_displayCount == 1)
+                if (_displayCount == 1000)
                 {
                     if (displayProgressInConsole)
                     {
                         Console.WriteLine($"Iteration: {_iterationCount} Result: {GetBestSolution().SolutionValue}");
+                        Console.WriteLine(nrOfSolutionsGenerated);
                     }
 
                     _displayCount = 0;
@@ -99,12 +101,10 @@ namespace QAPAlgorithms.ScatterSearch
 
                 newSolutions.Clear();
                 _foundNewSolutions = false;
-
-                newSolutions.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
-                // Console.WriteLine(newSolutions.Count);
-                // EliminateIdenticalSolutionsFromSet(newSolutions);
-                // Console.WriteLine(newSolutions.Count);
                 
+                newSolutions.UnionWith(_solutionGenerationMethod.GetSolutions(_referenceSet));
+                nrOfSolutionsGenerated += newSolutions.Count;
+
                 foreach (var newSolution in newSolutions) 
                 {
                     if (ReferenceSetUpdate(newSolution, _referenceSet, _referenceSetSize))

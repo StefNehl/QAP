@@ -7,13 +7,13 @@ namespace QAPAlgorithms.ScatterSearch.SolutionGenerationMethods;
 
 public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
 {
-    private readonly ConcurrentBag<InstanceSolution> _newSolutions;
+    private readonly ConcurrentDictionary<InstanceSolution, int> _newSolutions;
     public ParallelPathRelinking(IImprovementMethod improvementMethod, int improveEveryNSolutions = 100) : base(improvementMethod, improveEveryNSolutions)
     {
-        _newSolutions = new ConcurrentBag<InstanceSolution>();
+        _newSolutions = new ConcurrentDictionary<InstanceSolution, int>();
     }
 
-    public new List<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
+    public new HashSet<InstanceSolution> GetSolutions(List<InstanceSolution> referenceSolutions)
     {
         var taskList = new List<Task>();
         _newSolutions.Clear();
@@ -34,7 +34,7 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
         }
 
         Task.WhenAll(taskList).Wait();
-        return _newSolutions.ToList();
+        return _newSolutions.Keys.ToHashSet();
     }
 
     private void GenerateTwoPaths(int i, int j, IReadOnlyList<InstanceSolution> referenceSolutions)
@@ -47,7 +47,7 @@ public class ParallelPathRelinking : PathRelinking, ISolutionGenerationMethod
     {
         foreach (var instanceSolution in solutionsToAdd)
         {
-            _newSolutions.Add(instanceSolution);
+            _newSolutions.TryAdd(instanceSolution, 0);
         }
     }
     

@@ -27,7 +27,7 @@ public class PathRelinkingSubSetGenerationCombinedTests
     }
 
     [Test]
-    public void GetSolutions_N3Permutation_6NewSolution()
+    public void GetSolutions_N3Permutation_4NewSolution()
     {
         var firstPermutation = new[] {0, 1, 2};
         var startSolution = new InstanceSolution(_qapInstance, firstPermutation);
@@ -39,11 +39,11 @@ public class PathRelinkingSubSetGenerationCombinedTests
         
         var solutions = _pathRelinkingSubSetGenerationCombined.GetSolutions(referenceSet);
         
-        Assert.That(solutions.Count, Is.EqualTo(6));
+        Assert.That(solutions.Count, Is.EqualTo(4));
     }
     
     [Test]
-    public void GetSolutions_N3Permutation_5NewSolutions()
+    public void GetSolutions_N3Permutation_4NewSolutions()
     {
         var firstPermutation = new[] {0, 1, 2};
         var startSolution = new InstanceSolution(_qapInstance, firstPermutation);
@@ -55,11 +55,11 @@ public class PathRelinkingSubSetGenerationCombinedTests
         
         var solutions = _pathRelinkingSubSetGenerationCombined.GetSolutions(referenceSet);
         
-        Assert.That(solutions.Count, Is.EqualTo(5));
+        Assert.That(solutions.Count, Is.EqualTo(4));
     }
     
     [Test]
-    public void GetSolutionsParallel_N3Permutation_6NewSolution()
+    public void GetSolutionsParallel_N3Permutation_4NewSolution()
     {
         var firstPermutation = new[] {0, 1, 2};
         var startSolution = new InstanceSolution(_qapInstance, firstPermutation);
@@ -71,11 +71,11 @@ public class PathRelinkingSubSetGenerationCombinedTests
         
         var solutions = _parallelPathRelinkingSubSetGenerationCombined.GetSolutions(referenceSet);
         
-        Assert.That(solutions.Count, Is.EqualTo(6));
+        Assert.That(solutions.Count, Is.EqualTo(4));
     }
     
     [Test]
-    public void GetSolutionsParallel_N3Permutation_5NewSolutions()
+    public void GetSolutionsParallel_N3Permutation_4NewSolutions()
     {
         var firstPermutation = new[] {0, 1, 2};
         var startSolution = new InstanceSolution(_qapInstance, firstPermutation);
@@ -87,6 +87,6 @@ public class PathRelinkingSubSetGenerationCombinedTests
         
         var solutions = _parallelPathRelinkingSubSetGenerationCombined.GetSolutions(referenceSet);
         
-        Assert.That(solutions.Count, Is.EqualTo(5));
+        Assert.That(solutions.Count, Is.EqualTo(4));
     }
 }
