@@ -83,7 +83,9 @@ namespace QAPTest.QAPAlgorithmsTests
         [Test]
         public void CheckReferenceSetUpdate_AddEmptyList()
         {
-            var result = _scatterSearch.ReferenceSetUpdate(new InstanceSolution( _testInstance, new[] { 0, 1, 2 }));
+            var result = ScatterSearch.ReferenceSetUpdate(
+                new InstanceSolution( _testInstance, new[] { 0, 1, 2 }),
+                );
 
             Assert.That(result, Is.EqualTo(true));
         }

@@ -8,7 +8,6 @@ namespace QAPAlgorithms.Contracts
         void InitMethod(QAPInstance instance);
         void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, 
             List<InstanceSolution> population, 
-            ScatterSearch.ScatterSearch scatterSearch,
             double percentageOfSolutionToRemove = 0.5);
     }
 }

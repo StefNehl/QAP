@@ -68,10 +68,10 @@ namespace QAPAlgorithms.ScatterSearch
 
             foreach (var instanceSolution in _population)
             {
-                ReferenceSetUpdate(instanceSolution);
+                ReferenceSetUpdate(instanceSolution, _referenceSet, _referenceSetSize);
             }
             
-            _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population, this);
+            _diversificationMethod.ApplyDiversificationMethod(_referenceSet, _population);
 
             var newSolutions = new List<InstanceSolution>();
 
@@ -106,9 +106,9 @@ namespace QAPAlgorithms.ScatterSearch
                 EliminateIdenticalSolutionsFromSet(newSolutions);
                 // Console.WriteLine(newSolutions.Count);
                 
-                foreach (var subSet in newSolutions) 
+                foreach (var newSolution in newSolutions) 
                 {
-                    if (ReferenceSetUpdate(subSet))
+                    if (ReferenceSetUpdate(newSolution, _referenceSet, _referenceSetSize))
                         _foundNewSolutions = true;
 
                     if (_referenceSet.Count > _referenceSetSize)
@@ -125,7 +125,6 @@ namespace QAPAlgorithms.ScatterSearch
                     
                     _diversificationMethod.ApplyDiversificationMethod(_referenceSet,
                         _population,
-                        this,
                         percentageOfSolutionToRemove);
                     _foundNewSolutions = true;
                     notFoundSolutionCount++;
@@ -137,38 +136,40 @@ namespace QAPAlgorithms.ScatterSearch
             return new Tuple<InstanceSolution, long, long>(_referenceSet.First(), _iterationCount, (long)(_currentTime - _startTime).TotalSeconds);
         }
 
-        public bool ReferenceSetUpdate(InstanceSolution newSolution)
+        public static bool ReferenceSetUpdate(InstanceSolution newSolution, 
+            List<InstanceSolution> referenceSet, 
+            int maxReferenceSize)
         {
-            if (!_referenceSet.Any())
+            if (!referenceSet.Any())
             {
-                _referenceSet.Add(newSolution);
+                referenceSet.Add(newSolution);
                 return true;
             }
 
-            if (IsSolutionAlreadyInReferenceSet(newSolution))
+            if (IsSolutionAlreadyInReferenceSet(newSolution, referenceSet))
                 return false;
 
-            var worstItem = _referenceSet.Last();
-            if(_referenceSet.Count == _referenceSetSize)
+            var worstItem = referenceSet.Last();
+            if(referenceSet.Count == maxReferenceSize)
             {
                 if (!InstanceHelpers.IsBetterSolution(worstItem.SolutionValue, newSolution.SolutionValue))
                     return false;
             }
 
-            for(int i = 0; i < _referenceSet.Count; i++)
+            for(int i = 0; i < referenceSet.Count; i++)
             {
-                if (InstanceHelpers.IsBetterSolution(_referenceSet[i].SolutionValue, newSolution.SolutionValue))
+                if (InstanceHelpers.IsBetterSolution(referenceSet[i].SolutionValue, newSolution.SolutionValue))
                 {
-                    _referenceSet.Insert(i, newSolution);
+                    referenceSet.Insert(i, newSolution);
 
-                    if (_referenceSet.Count > _referenceSetSize)
-                        _referenceSet.Remove(worstItem);
+                    if (referenceSet.Count > maxReferenceSize)
+                        referenceSet.Remove(worstItem);
 
                     return true;
                 }
             }
 
-            _referenceSet.Add(newSolution);
+            referenceSet.Add(newSolution);
             return true;
         }
 
@@ -201,9 +202,9 @@ namespace QAPAlgorithms.ScatterSearch
             _improvementMethod.ImproveSolutions(_population);
         }
 
-        private bool IsSolutionAlreadyInReferenceSet(InstanceSolution instanceSolution)
+        private static bool IsSolutionAlreadyInReferenceSet(InstanceSolution instanceSolution, List<InstanceSolution> referenceSet)
         {
-            foreach (var solution in _referenceSet)
+            foreach (var solution in referenceSet)
                 if (solution.HashCode == instanceSolution.HashCode)
                     return true;
 

@@ -32,7 +32,6 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
         
         public void ApplyDiversificationMethod(List<InstanceSolution> referenceSet, 
             List<InstanceSolution> population, 
-            ScatterSearch scatterSearch,
             double percentageOfSolutionToRemove = 0.5)
         {
             int refSetSize = referenceSet.Count;
@@ -58,7 +57,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
 
             foreach (var newSolution in orderedPopulationAfterHashCode)
             {
-                scatterSearch.ReferenceSetUpdate(newSolution);
+                ScatterSearch.ReferenceSetUpdate(newSolution, referenceSet, refSetSize);
             }
         }
     }
