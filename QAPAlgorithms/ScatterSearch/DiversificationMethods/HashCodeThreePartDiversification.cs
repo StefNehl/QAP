@@ -59,7 +59,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             var partSize = newRefSetSize / 3;
             var diverseSolutions = new List<InstanceSolution>();
 
-            var startEndTuple = GetStartAndEndIndexForPart(indexOfMinDiff, partSize, population.Count);
+            var startEndTuple = GetStartAndEndIndexForPart(indexOfMinDiff, partSize, population.Count-1);
             var startIndex = startEndTuple.Item1;
             var endIndex = startEndTuple.Item2;
             
@@ -67,7 +67,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
             for (int i = 0; i < partSize; i++)
             {
                 diverseSolutions.Add(population[i]);
-                diverseSolutions.Add(population[(refSetSize-1)-i]);
+                diverseSolutions.Add(population[(population.Count-1)-i]);
             }
             for (var i = startIndex; i <= endIndex; i++)
             {

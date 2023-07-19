@@ -85,10 +85,7 @@ namespace QAPAlgorithms.ScatterSearch
                 if (_displayCount == 1000)
                 {
                     if (displayProgressInConsole)
-                    {
-                        Console.WriteLine($"Iteration: {_iterationCount} Result: {GetBestSolution().SolutionValue}");
-                        Console.WriteLine(nrOfSolutionsGenerated);
-                    }
+                        Console.WriteLine($"Iteration: {_iterationCount} Result: {GetBestSolution().SolutionValue} Solutions Generated: {nrOfSolutionsGenerated}");
 
                     _displayCount = 0;
                     _currentTime = DateTime.Now;
@@ -96,6 +93,11 @@ namespace QAPAlgorithms.ScatterSearch
                         break;
                     // if(_iterationCount == 10000)
                     //     break;
+
+                    // foreach (var solution in _referenceSet)
+                    // {
+                    //     Console.WriteLine($"SV: {solution.SolutionValue} HC: {solution.HashCode}");
+                    // }
                     
                 }
 

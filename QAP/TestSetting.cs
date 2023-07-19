@@ -100,7 +100,7 @@ public class TestSettingsProvider
     {
         var combinationMethod = new ExhaustingPairwiseCombination(1, 
             0, checkIfSolutionsWereAlreadyCombined: true);
-        var diversificationMethod = new HashCodeDiversification();
+        var diversificationMethod = new HashCodeThreePartDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
         var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
         var solutionGenerationMethod = new ParallelPathRelinkingSubSetGenerationCombined( 1, SubSetGenerationMethodType.Cycle,
