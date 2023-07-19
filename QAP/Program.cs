@@ -5,10 +5,10 @@
 
 var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
-var filesWithKnownOptimum = new List<Tuple<string, string>>
+var filesWithKnownOptimum = new List<TestFiles>
 {
     // new ("QAPLIB","chr12a.dat"),
-    new ("QAPLIB","chr15b.dat"),
+    new ("QAPLIB","chr15b.dat", 7990),
     // new ("QAPLIB","chr25a.dat"),
     // new ("QAPLIB","esc16b.dat"),
     // new ("QAPLIB","esc32c.dat"),
@@ -31,13 +31,15 @@ var testResults = new List<TestResult>();
 
 for(int i = 0; i < filesWithKnownOptimum.Count; i++)
 {
-    var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].Item1, filesWithKnownOptimum[i].Item2);
+    var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].FolderName, 
+        filesWithKnownOptimum[i].FileName);
     var testSettingsProvider = new TestSettingsProvider(instance, refSetSize, populationSetSize, runtimeInSeconds);
 
     foreach (var testSetting in testSettingsProvider.GetTestSettings())
     {
         Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
-        var testResult = TestInstance.StartTest(testSetting, true);
+        var testResult = TestInstance.StartTest(testSetting, true, 
+            filesWithKnownOptimum[i].KnownOptimum);
         Console.WriteLine(testResult.ToStringForConsole());
         testResults.Add(testResult);
         Console.WriteLine();
@@ -50,5 +52,6 @@ Console.WriteLine(testResults.First().ToStringColumnNames());
 foreach (var t in testResults)
     Console.WriteLine(t.ToString());
 
-await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", DateTime.Now.ToString("hh-mm-ss_dd-MM-yyyy"));
+await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", 
+    DateTime.Now.ToString("hh-mm-ss_dd-MM-yyyy"));
 

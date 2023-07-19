@@ -4,7 +4,10 @@ namespace QAP
 {
     public static class TestInstance
     {
-        public static TestResult StartTest(TestSetting testSetting, bool displayProgressInConsole)
+        public static TestResult StartTest(
+            TestSetting testSetting, 
+            bool displayProgressInConsole,
+            long knownOptimum)
         {
             var scatterSearch = new ScatterSearch(
                 testSetting.GenerateInitPopulationMethod, 
@@ -23,6 +26,7 @@ namespace QAP
             var newTestResult = new TestResult(
                 testSetting,
                 result.Item1.SolutionValue, 
+                knownOptimum,
                 result.Item3, 
                 result.Item2,
                 result.Item1.SolutionPermutation);
