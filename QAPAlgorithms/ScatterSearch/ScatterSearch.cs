@@ -102,7 +102,7 @@ namespace QAPAlgorithms.ScatterSearch
 
                 newSolutions.AddRange(_solutionGenerationMethod.GetSolutions(_referenceSet));
                 // Console.WriteLine(newSolutions.Count);
-                EliminateIdenticalSolutionsFromSet(newSolutions);
+                // EliminateIdenticalSolutionsFromSet(newSolutions);
                 // Console.WriteLine(newSolutions.Count);
                 
                 foreach (var newSolution in newSolutions) 
@@ -117,8 +117,12 @@ namespace QAPAlgorithms.ScatterSearch
 
                 if (!_foundNewSolutions)
                 {
-                    GenerateNewPopulation();
-                    double percentageOfSolutionToRemove = 0.8;
+                    //we need diverse solutions not improved solutions
+                    _population.Clear();
+                    _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
+                    
+                    // GenerateNewPopulation(false);
+                    double percentageOfSolutionToRemove = 0.5;
                     if(notFoundSolutionCount > 50)
                         percentageOfSolutionToRemove = notFoundSolutionCount / 100;
                     
@@ -210,10 +214,10 @@ namespace QAPAlgorithms.ScatterSearch
         {
             _population.Clear();
             _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
+            EliminateIdenticalSolutionsFromSet(_population);
             
             if(improveSolutions)
-                EliminateIdenticalSolutionsFromSet(_population);
-            _improvementMethod.ImproveSolutions(_population);
+                _improvementMethod.ImproveSolutions(_population);
         }
 
         private static bool IsSolutionAlreadyInReferenceSet(InstanceSolution instanceSolution, List<InstanceSolution> referenceSet)

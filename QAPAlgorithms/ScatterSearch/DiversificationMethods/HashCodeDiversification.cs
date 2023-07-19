@@ -39,7 +39,7 @@ namespace QAPAlgorithms.ScatterSearch.DiversificationMethods
                 hashCodeOfReferenceSet += solution.HashCode;
             }
 
-            var averageRefSetHashCode = hashCodeOfReferenceSet / halfRefSetSize;
+            var averageRefSetHashCode = hashCodeOfReferenceSet / referenceSet.Count;
 
             while (referenceSet.Count != halfRefSetSize)
                 referenceSet.RemoveAt(referenceSet.Count - 1);
