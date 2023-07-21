@@ -41,7 +41,7 @@ def generate_plot(file_path: str,
     #                         use_different_alpha)
 
 
-def show_plot_for_group(first_group,
+def show_plot_for_group(first_group: DataFrameGroupBy,
                         second_groups: DataFrameGroupBy,
                         plot_name: str,
                         y_axis_name: str,

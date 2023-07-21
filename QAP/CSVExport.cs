@@ -10,7 +10,7 @@ namespace QAP
             var stringBuilder = new StringBuilder();    
 
             foreach(var result in results) 
-                stringBuilder.AppendLine(result.ToCSVString());
+                stringBuilder.AppendLine(result.ToString());
 
             await using var streamReader = File.CreateText(fullPath);
             await streamReader.WriteAsync(stringBuilder.ToString());

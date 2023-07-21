@@ -12,32 +12,32 @@ namespace QAP
     {
         public double OptimumDifference { get; } = 1 - ((double)KnownOptimum / FoundOptimum);
         
-        public string ToCSVString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(TestSetting.Instance.InstanceName);
-            sb.Append(';');
-            sb.Append(TestSetting.Instance.N);
-            sb.Append(';');
-            sb.Append(FoundOptimum);
-            sb.Append(';');
-            sb.Append(Time);
-            sb.Append(';');
-
-            var arrayString = new StringBuilder();
-            arrayString.Append('[');
-            for(int i = 0; i < Solution.Length; i++)
-            {
-                arrayString.Append(Solution[i]);
-
-                if(i < Solution.Length - 1) 
-                    arrayString.Append(", ");
-            }
-            arrayString.Append(']');
-
-            sb.Append(arrayString);
-            return sb.ToString();
-        }
+        // public string ToCSVString()
+        // {
+        //     StringBuilder sb = new StringBuilder();
+        //     sb.Append(TestSetting.Instance.InstanceName);
+        //     sb.Append(';');
+        //     sb.Append(TestSetting.Instance.N);
+        //     sb.Append(';');
+        //     sb.Append(FoundOptimum);
+        //     sb.Append(';');
+        //     sb.Append(Time);
+        //     sb.Append(';');
+        //
+        //     var arrayString = new StringBuilder();
+        //     arrayString.Append('[');
+        //     for(int i = 0; i < Solution.Length; i++)
+        //     {
+        //         arrayString.Append(Solution[i]);
+        //
+        //         if(i < Solution.Length - 1) 
+        //             arrayString.Append(", ");
+        //     }
+        //     arrayString.Append(']');
+        //
+        //     sb.Append(arrayString);
+        //     return sb.ToString();
+        // }
 
         public override string ToString()
         {
@@ -46,8 +46,17 @@ namespace QAP
             sb.Append(';');
             sb.Append(TestSetting.Instance.N);
             sb.Append(';');
+            sb.Append(TestSetting.ReferenceSetSize);
+            sb.Append(';');
+            sb.Append(TestSetting.PopulationSize);
+            sb.Append(';');
             sb.Append(FoundOptimum);
             sb.Append(';');
+            sb.Append(KnownOptimum);
+            sb.Append(';');
+            sb.Append(OptimumDifference);
+            sb.Append(';');
+            
             sb.Append(Time);
             sb.Append(';');
             sb.Append(Iterations);
@@ -68,8 +77,6 @@ namespace QAP
             sb.Append(';');
             sb.Append(TestSetting.CombinationMethod.GetType().Name);
             sb.Append(';');
-            sb.Append(TestSetting.GenerateInitPopulationMethod.GetType().Name);
-            sb.Append(';');
             sb.Append(TestSetting.ImprovementMethod.GetType().Name);
             return sb.ToString();
         }
@@ -81,19 +88,26 @@ namespace QAP
             sb.Append(';');
             sb.Append('N');
             sb.Append(';');
-            sb.Append("Solution Value");
+            sb.Append("Reference Size");
             sb.Append(';');
-            sb.Append("Time[s]");
+            sb.Append("Population Size");
             sb.Append(';');
-            sb.Append("Solutions Tried");
+            sb.Append("Found Optimum");
+            sb.Append(';');
+            sb.Append("Known Optimum");
+            sb.Append(';');
+            sb.Append("Difference");
+            sb.Append(';');
+            sb.Append("Time");
+            sb.Append(';');
+            sb.Append("Iterations");
             sb.Append(';');
             sb.Append("Permutation");
             sb.Append(';');
             sb.Append("Combination Method");
             sb.Append(';');
-            sb.Append("Init Pop Generation");
-            sb.Append(';');
-            sb.Append("ImprovementMethod");
+            sb.Append("Improvement Method");
+            
             return sb.ToString();
         }
 
