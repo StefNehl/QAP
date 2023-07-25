@@ -7,12 +7,8 @@ var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 
 var filesWithKnownOptimum = new List<TestFiles>
 {
-    // new ("QAPLIB","chr12a.dat", 9552),
+    new ("QAPLIB","chr12a.dat", 9552),
     // new ("QAPLIB","chr15b.dat", 7990),
-    new ("QAPLIB","chr25a.dat", 3796),
-    // new ("QAPLIB","chr25a.dat", 3796),
-    // new ("QAPLIB","chr25a.dat", 3796),
-    // new ("QAPLIB","chr25a.dat", 3796),
     // new ("QAPLIB","chr25a.dat", 3796),
     // new ("QAPLIB","esc16b.dat", 292),
     // new ("QAPLIB","esc32c.dat", 642),
@@ -28,37 +24,45 @@ var filesWithKnownOptimum = new List<TestFiles>
 const int runtimeInSeconds = 60;
 // const int runtimeInSeconds = 600 * 3;
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
-int refSetSize = 10;
-int populationSetSize = 5 * refSetSize;
-
+int nrOfRepetitions = 1;
 var testResults = new List<TestResult>();
+
 
 for(int i = 0; i < filesWithKnownOptimum.Count; i++)
 {
-    var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].FolderName, 
-        filesWithKnownOptimum[i].FileName);
-    var testSettingsProvider = new TestSettingsProvider(instance, refSetSize, populationSetSize, runtimeInSeconds);
-
-    foreach (var testSetting in testSettingsProvider.GetTestSettings())
+    int refSetSize = 20;
+    int populationSetSize = 5 * refSetSize;
+    Console.WriteLine($"Instance: {filesWithKnownOptimum[i].FileName} {i + 1} of {filesWithKnownOptimum.Count}.");
+    for (int r = 0; r < nrOfRepetitions; r++)
     {
-        Console.WriteLine($"Start {i + 1} of {filesWithKnownOptimum.Count}.");
-        var testResult = TestInstance.StartTest(testSetting, false, 
-            filesWithKnownOptimum[i].KnownOptimum);
-        Console.WriteLine(testResult.ToString());
-        testResults.Add(testResult);
-        Console.WriteLine();
-        Console.WriteLine($"{i + 1} of {filesWithKnownOptimum.Count} calculated");
-        Console.WriteLine();
+        Console.WriteLine("Repetition: " + (r + 1) + " of " + nrOfRepetitions);
+        var instance = await qapReader.ReadFileAsync(filesWithKnownOptimum[i].FolderName, 
+            filesWithKnownOptimum[i].FileName);
+        var testSettingsProvider = new TestSettingsProvider(instance, refSetSize, populationSetSize, runtimeInSeconds);
+
+        int nrOfTest = testSettingsProvider.GetTestSettings().Count;
+        int testSettingsCount = 0;
+        foreach (var testSetting in testSettingsProvider.GetTestSettings())
+        {
+            Console.WriteLine($"Test {testSettingsCount + 1} of {nrOfTest}.");
+            var testResult = TestInstance.StartTest(testSetting, false, 
+                filesWithKnownOptimum[i].KnownOptimum);
+            Console.WriteLine(testResult.ToString());
+            testResults.Add(testResult);
+            Console.WriteLine();
+            testSettingsCount++;
+        }
+
+        refSetSize += 10;
+        populationSetSize = 5 * refSetSize;
     }
-    
-    // refSetSize += 10;
-    // populationSetSize = 5 * refSetSize;
 }
+
 
 Console.WriteLine(testResults.First().ToStringColumnNames());
 foreach (var t in testResults)
     Console.WriteLine(t.ToString());
 
 await CSVExport.ExportToCSV(testResults, @"C:\Master_Results", 
-    DateTime.Now.ToString("hh-mm-ss_dd-MM-yyyy"));
+    DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy"));
 

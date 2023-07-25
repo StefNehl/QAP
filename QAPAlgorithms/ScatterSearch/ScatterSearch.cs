@@ -8,8 +8,9 @@ namespace QAPAlgorithms.ScatterSearch
     {
         //16_Design of Heuristic Algorithms for Hard Optimization.pdf 215
         //14_Principles of Scatter Search P.3
-        private readonly int _populationSize; //size of the complete population (max = 20)
-        private readonly int _referenceSetSize; //size of the reference (elite) solutions (around 10) 
+        private int _populationSize; //size of the complete population (max = 20)
+        private int _referenceSetSize; //size of the reference (elite) solutions (around 10) 
+        private readonly bool _adjustReferenceSetAndPopulationSetSizeDynamically;
         private readonly List<InstanceSolution> _population;
         private readonly List<InstanceSolution> _referenceSet;
 
@@ -32,7 +33,8 @@ namespace QAPAlgorithms.ScatterSearch
             IImprovementMethod improvementMethod,
             ISolutionGenerationMethod solutionGenerationMethod,
             int populationSize = 10,
-            int referenceSetSize = 5)
+            int referenceSetSize = 5,
+            bool adjustReferenceSetAndPopulationSetSizeDynamically = false)
         {
             _generateInitPopulationMethod = generateInitPopulationMethod;
             _diversificationMethod = diversificationMethod;
@@ -42,6 +44,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             _populationSize = populationSize;
             _referenceSetSize = referenceSetSize;
+            _adjustReferenceSetAndPopulationSetSizeDynamically = adjustReferenceSetAndPopulationSetSizeDynamically;
             _population = new List<InstanceSolution>(_populationSize);
             _referenceSet = new List<InstanceSolution>(_referenceSetSize);
         }
@@ -82,7 +85,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if (_displayCount == 1000)
+                if (_displayCount == 5)
                 {
                     if (displayProgressInConsole)
                         Console.WriteLine($"Iteration: {_iterationCount} Result: {GetBestSolution().SolutionValue} Solutions Generated: {nrOfSolutionsGenerated}");
@@ -122,7 +125,12 @@ namespace QAPAlgorithms.ScatterSearch
                     //we need diverse solutions not improved solutions
                     _population.Clear();
                     _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
-                    
+
+                    if (_adjustReferenceSetAndPopulationSetSizeDynamically)
+                    {
+                        _referenceSetSize += 10;
+                        _populationSize = _referenceSetSize * 5;
+                    }
                     // GenerateNewPopulation(false);
                     double percentageOfSolutionToRemove = 0.5;
                     if(notFoundSolutionCount > 50)
