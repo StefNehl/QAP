@@ -7,7 +7,8 @@ namespace QAP
         public static TestResult StartTest(
             TestSetting testSetting, 
             bool displayProgressInConsole,
-            long knownOptimum)
+            long knownOptimum,
+            bool adjustReferenceSetSizeAndPopulationSizeDynamically)
         {
             var scatterSearch = new ScatterSearch(
                 testSetting.GenerateInitPopulationMethod, 
@@ -16,7 +17,8 @@ namespace QAP
                 testSetting.ImprovementMethod,
                 testSetting.SolutionGenerationMethod,
                 testSetting.PopulationSize,
-                testSetting.ReferenceSetSize);
+                testSetting.ReferenceSetSize,
+                adjustReferenceSetSizeAndPopulationSizeDynamically);
             
             var result = scatterSearch.Solve(
                 testSetting.Instance,

@@ -45,8 +45,11 @@ for(int i = 0; i < filesWithKnownOptimum.Count; i++)
         foreach (var testSetting in testSettingsProvider.GetTestSettings())
         {
             Console.WriteLine($"Test {testSettingsCount + 1} of {nrOfTest}.");
-            var testResult = TestInstance.StartTest(testSetting, false, 
-                filesWithKnownOptimum[i].KnownOptimum);
+            var testResult = TestInstance.StartTest(
+                testSetting, 
+                false, 
+                filesWithKnownOptimum[i].KnownOptimum, 
+                true);
             Console.WriteLine(testResult.ToString());
             testResults.Add(testResult);
             Console.WriteLine();
