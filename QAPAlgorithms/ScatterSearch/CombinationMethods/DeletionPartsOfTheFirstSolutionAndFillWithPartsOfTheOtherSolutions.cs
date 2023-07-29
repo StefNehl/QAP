@@ -45,7 +45,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public List<int[]> CombineSolutions(List<InstanceSolution> solutions)
         {
-            if (WereSolutionsAlreadyCombined(solutions))
+            if (WereSolutionsAlreadyCombined(solutions, true))
                 return new List<int[]>();
 
             return Combine(solutions);
@@ -53,7 +53,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
 
         public List<int[]> CombineSolutionsThreadSafe(List<InstanceSolution> solutions)
         {
-            if (WereSolutionsAlreadyCombinedThreadSafe(solutions))
+            if (WereSolutionsAlreadyCombinedThreadSafe(solutions, true))
                 return new List<int[]>();
 
             return Combine(solutions);

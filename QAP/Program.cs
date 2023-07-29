@@ -57,9 +57,6 @@ for(int i = 0; i < filesWithKnownOptimum.Count; i++)
             Console.WriteLine();
             testSettingsCount++;
         }
-
-        // refSetSize += 10;
-        // populationSetSize += 50;
     }
 }
 

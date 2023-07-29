@@ -18,11 +18,13 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             _alreadyCombinedSolutionsForAsync= new ConcurrentDictionary<BigInteger, long>();
         }
 
-        public bool WereSolutionsAlreadyCombined(List<InstanceSolution> solutions)
+        public bool WereSolutionsAlreadyCombined(List<InstanceSolution> solutions,
+            bool checkOrderOfTheSolutions)
         {
             if (_checkIfSolutionsWereAlreadyCombined)
             {
-                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
+                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions,
+                    checkOrderOfTheSolutions);
                 if (_alreadyCombinedSolutions.Contains(hashCodeOfSolutions))
                     return true;
                 _alreadyCombinedSolutions.Add(hashCodeOfSolutions);
@@ -31,11 +33,13 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return false;
         }
 
-        public bool WereSolutionsAlreadyCombinedThreadSafe(List<InstanceSolution> solutions)
+        public bool WereSolutionsAlreadyCombinedThreadSafe(List<InstanceSolution> solutions,
+            bool checkOrderOfTheSolutions)
         {
             if (_checkIfSolutionsWereAlreadyCombined)
             {
-                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions);
+                var hashCodeOfSolutions = GenerateHashCodeFromCombinedSolutions(solutions,
+                    checkOrderOfTheSolutions);
                 if (_alreadyCombinedSolutionsForAsync.ContainsKey(hashCodeOfSolutions))
                 {
                     // nrOfCombinationsAlreadyDone++;
@@ -48,12 +52,17 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             return false;
         }
 
-        private BigInteger GenerateHashCodeFromCombinedSolutions(List<InstanceSolution> solutions)
+        private BigInteger GenerateHashCodeFromCombinedSolutions(
+            List<InstanceSolution> solutions,
+            bool checkOrderOfTheSolutions)
         {
             BigInteger newHashCode = 0;
             for (int i = 0; i < solutions.Count; i++)
             {
-                newHashCode += (BigInteger)solutions[i].HashCode * (i + 1);
+                var multiplier = 1;
+                if (checkOrderOfTheSolutions)
+                    multiplier = (i + 1);
+                newHashCode += (BigInteger)solutions[i].HashCode * multiplier; ;
             }
             return newHashCode;
         }

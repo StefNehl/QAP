@@ -43,7 +43,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             if (_stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (WereSolutionsAlreadyCombined(solutions))
+            if (WereSolutionsAlreadyCombined(solutions, false))
                 return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
@@ -57,7 +57,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             if (_stepSizeForPairs > 2)
                 throw new Exception("Stepsize higher than 2 is not supported and verified");
 
-            if (WereSolutionsAlreadyCombinedThreadSafe(solutions))
+            if (WereSolutionsAlreadyCombinedThreadSafe(solutions, false))
                 return new List<int[]>();
 
             var solutionLenght = solutions[0].SolutionPermutation.Length;
