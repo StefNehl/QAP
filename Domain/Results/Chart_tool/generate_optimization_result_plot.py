@@ -9,11 +9,11 @@ from generate_time_plots_for_benchmark import generate_plot
 def generate_plot():
     # file_path = "..\\OptimizationAnalysis\\02-18-12_21-07-2023.csv"
 
-    # file_path = "..\\OptimizationAnalysis\\10-15-57_24-07-2023.csv"
-    file_path = "..\\OptimizationAnalysis\\14-17-11_24-07-2023.csv"
+    file_path = "..\\OptimizationAnalysis\\10-15-57_24-07-2023.csv"
+    # file_path = "..\\OptimizationAnalysis\\14-17-11_24-07-2023.csv"
     data = pd.read_csv(file_path, delimiter=';')
 
-    header_name = "Instance: " + data["Instance Name"]
+    header_name = "Instance: " + data["Instance Name"][0]
     # y_axis_name = "Found Optimum"
     # y_axis_label = y_axis_name
 
@@ -62,14 +62,10 @@ def generate_plot():
 
     labels = ['\n'.join(wrap(label, 35)) for label in labels]
 
-
     fig.legend(lines,
                labels)
 
-
-
-
-
+    plt.title(header_name)
     plt.show()
 
 

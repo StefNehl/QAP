@@ -10,7 +10,7 @@ namespace QAP
         long Iterations,
         int[] Solution)
     {
-        public double OptimumDifference { get; } = 1 - ((double)KnownOptimum / FoundOptimum);
+        public double OptimumDifference { get; } = ((double)FoundOptimum / KnownOptimum) - 1;
         
         // public string ToCSVString()
         // {

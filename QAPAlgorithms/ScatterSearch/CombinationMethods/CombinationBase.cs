@@ -53,8 +53,7 @@ namespace QAPAlgorithms.ScatterSearch.CombinationMethods
             BigInteger newHashCode = 0;
             for (int i = 0; i < solutions.Count; i++)
             {
-                newHashCode += (BigInteger)solutions[i].HashCode * i;
-                // newHashCode += solutions[i].HashCode;
+                newHashCode += (BigInteger)solutions[i].HashCode * (i + 1);
             }
             return newHashCode;
         }

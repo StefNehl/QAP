@@ -8,25 +8,27 @@ var qapReader = QAPInstanceReader.QAPInstanceReader.GetInstance();
 var filesWithKnownOptimum = new List<TestFiles>
 {
     new ("QAPLIB","chr12a.dat", 9552),
-    // new ("QAPLIB","chr15b.dat", 7990),
-    // new ("QAPLIB","chr25a.dat", 3796),
-    // new ("QAPLIB","esc16b.dat", 292),
-    // new ("QAPLIB","esc32c.dat", 642),
-    // new ("QAPLIB","esc128.dat", 64),
-    // new ("QAPLIB","nug24.dat", 3488),
-    // new ("QAPLIB","nug30.dat", 6124),
-    // new ("QAPLIB","sko64.dat", 48498),
-    // new ("QAPLIB","tai256c.dat", 44759294),
+    new ("QAPLIB","chr15b.dat", 7990),
+    new ("QAPLIB","chr25a.dat", 3796),
+    new ("QAPLIB","esc16b.dat", 292),
+    new ("QAPLIB","esc32c.dat", 642),
+    new ("QAPLIB","esc128.dat", 64),
+    new ("QAPLIB","nug24.dat", 3488),
+    new ("QAPLIB","nug30.dat", 6124),
+    new ("QAPLIB","sko64.dat", 48498),
+    new ("QAPLIB","tai256c.dat", 44759294),
 };
 
 //new ("QAPLIBNoOptimum", "sko42.dat")
 
-const int runtimeInSeconds = 60;
+const int runtimeInSeconds = 600;
 // const int runtimeInSeconds = 600 * 3;
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
 int nrOfRepetitions = 1;
 var testResults = new List<TestResult>();
 
+var calculatedRuntime = filesWithKnownOptimum.Count * runtimeInSeconds * nrOfRepetitions * 4; // 4 = nr of tests 
+Console.WriteLine("Runtime till: " + DateTime.Now.AddSeconds(calculatedRuntime));
 
 for(int i = 0; i < filesWithKnownOptimum.Count; i++)
 {
@@ -56,8 +58,8 @@ for(int i = 0; i < filesWithKnownOptimum.Count; i++)
             testSettingsCount++;
         }
 
-        refSetSize += 10;
-        populationSetSize = 5 * refSetSize;
+        // refSetSize += 10;
+        // populationSetSize += 50;
     }
 }
 
