@@ -1,55 +1,55 @@
-Method,SolutionName,NrOfCalls,Allocated
-SubSetGen,chr12a.dat,10,89.67
-SubSetGen_Parallel,chr12a.dat,10,143.85
-PathRelinking,chr12a.dat,10,2255.86
-PathRelinking_Parallel,chr12a.dat,10,2644.61
-Combination,chr12a.dat,10,2780.76
-Combination_Parallel,chr12a.dat,10,3091.52
-SubSetGen,chr12a.dat,100,896.68
-SubSetGen_Parallel,chr12a.dat,100,1438.48
-PathRelinking,chr12a.dat,100,23702.4
-PathRelinking_Parallel,chr12a.dat,100,27840.62
-Combination,chr12a.dat,100,26807.67
-Combination_Parallel,chr12a.dat,100,30527.47
-SubSetGen,chr12a.dat,200,1793.36
-SubSetGen_Parallel,chr12a.dat,200,2876.96
-PathRelinking,chr12a.dat,200,46323.53
-PathRelinking_Parallel,chr12a.dat,200,52826.56
-Combination,chr12a.dat,200,56393.47
-Combination_Parallel,chr12a.dat,200,59567.46
-SubSetGen,chr25a.dat,10,89.67
-SubSetGen_Parallel,chr25a.dat,10,143.85
-PathRelinking,chr25a.dat,10,9181.59
-PathRelinking_Parallel,chr25a.dat,10,9365.09
-Combination,chr25a.dat,10,9763.83
-Combination_Parallel,chr25a.dat,10,9912.53
-SubSetGen,chr25a.dat,100,896.68
-SubSetGen_Parallel,chr25a.dat,100,1438.48
-PathRelinking,chr25a.dat,100,91242.57
-PathRelinking_Parallel,chr25a.dat,100,92828.19
-Combination,chr25a.dat,100,97584.57
-Combination_Parallel,chr25a.dat,100,99072.14
-SubSetGen,chr25a.dat,200,1793.36
-SubSetGen_Parallel,chr25a.dat,200,2876.96
-PathRelinking,chr25a.dat,200,180874.21
-PathRelinking_Parallel,chr25a.dat,200,188522
-Combination,chr25a.dat,200,192722.26
-Combination_Parallel,chr25a.dat,200,200038.03
-SubSetGen,tai256c.dat,10,89.67
-SubSetGen_Parallel,tai256c.dat,10,143.85
-PathRelinking,tai256c.dat,10,593599.88
-PathRelinking_Parallel,tai256c.dat,10,598679.28
-Combination,tai256c.dat,10,598489.15
-Combination_Parallel,tai256c.dat,10,603177.7
-SubSetGen,tai256c.dat,100,896.68
-SubSetGen_Parallel,tai256c.dat,100,1438.48
-PathRelinking,tai256c.dat,100,5928708.95
-PathRelinking_Parallel,tai256c.dat,100,5974806.55
-Combination,tai256c.dat,100,5977330.97
-Combination_Parallel,tai256c.dat,100,6042367.91
-SubSetGen,tai256c.dat,200,1793.36
-SubSetGen_Parallel,tai256c.dat,200,2876.96
-PathRelinking,tai256c.dat,200,11856178.6
-PathRelinking_Parallel,tai256c.dat,200,11973411.65
-Combination,tai256c.dat,200,11964597.85
-Combination_Parallel,tai256c.dat,200,12081911.74
+Method,SolutionName,NrOfCalls,Mean,Error,StdDev,Median,Gen0,Gen1,Gen2,Allocated
+SubSetGen,chr12a.dat,10,72.05,1.39,1.487,72.09 us,2.1973,-,-,110.64 
+SubSetGen_Parallel,chr12a.dat,10,130.4,1.079,0.957,130.21 us,3.1738,1.4648,-,164.83 
+PathRelinking,chr12a.dat,10,4046.79,50.267,44.561,"4,031.76 us",46.8750,7.8125,-,2678.05 
+PathRelinking_Parallel,chr12a.dat,10,2304.75,45.865,61.229,"2,306.82 us",70.3125,15.6250,-,3376.34 
+Combination,chr12a.dat,10,4090.47,80.719,107.757,"4,023.63 us",46.8750,7.8125,-,2643.31 
+Combination_Parallel,chr12a.dat,10,2581.41,51.455,83.09,"2,579.90 us",74.2188,19.5313,-,3659.3 
+SubSetGen,chr12a.dat,100,734.38,3.268,2.897,734.44 us,22.4609,-,-,1106.45 
+SubSetGen_Parallel,chr12a.dat,100,1320.53,13.533,12.658,"1,322.17 us",33.2031,15.6250,-,1648.25 
+PathRelinking,chr12a.dat,100,41755.46,524.222,437.749,"41,839.84 us",538.4615,76.9231,-,26903.97 
+PathRelinking_Parallel,chr12a.dat,100,24627.81,480.728,572.273,"24,837.60 us",718.7500,156.2500,-,34935.96 
+Combination,chr12a.dat,100,41746.75,464.625,411.878,"41,802.84 us",538.4615,76.9231,-,26907.29 
+Combination_Parallel,chr12a.dat,100,24985.56,402.727,590.313,"24,862.08 us",812.5000,250.0000,-,39595.46 
+SubSetGen,chr12a.dat,200,1549.33,30.855,27.352,"1,560.13 us",44.9219,-,-,2212.89 
+SubSetGen_Parallel,chr12a.dat,200,2599.64,24.95,23.339,"2,596.71 us",66.4063,31.2500,-,3296.5 
+PathRelinking,chr12a.dat,200,81222.62,1247.951,1106.276,"81,296.94 us",1000.0000,142.8571,-,53089.17 
+PathRelinking_Parallel,chr12a.dat,200,49875.13,982.778,1092.355,"49,895.89 us",1400.0000,300.0000,-,70081.79 
+Combination,chr12a.dat,200,89398.34,1348.082,1195.04,"89,812.43 us",1333.3333,166.6667,-,69055.21 
+Combination_Parallel,chr12a.dat,200,55291.36,1103.251,1582.25,"54,949.25 us",1800.0000,500.0000,-,85794.27 
+SubSetGen,chr25a.dat,10,78.47,1.323,1.237,78.82 us,2.5635,-,-,130.41 
+SubSetGen_Parallel,chr25a.dat,10,130.9,1.57,1.468,131.18 us,3.6621,1.7090,-,184.59 
+PathRelinking,chr25a.dat,10,29233.31,107.162,100.24,"29,216.06 us",187.5000,62.5000,-,9345.96 
+PathRelinking_Parallel,chr25a.dat,10,6398.73,119.385,111.673,"6,355.22 us",250.0000,132.8125,-,12099.31 
+Combination,chr25a.dat,10,29802.31,137.435,128.557,"29,808.40 us",187.5000,62.5000,-,10624.81 
+Combination_Parallel,chr25a.dat,10,6886.61,77.729,72.708,"6,892.12 us",257.8125,164.0625,-,12716.97 
+SubSetGen,chr25a.dat,100,808.73,4.144,3.46,808.83 us,26.3672,-,-,1304.1 
+SubSetGen_Parallel,chr25a.dat,100,1313.74,13.635,12.087,"1,314.48 us",37.1094,17.5781,-,1845.9 
+PathRelinking,chr25a.dat,100,284779.19,5107.64,4777.69,"286,905.70 us",1500.0000,500.0000,-,93169.92 
+PathRelinking_Parallel,chr25a.dat,100,61681.2,1010.859,945.558,"61,496.27 us",2333.3333,1111.1111,-,115387.9 
+Combination,chr25a.dat,100,292749.01,5317.903,4974.37,"295,446.95 us",2000.0000,1000.0000,-,107459.18 
+Combination_Parallel,chr25a.dat,100,68708.94,280.01,218.613,"68,644.29 us",2750.0000,1500.0000,-,137288.96 
+SubSetGen,chr25a.dat,200,1545.12,21.554,20.162,"1,547.67 us",52.7344,-,-,2608.21 
+SubSetGen_Parallel,chr25a.dat,200,2634.24,27.632,25.847,"2,646.76 us",74.2188,35.1563,-,3691.8 
+PathRelinking,chr25a.dat,200,580610.9,11116.308,10917.701,"587,826.80 us",3000.0000,1000.0000,-,187716.4 
+PathRelinking_Parallel,chr25a.dat,200,123330.38,917.169,857.921,"123,200.70 us",4800.0000,2800.0000,-,238816.41 
+Combination,chr25a.dat,200,604948.46,11551.083,10804.89,"610,648.80 us",4000.0000,1000.0000,-,219088.66 
+Combination_Parallel,chr25a.dat,200,138503.77,2691.555,3773.184,"137,236.83 us",5250.0000,2500.0000,-,261525.22 
+SubSetGen,tai256c.dat,10,89.01,1.774,3.781,90.60 us,-,-,-,139.87 
+SubSetGen_Parallel,tai256c.dat,10,133.99,0.897,0.839,134.26 us,3.6621,1.7090,-,188.42 
+PathRelinking,tai256c.dat,10,23723679.37,75646.365,63168.141,"23,720,253.40 us",16000.0000,15000.0000,7000.0000,602214.84 
+PathRelinking_Parallel,tai256c.dat,10,3262366.45,19991.838,18700.378,"3,261,248.70 us",16000.0000,15000.0000,5000.0000,634851.97 
+Combination,tai256c.dat,10,23673114.67,128034.867,119763.894,"23,710,502.30 us",20000.0000,18000.0000,9000.0000,627118.73 
+Combination_Parallel,tai256c.dat,10,3329925.94,33392.827,29601.871,"3,327,832.75 us",19000.0000,18000.0000,7000.0000,661172.32 
+SubSetGen,tai256c.dat,100,822.71,6.329,4.941,822.50 us,-,-,-,1343.48 
+SubSetGen_Parallel,tai256c.dat,100,1314.55,20.053,18.757,"1,307.18 us",37.1094,17.5781,-,1884.18 
+PathRelinking,tai256c.dat,100,242230381.9,4318920.546,4039920.958,"239,836,950.30 us",174000.0000,173000.0000,75000.0000,6014619.37 
+PathRelinking_Parallel,tai256c.dat,100,33219590.65,246825.535,230880.759,"33,153,858.30 us",197000.0000,196000.0000,78000.0000,6361155.79 
+Combination,tai256c.dat,100,237153855.9,1087403.917,1017158.299,"237,202,597.10 us",212000.0000,210000.0000,103000.0000,6272515.12 
+Combination_Parallel,tai256c.dat,100,33709536.06,206063.177,192751.623,"33,761,832.90 us",222000.0000,213000.0000,94000.0000,6611875.97 
+SubSetGen,tai256c.dat,200,1644.71,13.116,10.24,"1,649.05 us",-,-,-,2685.87 
+SubSetGen_Parallel,tai256c.dat,200,2627.9,17.933,15.897,"2,626.30 us",74.2188,35.1563,-,3768.36 
+PathRelinking,tai256c.dat,200,471215399.2,1971261.847,1843919.554,"470,792,754.70 us",352000.0000,351000.0000,152000.0000,12047757.06 
+PathRelinking_Parallel,tai256c.dat,200,66055507.39,240197.929,224681.291,"66,044,859.60 us",395000.0000,394000.0000,151000.0000,12684343.16 
+Combination,tai256c.dat,200,473935657.6,1699298.525,1589524.894,"472,872,225.70 us",420000.0000,418000.0000,201000.0000,12562743.62 
+Combination_Parallel,tai256c.dat,200,66654552.59,164110.692,153509.243,"66,643,760.40 us",449000.0000,436000.0000,197000.0000,13201136.42 

@@ -1,19 +1,19 @@
-Method,SolutionName,Solutions generated
-Subset generation,chr12a.dat,593
-Parallel Subset generation,chr12a.dat,589
-Path relinking,chr12a.dat,728
-Parallel Path relinking,chr12a.dat,715
-Combined,chr12a.dat,1291
-Parallel Combined,chr12a.dat,1328
-Subset generation,chr25a.dat,1947
-Parallel Subset generation,chr25a.dat,1946
-Path relinking,chr25a.dat,1821
-Parallel Path relinking,chr25a.dat,1770
-Combined,chr25a.dat,3795
-Parallel Combined,chr25a.dat,3774
-Subset generation,tai256c.dat,8833
-Parallel Subset generation,tai256c.dat,8822
-Path relinking,tai256c.dat,22378
-Parallel Path relinking,tai256c.dat,22494
-Combined,tai256c.dat,31234
-Parallel Combined,tai256c.dat,31247
+Method,SolutionName,Solutions generated,Allocated
+Subset generation,chr12a.dat,593,2212.89
+Parallel Subset generation,chr12a.dat,589,3296.5
+Path relinking,chr12a.dat,728,53089.17
+Parallel Path relinking,chr12a.dat,715,70081.79
+Combined,chr12a.dat,1291,69055.21
+Parallel Combined,chr12a.dat,1328,85794.27
+Subset generation,chr25a.dat,1947,2608.21
+Parallel Subset generation,chr25a.dat,1946,3691.8
+Path relinking,chr25a.dat,1821,187716.4
+Parallel Path relinking,chr25a.dat,1770,238816.41
+Combined,chr25a.dat,3795,219088.66
+Parallel Combined,chr25a.dat,3774,261525.22
+Subset generation,tai256c.dat,8833,2685.87
+Parallel Subset generation,tai256c.dat,8822,3768.36
+Path relinking,tai256c.dat,22378,12047757.06
+Parallel Path relinking,tai256c.dat,22494,12684343.16
+Combined,tai256c.dat,31234,12562743.62
+Parallel Combined,tai256c.dat,31247,13201136.42
