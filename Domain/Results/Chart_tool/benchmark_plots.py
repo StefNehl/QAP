@@ -53,11 +53,3 @@ def generate_plots():
                   "NrOfCalls",
                   "Nr of Calls",
                   bbox_to_anchor=(0.55, 0.045))
-
-    generate_plot("..\\Benchmarks\\SolutionGeneration_Results_NrOfSolutions.csv",
-                  "Solutions Generation Method Memory Consumption",
-                  "Solutions generated",
-                  "Solutions generated",
-                  "Method",
-                  "Method",
-                  bbox_to_anchor=(0.55, 0.045))
