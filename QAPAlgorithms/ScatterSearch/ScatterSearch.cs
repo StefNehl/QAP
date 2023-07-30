@@ -78,6 +78,7 @@ namespace QAPAlgorithms.ScatterSearch
 
             int notFoundSolutionCount = 0;
             long nrOfSolutionsGenerated = 0;
+            int adjustReferenceSetSizeCount = 0;
 
             while (true)
             {
@@ -122,19 +123,29 @@ namespace QAPAlgorithms.ScatterSearch
 
                 if (!_foundNewSolutions)
                 {
+                    adjustReferenceSetSizeCount++;
+                    if (_adjustReferenceSetAndPopulationSetSizeDynamically && 
+                        adjustReferenceSetSizeCount == 10)
+                    {
+                        _referenceSetSize += 10;
+                        _populationSize = _referenceSetSize * 5;
+                        adjustReferenceSetSizeCount = 0;
+                    }
+                    
                     //we need diverse solutions not improved solutions
                     _population.Clear();
                     _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
 
-                    if (_adjustReferenceSetAndPopulationSetSizeDynamically)
-                    {
-                        _referenceSetSize += 10;
-                        _populationSize = _referenceSetSize * 5;
-                    }
+
                     // GenerateNewPopulation(false);
                     double percentageOfSolutionToRemove = 0.5;
-                    if(notFoundSolutionCount > 50)
+                    if(notFoundSolutionCount > 10)
                         percentageOfSolutionToRemove = notFoundSolutionCount / 100;
+                    
+                    foreach (var instanceSolution in _population)
+                    {
+                        ReferenceSetUpdate(instanceSolution, _referenceSet, _referenceSetSize);
+                    }
                     
                     _diversificationMethod.ApplyDiversificationMethod(_referenceSet,
                         _population,
