@@ -3,7 +3,6 @@ import copy
 import pandas as pd
 import numpy as np
 
-
 def prepare_csv(file_path:str):
     data = pd.read_csv(file_path, delimiter=';')
     prepared_data_strings: [str] = [get_column_names()]
@@ -49,6 +48,10 @@ def merge_csv_files_to_compare_diff(file_paths: list[str]):
     for path in file_paths:
         new_data = pd.read_csv(path, delimiter=';')
 
+        print("mean:" + str(new_data[default_column_name].mean()))
+        print("median:" + str(new_data[default_column_name].median()))
+        # print("geo mean:" + str(calculate_gmean(new_data[default_column_name].values)))
+
         if data is None:
             data = copy.deepcopy(new_data)
             diff_counter
@@ -59,12 +62,17 @@ def merge_csv_files_to_compare_diff(file_paths: list[str]):
 
     new_file_path = file_paths[0][:-4]
     new_file_path = new_file_path + "_merged.csv"
-    np.savetxt(new_file_path, data, fmt="%s", delimiter=";")
+    data.to_csv(new_file_path, sep=";", index=False)
 
 
+def calculate_gmean(values: list) -> float:
+    result = 1
+    for i in values:
+        if i < 0:
+            continue
+        result = result * i
 
-
-
+    return result**(1/len(values))
 
 def get_column_names() -> list:
     column_names = [

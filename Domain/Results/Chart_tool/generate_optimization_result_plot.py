@@ -11,7 +11,10 @@ def generate_plot(file_path: str,
                   y_axis_name: str,
                   y_axis_label: str,
                   x_axis_name: str,
-                  x_axis_label: str):
+                  x_axis_label: str,
+                  x_axis_rotation: int = 0,
+                  show_header: bool = True,
+                  new_file_path: str = None):
     data = pd.read_csv(file_path, delimiter=';')
 
     header_name = "Instance: " + data["Instance Name"][0]
@@ -27,6 +30,8 @@ def generate_plot(file_path: str,
         x = first_group[1][x_axis_name]
 
         plt.plot(x, y, label="Test Setting " + str(first_group[0]))
+        ax = plt.gca()
+        ax.tick_params(axis='x', labelrotation=x_axis_rotation)
 
     fig = plt.gcf()
     lines = []
@@ -41,9 +46,15 @@ def generate_plot(file_path: str,
     fig.legend(lines,
                labels)
 
-    plt.title(header_name)
+    plt.tight_layout()
+
+    if show_header:
+        plt.title(header_name)
     plt.show()
-    new_file_path = file_path[:-4] + ".png"
-    fig.savefig(new_file_path, dpi=200)
+    final_file_path = file_path[:-4] + ".png"
+
+    if new_file_path is not None:
+        final_file_path = new_file_path
+    fig.savefig(final_file_path, dpi=200)
 
 

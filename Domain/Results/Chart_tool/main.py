@@ -4,7 +4,6 @@ from prepare_csv_file import prepare_csv, merge_csv_files_to_compare_diff
 
 # benchmark_plots.generate_plots()
 
-
 # new_file_path = prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results/14-17-11_24-07-2023.csv")
 # generate_plot(new_file_path,
 #               x_axis_name="Reference Size",
@@ -43,3 +42,14 @@ result_with_dynamic_limit = \
 merge_csv_files_to_compare_diff(
     [result_without_dynamic, result_with_dynamic, result_with_dynamic_limit]
     )
+
+new_file_path = result_with_dynamic_limit[:-4]
+new_file_path = new_file_path + "_compare_combinations.png"
+generate_plot(result_with_dynamic_limit,
+              x_axis_name="Instance Name",
+              x_axis_label="Instance Name",
+              y_axis_name="Difference",
+              y_axis_label="Difference[%]",
+              show_header=False,
+              x_axis_rotation=45,
+              new_file_path=new_file_path)
