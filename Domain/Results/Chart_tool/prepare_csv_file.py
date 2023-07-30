@@ -38,6 +38,32 @@ def prepare_csv(file_path:str):
     new_file_path = file_path[:-4]
     new_file_path = new_file_path + "_prepared.csv"
     np.savetxt(new_file_path, csv_array, fmt="%s", delimiter=";")
+    return new_file_path
+
+
+def merge_csv_files_to_compare_diff(file_paths: list[str]):
+
+    data = None
+    diff_counter = 1
+    default_column_name = "Difference"
+    for path in file_paths:
+        new_data = pd.read_csv(path, delimiter=';')
+
+        if data is None:
+            data = copy.deepcopy(new_data)
+            diff_counter
+            continue
+
+        data[default_column_name + "_" + str(diff_counter)] = new_data[default_column_name]
+        diff_counter += 1
+
+    new_file_path = file_paths[0][:-4]
+    new_file_path = new_file_path + "_merged.csv"
+    np.savetxt(new_file_path, data, fmt="%s", delimiter=";")
+
+
+
+
 
 
 def get_column_names() -> list:
