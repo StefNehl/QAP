@@ -40,7 +40,7 @@ public class TestSettingsProvider
     /// <summary>
     /// Returns 4 different Test Cases
     /// Generation Method: ParallelRandomGeneratedPopulation
-    /// Diversification Method: HashCodeDiversification
+    /// Diversification Method: HashCodeThreePartDiversification
     /// Solution Generation Method:
     ///     ParallelPathRelinkingSubSetGenerationCombined
     ///
