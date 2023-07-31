@@ -3,6 +3,7 @@ import copy
 import pandas as pd
 import numpy as np
 
+
 def prepare_csv(file_path:str):
     data = pd.read_csv(file_path, delimiter=';')
     prepared_data_strings: [str] = [get_column_names()]
@@ -41,7 +42,6 @@ def prepare_csv(file_path:str):
 
 
 def merge_csv_files_to_compare_diff(file_paths: list[str]):
-
     data = None
     diff_counter = 1
     default_column_name = "Difference"
@@ -65,6 +65,33 @@ def merge_csv_files_to_compare_diff(file_paths: list[str]):
     data.to_csv(new_file_path, sep=";", index=False)
 
 
+def calculate_mean_and_median_for_csv(file_path: str):
+    data = pd.read_csv(file_path, delimiter=";")
+    mean_data = []
+
+    group_by_instances = data.groupby("Instance Name")
+    for instance in group_by_instances:
+        group_by_test_setting = instance[1].groupby("Test Setting")
+
+        for test_setting in group_by_test_setting:
+            mean = test_setting[1]["Difference"].mean()
+            median = test_setting[1]["Difference"].median()
+            mean_data.append([
+                instance[0],
+                test_setting[0],
+                round(mean, 2),
+                round(median, 2)
+            ])
+
+    mean_data_frame = pd.DataFrame(mean_data)
+    mean_data_frame.columns = ["Instance Name", "Test Setting", "Mean", "Median"]
+    new_file_path = file_path[:-4]
+    new_file_path = new_file_path + "_mean_median.csv"
+    mean_data_frame.to_csv(new_file_path, sep=";", index=False)
+    return new_file_path
+
+
+
 def calculate_gmean(values: list) -> float:
     result = 1
     for i in values:
@@ -73,6 +100,7 @@ def calculate_gmean(values: list) -> float:
         result = result * i
 
     return result**(1/len(values))
+
 
 def get_column_names() -> list:
     column_names = [
