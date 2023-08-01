@@ -68,15 +68,22 @@ generate_plot(mean_final_results,
 mean_final_results_without_optimization = reduce_csv_to_optimization_scenario_instances(mean_final_results)
 final_results_with_deduction = \
     prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results"
-                "/final_result_deducted_values_for_parameter.csv")
+                "/final_result_decreased_values_for_parameter.csv")
 mean_final_results_with_deduction = calculate_mean_and_median_for_csv(final_results_with_deduction)
 
-optimization_comparison = merge_csv_files_for_different_tests(
+final_results_with_increased = \
+    prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results"
+                "/final_result_increased_values_for_parameter.csv")
+mean_final_results_with_increased = calculate_mean_and_median_for_csv(final_results_with_increased)
+
+file_paths = \
     {
         mean_final_results_without_optimization: "Without Optimization",
-        mean_final_results_with_deduction: "With Deduction"
+        mean_final_results_with_deduction: "With Decreased",
+        mean_final_results_with_increased: "With Increased",
     }
-)
+
+optimization_comparison = merge_csv_files_for_different_tests(file_paths)
 
 generate_plot(optimization_comparison,
               x_axis_name="Instance Name",
