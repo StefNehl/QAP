@@ -1,6 +1,7 @@
 import benchmark_plots
 from generate_optimization_result_plot import generate_plot
-from prepare_csv_file import prepare_csv, merge_csv_files_to_compare_diff, calculate_mean_and_median_for_csv
+from prepare_csv_file import prepare_csv, merge_csv_files_to_compare_diff, calculate_mean_and_median_for_csv, \
+    reduce_csv_to_optimization_scenario_instances, merge_csv_files_for_different_tests
 
 # benchmark_plots.generate_plots()
 
@@ -62,3 +63,35 @@ generate_plot(mean_final_results,
               y_axis_label="Median",
               show_header=False,
               x_axis_rotation=45)
+
+
+mean_final_results_without_optimization = reduce_csv_to_optimization_scenario_instances(mean_final_results)
+final_results_with_deduction = \
+    prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results"
+                "/final_result_deducted_values_for_parameter.csv")
+mean_final_results_with_deduction = calculate_mean_and_median_for_csv(final_results_with_deduction)
+
+optimization_comparison = merge_csv_files_for_different_tests(
+    {
+        mean_final_results_without_optimization: "Without Optimization",
+        mean_final_results_with_deduction: "With Deduction"
+    }
+)
+
+generate_plot(optimization_comparison,
+              x_axis_name="Instance Name",
+              x_axis_label="Instance Name",
+              y_axis_name="Mean",
+              y_axis_label="Mean",
+              show_header=False,
+              x_axis_rotation=45,
+              second_group_string="Test Name")
+
+generate_plot(optimization_comparison,
+              x_axis_name="Instance Name",
+              x_axis_label="Instance Name",
+              y_axis_name="Median",
+              y_axis_label="Median",
+              show_header=False,
+              x_axis_rotation=45,
+              second_group_string="Test Name")

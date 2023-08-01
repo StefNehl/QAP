@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def prepare_csv(file_path:str):
+def prepare_csv(file_path: str):
     data = pd.read_csv(file_path, delimiter=';')
     prepared_data_strings: [str] = [get_column_names()]
 
@@ -91,6 +91,43 @@ def calculate_mean_and_median_for_csv(file_path: str):
     return new_file_path
 
 
+def reduce_csv_to_optimization_scenario_instances(file_path: str):
+    scenario_names = [
+        "chr15b.dat",
+        "chr25a.dat",
+        "esc128.dat",
+        "tai256c.dat"
+    ]
+    data = pd.read_csv(file_path, sep=";")
+    filtered_data = data[data["Instance Name"].isin(scenario_names)]
+
+    new_file_path = file_path[:-4]
+    new_file_path = new_file_path + "_optimization.csv"
+    filtered_data.to_csv(new_file_path, sep=";", index=False)
+    return new_file_path
+
+
+def merge_csv_files_for_different_tests(file_paths: {str, str}):
+    data = None
+
+    for file_path, test_name in file_paths.items():
+        new_data = pd.read_csv(file_path, sep=";")
+        new_column = []
+        for row in new_data.values:
+            new_column.append(test_name)
+
+        new_data["Test Name"] = new_column
+
+        if data is None:
+            data = new_data
+            continue
+
+        data = pd.concat([data, new_data])
+
+    new_file_path = "C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results/optimization_comparison.csv"
+    data.to_csv(new_file_path, sep=";", index=False)
+    return new_file_path
+
 
 def calculate_gmean(values: list) -> float:
     result = 1
@@ -99,7 +136,7 @@ def calculate_gmean(values: list) -> float:
             continue
         result = result * i
 
-    return result**(1/len(values))
+    return result ** (1 / len(values))
 
 
 def get_column_names() -> list:

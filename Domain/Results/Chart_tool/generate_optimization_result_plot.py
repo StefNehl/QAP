@@ -14,7 +14,8 @@ def generate_plot(file_path: str,
                   x_axis_label: str,
                   x_axis_rotation: int = 0,
                   show_header: bool = True,
-                  new_file_path: str = None):
+                  new_file_path: str = None,
+                  second_group_string: str = None):
     data = pd.read_csv(file_path, delimiter=';')
 
     header_name = "Instance: " + data["Instance Name"][0]
@@ -22,16 +23,28 @@ def generate_plot(file_path: str,
 
     plt.figure(figsize=(8, 6))
 
-    for first_group in first_groups:
+    def plot_group(group, name):
         plt.xlabel(x_axis_label)
         plt.ylabel(y_axis_label)
 
-        y = first_group[1][y_axis_name]
-        x = first_group[1][x_axis_name]
+        y = group[1][y_axis_name]
+        x = group[1][x_axis_name]
 
-        plt.plot(x, y, label="Test Setting " + str(first_group[0]))
+        plt.plot(x, y, label=name + str(group[0]))
         ax = plt.gca()
         ax.tick_params(axis='x', labelrotation=x_axis_rotation)
+
+    for first_group in first_groups:
+        if second_group_string is not None:
+            second_groups = first_group[1].groupby(second_group_string)
+
+            for second_group in second_groups:
+                plot_group(second_group, "Test Setting " + str(first_group[0]) + " ")
+        else:
+            plot_group(first_group, "Test Setting")
+
+
+
 
     fig = plt.gcf()
     lines = []
