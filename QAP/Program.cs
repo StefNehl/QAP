@@ -33,10 +33,10 @@ var filesWithUnknownOptimum = new List<TestFiles>
     new("QAPLIBNoOptimum", "wil100.dat", 263909),
 };
 
-const int runtimeInSeconds = 6;
+const int runtimeInSeconds = 600;
 // const int runtimeInSeconds = 600 * 3;
 //17 P_25 P is generally set at max(lOO, 5*refSetSize)
-int nrOfRepetitions = 1;
+int nrOfRepetitions = 5;
 var testResults = new List<TestResult>();
 
 var calculatedRuntime = filesWithUnknownOptimum.Count * runtimeInSeconds * nrOfRepetitions * 4; // 4 = nr of tests 

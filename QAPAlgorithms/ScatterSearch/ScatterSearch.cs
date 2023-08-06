@@ -76,7 +76,6 @@ namespace QAPAlgorithms.ScatterSearch
 
             var newSolutions = new HashSet<InstanceSolution>();
 
-            int notFoundSolutionCount = 0;
             long nrOfSolutionsGenerated = 0;
             int adjustReferenceSetSizeCount = 0;
 
@@ -125,7 +124,8 @@ namespace QAPAlgorithms.ScatterSearch
                 {
                     adjustReferenceSetSizeCount++;
                     if (_adjustReferenceSetAndPopulationSetSizeDynamically && 
-                        adjustReferenceSetSizeCount == 10)
+                        adjustReferenceSetSizeCount == 10 && 
+                        _referenceSetSize < 200)
                     {
                         _referenceSetSize += 10;
                         _populationSize = _referenceSetSize * 5;
@@ -136,25 +136,17 @@ namespace QAPAlgorithms.ScatterSearch
                     _population.Clear();
                     _population.AddRange(_generateInitPopulationMethod.GeneratePopulation(_populationSize));
 
-
-                    // GenerateNewPopulation(false);
-                    double percentageOfSolutionToRemove = 0.5;
-                    if(notFoundSolutionCount > 10)
-                        percentageOfSolutionToRemove = notFoundSolutionCount / 100;
-                    
                     foreach (var instanceSolution in _population)
                     {
                         ReferenceSetUpdate(instanceSolution, _referenceSet, _referenceSetSize);
                     }
                     
+                    double percentageOfSolutionToRemove = 0.8;
                     _diversificationMethod.ApplyDiversificationMethod(_referenceSet,
                         _population,
                         percentageOfSolutionToRemove);
                     _foundNewSolutions = true;
-                    notFoundSolutionCount++;
                 }
-                else
-                    notFoundSolutionCount = 0;
             }
 
             return new Tuple<InstanceSolution, long, long>(_referenceSet.First(), _iterationCount, (long)(_currentTime - _startTime).TotalSeconds);

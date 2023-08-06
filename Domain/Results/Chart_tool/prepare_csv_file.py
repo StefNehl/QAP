@@ -29,7 +29,8 @@ def prepare_csv(file_path: str):
                 row[11] == "ParallelImprovedLocalSearchFirstImprovement":
             new_row.append(4)
 
-        diff = round(((row[4] / row[5]) - 1) * 100, 2)
+        diff = round(calculate_gmean([(row[4] / row[5])]), 2)
+        # diff = round(((row[4] / row[5]) - 1) * 100, 2)
         new_row[6] = diff
 
         prepared_data_strings.append(new_row)
@@ -48,9 +49,10 @@ def merge_csv_files_to_compare_diff(file_paths: list[str]):
     for path in file_paths:
         new_data = pd.read_csv(path, delimiter=';')
 
-        print("mean:" + str(new_data[default_column_name].mean()))
-        print("median:" + str(new_data[default_column_name].median()))
-        # print("geo mean:" + str(calculate_gmean(new_data[default_column_name].values)))
+        # print("mean:" + str(new_data[default_column_name].mean()))
+        # print("median:" + str(new_data[default_column_name].median()))
+        adjusted_value_for_gmean = [(v + 100) / 100 for v in new_data[default_column_name].values]
+        print("geo mean:" + str(calculate_gmean(adjusted_value_for_gmean)))
 
         if data is None:
             data = copy.deepcopy(new_data)
@@ -74,7 +76,8 @@ def calculate_mean_and_median_for_csv(file_path: str):
         group_by_test_setting = instance[1].groupby("Test Setting")
 
         for test_setting in group_by_test_setting:
-            mean = test_setting[1]["Difference"].mean()
+            adjusted_values = [(v + 100) / 100 for v in test_setting[1]["Difference"].values]
+            mean = calculate_gmean(adjusted_values)
             median = test_setting[1]["Difference"].median()
             mean_data.append([
                 instance[0],
@@ -136,7 +139,7 @@ def calculate_gmean(values: list) -> float:
             continue
         result = result * i
 
-    return result ** (1 / len(values))
+    return round((result ** (1 / len(values))) - 1, 4) * 100
 
 
 def get_column_names() -> list:

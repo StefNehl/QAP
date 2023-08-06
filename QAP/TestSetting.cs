@@ -66,8 +66,8 @@ public class TestSettingsProvider
         {
             TestCase1(),
             TestCase2(),
-            TestCase3(),
-            TestCase4()
+            // TestCase3(),
+            // TestCase4()
         };
 
         return tests; 
@@ -76,7 +76,7 @@ public class TestSettingsProvider
     private TestSetting TestCase1()
     {
         var combinationMethod = new DeletionPartsOfTheFirstSolutionAndFillWithPartsOfTheOtherSolutions(true, 
-            50, checkIfSolutionsWereAlreadyCombined: true);
+            80, checkIfSolutionsWereAlreadyCombined: true);
         var diversificationMethod = new HashCodeThreePartDiversification();
         var improvementMethod = new ParallelImprovedLocalSearchBestImprovement();
         var generationInitPopMethod = new ParallelRandomGeneratedPopulation(RandomSeed);
