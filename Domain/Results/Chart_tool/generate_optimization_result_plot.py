@@ -14,6 +14,7 @@ def generate_plot(file_path: str,
                   x_axis_label: str,
                   x_axis_rotation: int = 0,
                   show_header: bool = True,
+                  sort_after_instance_size: bool = False,
                   new_file_path: str = None,
                   second_group_string: str = None):
     data = pd.read_csv(file_path, delimiter=';')
@@ -26,6 +27,9 @@ def generate_plot(file_path: str,
     def plot_group(group, name):
         plt.xlabel(x_axis_label)
         plt.ylabel(y_axis_label)
+
+        if sort_after_instance_size:
+            group[1].sort_values("N", inplace=True)
 
         y = group[1][y_axis_name]
         x = group[1][x_axis_name]
@@ -42,9 +46,6 @@ def generate_plot(file_path: str,
                 plot_group(second_group, "Test Setting " + str(first_group[0]) + " ")
         else:
             plot_group(first_group, "Test Setting")
-
-
-
 
     fig = plt.gcf()
     lines = []

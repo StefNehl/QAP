@@ -3,7 +3,7 @@ from generate_optimization_result_plot import generate_plot
 from prepare_csv_file import prepare_csv, merge_csv_files_to_compare_diff, calculate_mean_and_median_for_csv, \
     reduce_csv_to_optimization_scenario_instances, merge_csv_files_for_different_tests
 
-benchmark_plots.generate_plots()
+# benchmark_plots.generate_plots()
 
 new_file_path = prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results/14-17-11_24-07-2023.csv")
 generate_plot(new_file_path,
@@ -51,6 +51,7 @@ generate_plot(mean_final_results,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
+              sort_after_instance_size=True,
               x_axis_rotation=45,
               new_file_path=mean_final_results[:-4] + "_mean.png")
 
@@ -64,6 +65,7 @@ generate_plot(mean_final_results,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
+              sort_after_instance_size=True,
               x_axis_rotation=45,
               new_file_path=mean_final_results[:-4] + "_median.png")
 
@@ -94,6 +96,7 @@ generate_plot(optimization_comparison,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
+              sort_after_instance_size=True,
               x_axis_rotation=45,
               second_group_string="Test Name",
               new_file_path=optimization_comparison[:-4] + "_mean.png")
@@ -110,6 +113,7 @@ generate_plot(final_results_with_optimized_parameters,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
+              sort_after_instance_size=True,
               x_axis_rotation=45)
 
 final_results_with_optimized_parameters_unknown_solutions = \
@@ -124,4 +128,5 @@ generate_plot(final_results_with_optimized_parameters_unknown_solutions,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
+              sort_after_instance_size=True,
               x_axis_rotation=45)

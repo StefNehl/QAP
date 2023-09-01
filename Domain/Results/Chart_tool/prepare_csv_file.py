@@ -81,13 +81,14 @@ def calculate_mean_and_median_for_csv(file_path: str):
             median = test_setting[1]["Difference"].median()
             mean_data.append([
                 instance[0],
+                test_setting[1]["N"].values[0],
                 test_setting[0],
                 round(mean, 2),
                 round(median, 2)
             ])
 
     mean_data_frame = pd.DataFrame(mean_data)
-    mean_data_frame.columns = ["Instance Name", "Test Setting", "Mean", "Median"]
+    mean_data_frame.columns = ["Instance Name", "N", "Test Setting", "Mean", "Median"]
     new_file_path = file_path[:-4]
     new_file_path = new_file_path + "_mean_median.csv"
     mean_data_frame.to_csv(new_file_path, sep=";", index=False)
