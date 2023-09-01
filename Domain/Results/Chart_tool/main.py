@@ -51,7 +51,8 @@ generate_plot(mean_final_results,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
-              x_axis_rotation=45)
+              x_axis_rotation=45,
+              new_file_path=mean_final_results[:-4] + "_mean.png")
 
 final_results = \
     prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results/final_result_without_optimization.csv")
@@ -63,7 +64,8 @@ generate_plot(mean_final_results,
               y_axis_name="Mean",
               y_axis_label="Geometric Mean[%]",
               show_header=False,
-              x_axis_rotation=45)
+              x_axis_rotation=45,
+              new_file_path=mean_final_results[:-4] + "_median.png")
 
 
 mean_final_results_without_optimization = reduce_csv_to_optimization_scenario_instances(mean_final_results)
@@ -93,7 +95,8 @@ generate_plot(optimization_comparison,
               y_axis_label="Geometric Mean[%]",
               show_header=False,
               x_axis_rotation=45,
-              second_group_string="Test Name")
+              second_group_string="Test Name",
+              new_file_path=optimization_comparison[:-4] + "_mean.png")
 
 final_results_with_optimized_parameters = \
     prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results"
@@ -122,4 +125,3 @@ generate_plot(final_results_with_optimized_parameters_unknown_solutions,
               y_axis_label="Geometric Mean[%]",
               show_header=False,
               x_axis_rotation=45)
-
