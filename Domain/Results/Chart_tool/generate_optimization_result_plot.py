@@ -59,10 +59,11 @@ def generate_plot(file_path: str,
     fig.legend(lines,
                labels)
 
-    plt.tight_layout()
 
     if show_header:
         plt.title(header_name)
+
+    plt.tight_layout()
     plt.show()
     final_file_path = file_path[:-4] + ".png"
 

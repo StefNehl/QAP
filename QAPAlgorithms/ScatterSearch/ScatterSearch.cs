@@ -85,7 +85,7 @@ namespace QAPAlgorithms.ScatterSearch
                 _displayCount++;
 
                 //Check only every 1000 Iterations the Time
-                if (_displayCount == 5)
+                if (true)
                 {
                     if (displayProgressInConsole)
                         Console.WriteLine($"Iteration: {_iterationCount} Result: {GetBestSolution().SolutionValue} Solutions Generated: {nrOfSolutionsGenerated}");

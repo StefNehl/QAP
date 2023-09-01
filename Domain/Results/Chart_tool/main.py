@@ -3,7 +3,7 @@ from generate_optimization_result_plot import generate_plot
 from prepare_csv_file import prepare_csv, merge_csv_files_to_compare_diff, calculate_mean_and_median_for_csv, \
     reduce_csv_to_optimization_scenario_instances, merge_csv_files_for_different_tests
 
-# benchmark_plots.generate_plots()
+benchmark_plots.generate_plots()
 
 new_file_path = prepare_csv("C:/Users/stefa/OneDrive/Documents/_Private/MasterArbeit/Results/14-17-11_24-07-2023.csv")
 generate_plot(new_file_path,

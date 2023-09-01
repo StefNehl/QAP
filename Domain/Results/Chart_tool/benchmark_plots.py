@@ -10,7 +10,7 @@ def generate_plots():
                   "MeanUs",
                   "Time[us]",
                   "NrOfSolutions",
-                  "Nr of Solutions",
+                  "Nr of Solutions generated",
                   bbox_to_anchor=(0.55, 0.31))
 
     generate_plot("..\\Benchmarks\\GenerateInitialPopulation_Memory_Results.CSV",
@@ -18,24 +18,40 @@ def generate_plots():
                   "AllocatedB",
                   memory_label,
                   "NrOfSolutions",
-                  "Nr of Solutions",
+                  "Nr of Solutions generated",
                   use_different_alpha=True,
                   bbox_to_anchor=(0.55, 0.31))
 
-    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Time_Results.csv",
-                  "Improvement Methods Time Consumption",
+    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_First_Time_Results.csv",
+                  "First Improvement Methods Time Consumption",
                   "MeanNs",
                   "Time[ns]",
                   "NrOfSolutions",
-                  "Nr of Solutions",
+                  "Nr of Calls",
                   bbox_to_anchor=(0.55, 0.045))
 
-    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Memory_Results.csv",
-                  "Improvement Methods Memory Consumption",
+    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_First_Memory_Results.csv",
+                  "First Improvement Methods Memory Consumption",
                   "AllocatedB",
                   memory_label,
                   "NrOfSolutions",
-                  "Nr of Solutions",
+                  "Nr of Calls",
+                  bbox_to_anchor=(0.55, 0.045))
+
+    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Best_Time_Results.csv",
+                  "Best Improvement Methods Time Consumption",
+                  "MeanNs",
+                  "Time[ns]",
+                  "NrOfSolutions",
+                  "Nr of Calls",
+                  bbox_to_anchor=(0.55, 0.045))
+
+    generate_plot("..\\Benchmarks\\ImprovementBenchmarks_Best_Memory_Results.csv",
+                  "Best Improvement Methods Memory Consumption",
+                  "AllocatedB",
+                  memory_label,
+                  "NrOfSolutions",
+                  "Nr of Calls",
                   bbox_to_anchor=(0.55, 0.045))
 
     generate_plot("..\\Benchmarks\\SolutionGeneration_Results_Time.csv",
