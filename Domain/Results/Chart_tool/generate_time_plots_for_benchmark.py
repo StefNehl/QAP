@@ -2,6 +2,7 @@ from textwrap import wrap
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.transforms import offset_copy
 from pandas.core.groupby import DataFrameGroupBy
 
 
@@ -11,8 +12,10 @@ def generate_plot(file_path: str,
                   y_axis_label: str,
                   x_axis_name: str,
                   x_axis_label: str,
-                  use_different_alpha=False,
+                  transform_values_against_overlapping=None,
                   bbox_to_anchor=(0.5, 0.5)):
+    if transform_values_against_overlapping is None:
+        transform_values_against_overlapping = []
     data = pd.read_csv(file_path)
     first_groups = data.groupby("SolutionName")
 
@@ -25,7 +28,7 @@ def generate_plot(file_path: str,
                               y_axis_label,
                               x_axis_name,
                               x_axis_label,
-                              use_different_alpha,
+                              transform_values_against_overlapping,
                               bbox_to_anchor)
 
     # for first_group in first_groups:
@@ -77,13 +80,16 @@ def create_sub_plot_for_group(first_groups: DataFrameGroupBy,
                               y_axis_label: str,
                               x_axis_name: str,
                               x_axis_label: str,
-                              use_different_alpha: bool,
+                              transform_values_against_overlapping,
                               bbox_to_anchor=(0.5, 0.5)):
 
     plt.figure(figsize=(8, 6))
     plt.suptitle(plot_name)
+    fig = plt.gcf()
 
     plot_count = 1
+    group_count = 0
+
     for first_group in first_groups:
         second_groups = first_group[1].groupby("Method")
 
@@ -93,20 +99,19 @@ def create_sub_plot_for_group(first_groups: DataFrameGroupBy,
         plt.ylabel(y_axis_label)
         plot_count += 1
 
-        alpha_count = 2
-        for second_group in second_groups:
+        transform_add_value = 0
 
+        for second_group in second_groups:
             y = second_group[1][y_axis_name]
             x = second_group[1][x_axis_name]
 
-            new_alpha = 1
-            if use_different_alpha:
-                new_alpha -= (alpha_count / 10)
+            plt.plot(x, y + transform_add_value, label=second_group[0])
 
-            plt.plot(x, y, label=second_group[0], alpha=new_alpha)
-            alpha_count += 2
+            if len(transform_values_against_overlapping) != 0:
+                transform_add_value += (
+                    transform_values_against_overlapping)[group_count]
 
-    fig = plt.gcf()
+        group_count += 1
 
     lines = []
     labels = []
