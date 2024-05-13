@@ -20,3 +20,11 @@ After testing every instance with the Scatter Search framework, the results were
 0 and 30%, with exceptions, above the optimum or lower bound, respectively, within a time
 frame of 10 minutes. However, the modularity of the framework allows a combination of various
 algorithms, which allows an adjustment to specific problems.
+
+
+![alt text](https://github.com/StefNehl/QAP/blob/main/scatterSearchTemplate.jpg?raw=true)
+
+(Nebro, Antonio ; Luna, Francisco ; Alba, Enrique ; Dorronsoro, Bernabe ; Durillo,
+Juan ; Beham, Andreas: AbYSS: Adapting Scatter Search to Multiobjective Opti-
+mization. In: Evolutionary Computation, IEEE Transactions on 12 (2008), S. 439–457.
+http://dx.doi.org/10.1109/TEVC.2007.913109. – DOI 10.1109/TEVC.2007.913109)
